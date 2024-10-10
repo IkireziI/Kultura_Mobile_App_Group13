@@ -51,11 +51,12 @@ We welcome contributions! Here’s how you can help:
 5. Open a pull request.
 
 ## **Team Members**
-- **Eunice Adewusi**: Project Lead, SRS Documentation
+- **Eunice Adewusi (Climiradi)**: Project Lead, SRS Documentation
 - **Sifa Mwachoni**: Backend Developer, Flutter Features
 - **Lilian Kayitesi**: Market Research, Competitor Analysis
 - **Ines Ikirezi**: Feature Design, Educational Resources
 - **Ruth Iradukunda**: Appendix, Market Research
+- **Bryan Aurel Bakongo**: Lead Product Designer
 
 ## **Contact Information**
 For more information, feel free to contact Eunice at e.adewusi@alustudent.com
