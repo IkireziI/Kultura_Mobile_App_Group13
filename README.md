@@ -1,6 +1,6 @@
 # **Kultura App**  
 *Version: 1.0*  
-*Last Updated: September 16, 2024*
+*Last Updated: September 29, 2024*
 
 ## **Project Overview**
 **Kultura** is a mobile application that provides a platform for African artists to showcase their work, connect with buyers and investors, and access educational resources. The app fosters appreciation of African art, culture, and design while also supporting job creation and skill development through its unique blend of a marketplace and learning hub.
