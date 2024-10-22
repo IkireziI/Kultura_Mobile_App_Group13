@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'pages/opportunities_board.dart'; // Import your file containing OpportunitiesBoard widget
+import 'package:kultura/pages/log_in.dart';
+import 'pages/opportunities_board.dart';
+import 'pages/sign_up.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +17,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const OpportunitiesBoard(), // Set OpportunitiesBoard as the home page
+      initialRoute: '/login',
+
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignUpScreen(),
+
+        '/opportunities': (context) => const OpportunitiesBoard(),
+      },
+
     );
   }
 }

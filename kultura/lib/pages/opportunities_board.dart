@@ -7,7 +7,10 @@ class OpportunitiesBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Kultura"),
+        title: Image.asset('assets/kultura.png',
+        height: 40,
+            fit: BoxFit.contain,
+        ),
         backgroundColor: Colors.purple,
       ),
       //Main body content for the page
@@ -222,7 +225,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         BottomNavigationBarItem(icon: Icon(Icons.add_home_outlined), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.auto_stories_outlined), label: 'Stories'),
         BottomNavigationBarItem(icon: Icon(Icons.search_outlined), label: 'Search'),
-        BottomNavigationBarItem(icon: Icon(Icons.language_outlined), label: 'Global'),
+        BottomNavigationBarItem(icon: Icon(Icons.language_outlined), label: 'Marketplace'),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
       ],
     );
