@@ -51,7 +51,7 @@ class ArtisticCourseScreen extends StatelessWidget {
               // Music course card
               CourseCard(
                 title: 'Music',
-                imageUrl: 'assets/images/music.png', // Updated to .png
+                imageUrl: 'assets/images/music.png',
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 120,
                 onTap: () {
@@ -68,7 +68,7 @@ class ArtisticCourseScreen extends StatelessWidget {
               // Painting course card
               CourseCard(
                 title: 'Painting',
-                imageUrl: 'assets/images/painting.png', // Updated to .png
+                imageUrl: 'assets/images/painting.png',
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 150,
                 onTap: () {
@@ -85,7 +85,7 @@ class ArtisticCourseScreen extends StatelessWidget {
               // Literature course card
               CourseCard(
                 title: 'Literature',
-                imageUrl: 'assets/images/literature.png', // Updated to .png
+                imageUrl: 'assets/images/literature.png',
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 120,
                 onTap: () {
@@ -208,7 +208,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 builder: (context) => const ArtisticCourseScreen()),
           );
         }
-        // Add other cases for index 2, 3, 4 if needed
       },
       items: const [
         BottomNavigationBarItem(
