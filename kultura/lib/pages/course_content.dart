@@ -5,7 +5,7 @@ import 'literature_course.dart';
 import 'painting_course.dart';
 
 class CourseContentScreen extends StatelessWidget {
-  const CourseContentScreen({super.key});
+  const CourseContentScreen({super.key, required String courseTitle});
 
   @override
   Widget build(BuildContext context) {

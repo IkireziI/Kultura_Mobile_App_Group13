@@ -1,27 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Main function to start the app
-void main() {
-  runApp(const MyApp());
-}
-
-// Root widget of the application
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Artistic Course App',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      home: const ArtisticCourseScreen(),
-    );
-  }
-}
-
-// Artistic Course screen that displays course cards and bottom navigation bar
 class ArtisticCourseScreen extends StatelessWidget {
   const ArtisticCourseScreen({super.key});
 
@@ -41,74 +19,50 @@ class ArtisticCourseScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      // Scrollable body content
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Music course card
               CourseCard(
                 title: 'Music',
                 imageUrl: 'assets/images/music.png',
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 120,
                 onTap: () {
-                  // Navigate to course details
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const CourseContentScreen(courseTitle: 'Music')),
-                  );
+                  Navigator.pushNamed(context, '/course_content');
                 },
               ),
-              const SizedBox(height: 32), // Increased space between cards
-              // Painting course card
+              const SizedBox(height: 32),
               CourseCard(
                 title: 'Painting',
                 imageUrl: 'assets/images/painting.png',
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 150,
                 onTap: () {
-                  // Navigate to course details
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const CourseContentScreen(courseTitle: 'Painting')),
-                  );
+                  Navigator.pushNamed(context, '/course_content');
                 },
               ),
-              const SizedBox(height: 32), // Increased space between cards
-              // Literature course card
+              const SizedBox(height: 32),
               CourseCard(
                 title: 'Literature',
                 imageUrl: 'assets/images/literature.png',
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 120,
                 onTap: () {
-                  // Navigate to course details
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CourseContentScreen(
-                            courseTitle: 'Literature')),
-                  );
+                  Navigator.pushNamed(context, '/course_content');
                 },
               ),
             ],
           ),
         ),
       ),
-      // Bottom navigation bar
       bottomNavigationBar: const BottomNavigation(),
     );
   }
 }
 
-// Course card widget that displays an image, title, and click functionality
 class CourseCard extends StatelessWidget {
   final String title;
   final String imageUrl;
@@ -128,7 +82,7 @@ class CourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, // Makes the entire card clickable
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor,
@@ -167,7 +121,6 @@ class CourseCard extends StatelessWidget {
   }
 }
 
-// Bottom Navigation bar widget
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
 
@@ -176,7 +129,7 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int _selectedIndex = 1; // Default index set to 1 (Stories)
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -185,28 +138,17 @@ class _BottomNavigationState extends State<BottomNavigation> {
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.purple,
       unselectedItemColor: Colors.grey,
-      showSelectedLabels: false, // Remove labels from selected items
-      showUnselectedLabels: false, // Remove labels from unselected items
-      iconSize: 30, // Increased icon size
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      iconSize: 30,
       onTap: (index) {
         setState(() {
           _selectedIndex = index;
         });
-        // Navigation logic based on selected index
         if (index == 0) {
-          // Navigate to Home (Resource Center Screen) with back arrow
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const ResourceCenterScreen()),
-          );
+          Navigator.pushNamed(context, '/resource_center');
         } else if (index == 1) {
-          // Navigate to ArtisticCourseScreen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const ArtisticCourseScreen()),
-          );
+          Navigator.pushReplacementNamed(context, '/course_content');
         }
       },
       items: const [
@@ -216,7 +158,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.auto_stories_outlined),
-          label: 'Stories', // Focused icon
+          label: 'Stories',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search_outlined),
@@ -235,7 +177,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
   }
 }
 
-// Placeholder screen for Resource Center
 class ResourceCenterScreen extends StatelessWidget {
   const ResourceCenterScreen({super.key});
 
@@ -246,38 +187,13 @@ class ResourceCenterScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Go back to previous screen
+            Navigator.pop(context);
           },
         ),
         title: const Text('Resource Center'),
       ),
       body: const Center(
         child: Text('Resource Center Content'),
-      ),
-    );
-  }
-}
-
-// Placeholder screen for course content
-class CourseContentScreen extends StatelessWidget {
-  final String courseTitle;
-
-  const CourseContentScreen({super.key, required this.courseTitle});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(courseTitle),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context); // Go back to previous screen
-          },
-        ),
-      ),
-      body: Center(
-        child: Text('Content for $courseTitle course'),
       ),
     );
   }
