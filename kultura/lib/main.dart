@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kultura/pages/log_in.dart';
 import 'pages/opportunities_board.dart';
 import 'pages/sign_up.dart';
+import 'pages/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,6 +23,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignUpScreen(),
+
+        '/home': (context) => const Home(),
 
         '/opportunities': (context) => const OpportunitiesBoard(),
       },
