@@ -137,6 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
                         // Handle login logic
+                        Navigator.pushReplacementNamed(context, '/home');
+                        // Navigate to the HomePage after successful connexion
                       }
                     },
                     child: const Text('Log In'),

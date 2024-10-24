@@ -223,9 +223,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
       },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.add_home_outlined), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.auto_stories_outlined), label: 'Stories'),
+        BottomNavigationBarItem(icon: Icon(Icons.auto_stories_outlined), label: 'Resources'),
         BottomNavigationBarItem(icon: Icon(Icons.search_outlined), label: 'Search'),
-        BottomNavigationBarItem(icon: Icon(Icons.language_outlined), label: 'Marketplace'),
+        BottomNavigationBarItem(icon: Icon(Icons.language_outlined), label: 'Opportunities'),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
       ],
     );

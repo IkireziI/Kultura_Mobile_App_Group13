@@ -157,6 +157,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
                         // Handle sign up logic
+                        Navigator.pushReplacementNamed(context, '/home');
+                        // Navigate to the HomePage after successful registration
                       }
                     },
                     child: const Text('Sign Up'),
