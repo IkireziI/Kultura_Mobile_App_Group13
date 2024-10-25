@@ -174,7 +174,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
         Navigator.pushReplacementNamed(
             context, '/resource_center'); // Navigates to Resource Center
         break;
-      // Add cases for other tabs if needed
+      case 3:
+        Navigator.pushReplacementNamed(
+            context, '/opportunities_board'); // Navigates to Opportunities Board
+        break;
       default:
         break;
     }
