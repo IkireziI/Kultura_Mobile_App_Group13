@@ -42,7 +42,7 @@ class ProfileSettingsPage extends StatelessWidget {
           const SizedBox(height: 20),
           const CircleAvatar(
             radius: 50,
-            backgroundImage: AssetImage('assets/images(1).jpeg'), 
+            backgroundImage: AssetImage('assets/girl.png'),
           ),
           const SizedBox(height: 20),
           const Text(
@@ -100,7 +100,7 @@ class ProfileMenuItem extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  const ProfileMenuItem({Key? key, required this.icon, required this.text}) : super(key: key);
+  const ProfileMenuItem({super.key, required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {
