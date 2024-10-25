@@ -40,24 +40,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// HomeScreen class, which is a StatelessWidget
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading:
-            false, // Disable the back button in the app bar
-        title: const Text('Home'), // Title of the app bar
-      ),
-      body: const Center(
-        child: Text('Home Screen Content'), // Centered text in the body
-      ),
-      bottomNavigationBar: const resources.BottomNavigation(
-          selectedIndex: 0), // Bottom navigation bar with selected index
-    );
-  }
-}
