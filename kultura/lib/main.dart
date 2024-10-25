@@ -4,6 +4,7 @@ import 'package:kultura/pages/resource_center.dart' as resources;
 import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
+import 'pages/home.dart';
 
 // Entry point of the application
 void main() {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/home', // Set the initial route to home
       routes: {
         // Define the application's routes
-        '/home': (context) => const HomeScreen(), // Route for the home screen
+        '/home': (context) => const Home(), // Route for the home screen
         '/resource_center': (context) =>
             const resources.ArtisticCourseScreen(), // Route for the resource center
         '/music': (context) =>
