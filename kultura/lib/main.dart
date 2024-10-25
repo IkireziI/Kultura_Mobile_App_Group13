@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Kultura App', // The title of the application
+      title: 'Kultura App',
+      debugShowCheckedModeBanner: false,// The title of the application
       theme: ThemeData(
         primarySwatch: Colors.purple, // Set the primary color theme to purple
       ),
