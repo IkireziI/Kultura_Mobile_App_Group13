@@ -1,87 +1,88 @@
 import 'package:flutter/material.dart';
 
-// The main screen displaying the artistic courses available
+// Defines the ArtisticCourseScreen as a stateless widget
 class ArtisticCourseScreen extends StatelessWidget {
   const ArtisticCourseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Set background color of the screen
+      backgroundColor:
+          Colors.white, // Sets the screen background color to white
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Remove the default back button
+        automaticallyImplyLeading: false, // Hides the back button
         title: const Text(
-          'Artistic Course', // Title of the app bar
+          'Artistic Course', // Sets the title of the app bar
           style: TextStyle(
-            color: Colors.black, // Title text color
-            fontSize: 24, // Title text size
-            fontWeight: FontWeight.bold, // Title text weight
+            color: Colors.black,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white, // App bar background color
-        elevation: 0, // No shadow under the app bar
+        backgroundColor: Colors.white, // Makes the app bar background white
+        elevation: 0, // Removes the app bar shadow
       ),
       body: SingleChildScrollView(
-        // Allow scrolling for the body content
         child: Padding(
-          padding: const EdgeInsets.all(16.0), // Padding around the content
+          padding: const EdgeInsets.all(
+              16.0), // Adds padding around the body content
           child: Column(
             crossAxisAlignment:
-                CrossAxisAlignment.start, // Align children to the start
+                CrossAxisAlignment.start, // Aligns content to the left
             children: [
-              // Card for the Music course
+              // CourseCard for Music course
               CourseCard(
-                title: 'Music', // Title of the course
-                imageUrl: 'assets/images/music.png', // Path to the course image
+                title: 'Music',
+                imageUrl: 'assets/images/music.png',
                 backgroundColor:
-                    const Color(0xFFFCE4EC), // Background color of the card
-                imageHeight: 120, // Height of the course image
+                    const Color(0xFFFCE4EC), // Background color for card
+                imageHeight: 120, // Sets image height
                 onTap: () {
-                  // Navigate to the music course when tapped
-                  Navigator.pushNamed(context, '/music');
+                  Navigator.pushNamed(
+                      context, '/music'); // Navigates to Music page
                 },
               ),
-              const SizedBox(height: 32), // Space between course cards
-              // Card for the Painting course
+              const SizedBox(height: 28), // Space between cards
+              // CourseCard for Painting course
               CourseCard(
                 title: 'Painting',
                 imageUrl: 'assets/images/painting.png',
                 backgroundColor: const Color(0xFFFCE4EC),
-                imageHeight: 150,
+                imageHeight: 120,
                 onTap: () {
-                  // Navigate to the painting course when tapped
-                  Navigator.pushNamed(context, '/painting');
+                  Navigator.pushNamed(
+                      context, '/painting'); // Navigates to Painting page
                 },
               ),
-              const SizedBox(height: 32), // Space between course cards
-              // Card for the Literature course
+              const SizedBox(height: 28), // Space between cards
+              // CourseCard for Literature course
               CourseCard(
                 title: 'Literature',
                 imageUrl: 'assets/images/literature.png',
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 120,
                 onTap: () {
-                  // Navigate to the literature course when tapped
-                  Navigator.pushNamed(context, '/literature');
+                  Navigator.pushNamed(
+                      context, '/literature'); // Navigates to Literature page
                 },
               ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar:
-          const BottomNavigation(selectedIndex: 1), // Bottom navigation bar
+      // Adds the bottom navigation bar to the screen
+      bottomNavigationBar: const BottomNavigation(selectedIndex: 1),
     );
   }
 }
 
-// Widget representing an individual course card
+// Custom widget for each course card
 class CourseCard extends StatelessWidget {
   final String title; // Course title
-  final String imageUrl; // URL of the course image
-  final Color backgroundColor; // Background color of the card
-  final double imageHeight; // Height of the course image
-  final VoidCallback onTap; // Callback function when the card is tapped
+  final String imageUrl; // Path to the course image
+  final Color backgroundColor; // Background color for the card
+  final double imageHeight; // Image height
+  final VoidCallback onTap; // Callback function when tapped
 
   const CourseCard({
     super.key,
@@ -95,38 +96,42 @@ class CourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, // Trigger the onTap function when tapped
+      onTap: onTap, // Triggers the onTap callback when tapped
       child: Container(
+        width: double.infinity, // Makes the card take full width
         decoration: BoxDecoration(
-          color: backgroundColor, // Set the background color
-          borderRadius:
-              BorderRadius.circular(20), // Rounded corners for the card
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(20), // Rounds the card corners
         ),
+        clipBehavior: Clip.antiAlias, // Clips overflowed content
         child: Column(
           crossAxisAlignment:
-              CrossAxisAlignment.start, // Align children to the start
+              CrossAxisAlignment.start, // Aligns content to the left
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20), // Rounded corner for the top left
-                topRight:
-                    Radius.circular(20), // Rounded corner for the top right
-              ),
-              child: Image.asset(
-                imageUrl, // Load image from asset
-                width: double.infinity, // Take full width of the container
-                height: imageHeight, // Set the image height
-                fit: BoxFit.cover, // Scale the image to cover the area
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  16, 16, 16, 0), // Padding around the image
+              child: ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(12), // Rounds the image corners
+                child: SizedBox(
+                  width: double.infinity,
+                  height: imageHeight, // Sets image height
+                  child: Image.asset(
+                    imageUrl, // Loads the image asset
+                    fit: BoxFit.cover, // Fills the image to cover the container
+                  ),
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0), // Padding around the text
+              padding: const EdgeInsets.all(16.0), // Padding around the title
               child: Text(
-                title, // Display the course title
+                title, // Displays the course title
                 style: const TextStyle(
-                  fontSize: 24, // Font size of the title
-                  fontWeight: FontWeight.bold, // Bold font weight
-                  color: Colors.black, // Title text color
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -137,9 +142,9 @@ class CourseCard extends StatelessWidget {
   }
 }
 
-// Bottom navigation widget to switch between screens
+// Bottom navigation bar widget with 5 items
 class BottomNavigation extends StatefulWidget {
-  final int selectedIndex; // Currently selected tab index
+  final int selectedIndex; // Tracks the currently selected tab
 
   const BottomNavigation({super.key, required this.selectedIndex});
 
@@ -148,28 +153,28 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  late int _selectedIndex; // Variable to track selected index
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.selectedIndex; // Initialize selected index
+    _selectedIndex = widget.selectedIndex; // Sets the initial selected tab
   }
 
+  // Handles tap events for each navigation item
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Update selected index
+      _selectedIndex = index;
     });
-    // Navigate to the corresponding screen based on the tapped index
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/home'); // Navigate to Home
+        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
         break;
       case 1:
         Navigator.pushReplacementNamed(
-            context, '/resource_center'); // Navigate to Resource Center
+            context, '/resource_center'); // Navigates to Resource Center
         break;
-      // Additional cases for other tabs if needed
+      // Add cases for other tabs if needed
       default:
         break;
     }
@@ -178,35 +183,34 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _selectedIndex, // Set the current index
-      type: BottomNavigationBarType.fixed, // Fixed bottom navigation bar
-      selectedItemColor: Colors.purple, // Color for selected item
-      unselectedItemColor: Colors.grey, // Color for unselected items
-      showSelectedLabels: false, // Hide labels for selected items
-      showUnselectedLabels: false, // Hide labels for unselected items
-      iconSize: 30, // Size of the icons
-      onTap: _onItemTapped, // Function to call on item tap
+      currentIndex: _selectedIndex, // Highlights the selected tab
+      type: BottomNavigationBarType.fixed, // Fixed tab type
+      selectedItemColor: Colors.purple, // Selected icon color
+      unselectedItemColor: Colors.grey, // Unselected icon color
+      showSelectedLabels: false, // Hides selected labels
+      showUnselectedLabels: false, // Hides unselected labels
+      iconSize: 30, // Sets icon size
+      onTap: _onItemTapped, // Triggers _onItemTapped on tap
       items: const [
-        // Navigation bar items
         BottomNavigationBarItem(
-          icon: Icon(Icons.add_home_outlined), // Icon for Home
-          label: 'Home', // Label for Home
+          icon: Icon(Icons.add_home_outlined),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.auto_stories_outlined), // Icon for Resource Center
-          label: 'Resource Center', // Label for Resource Center
+          icon: Icon(Icons.auto_stories_outlined),
+          label: 'Resource Center',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined), // Icon for Search
-          label: 'Search', // Label for Search
+          icon: Icon(Icons.search_outlined),
+          label: 'Search',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.language_outlined), // Icon for Marketplace
-          label: 'Marketplace', // Label for Marketplace
+          icon: Icon(Icons.language_outlined),
+          label: 'Marketplace',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined), // Icon for Profile
-          label: 'Profile', // Label for Profile
+          icon: Icon(Icons.account_circle_outlined),
+          label: 'Profile',
         ),
       ],
     );
