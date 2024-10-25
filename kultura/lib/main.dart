@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/pages/resource_center.dart';
+import 'package:kultura/pages/opportunities_board.dart' as opportunities;
+import 'package:kultura/pages/resource_center.dart' as resources;
 import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
@@ -25,13 +26,15 @@ class MyApp extends StatelessWidget {
         // Define the application's routes
         '/home': (context) => const HomeScreen(), // Route for the home screen
         '/resource_center': (context) =>
-            const ArtisticCourseScreen(), // Route for the resource center
+            const resources.ArtisticCourseScreen(), // Route for the resource center
         '/music': (context) =>
             const MusicCourseScreen(), // Route for the music course
         '/painting': (context) =>
             const PaintingCourseScreen(), // Route for the painting course
         '/literature': (context) =>
             const LiteratureCourseScreen(), // Route for the literature course
+        '/opportunities_board': (context) =>
+            const opportunities.OpportunitiesBoard(), // Route for the Opportunities board
       },
     );
   }
@@ -52,7 +55,7 @@ class HomeScreen extends StatelessWidget {
       body: const Center(
         child: Text('Home Screen Content'), // Centered text in the body
       ),
-      bottomNavigationBar: const BottomNavigation(
+      bottomNavigationBar: const resources.BottomNavigation(
           selectedIndex: 0), // Bottom navigation bar with selected index
     );
   }
