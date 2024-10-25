@@ -1,59 +1,175 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:kultura/pages/resource_center.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MusicCourseScreen extends StatelessWidget {
   const MusicCourseScreen({super.key});
 
-  // Function to open YouTube video using launchUrl and canLaunchUrl
-  Future<void> _launchURL(String url) async {
-    final Uri uri = Uri.parse(url); // Convert the string URL to Uri
-
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri,
-          mode: LaunchMode.externalApplication); // Launch the URL
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Music Course'),
-        backgroundColor: Colors.purple,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context); // Navigates back to the previous screen
-          },
+      // Gradient background
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF9C27B0), Color(0xFFE1BEE7)], // Purple gradient
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Introduction to Music Theory',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-
-            // Display video thumbnail and clickable link to YouTube
-            GestureDetector(
-              onTap: () => _launchURL(
-                  'https://youtu.be/2pirdPK5avU?si=wB1GR-GtpnKN1_fV'), // Video 1 link
-              child: Image.network(
-                'https://img.youtube.com/vi/VIDEO_ID1/0.jpg',
-                fit: BoxFit.cover,
+            // Custom App Bar with image logo
+            AppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: Center(
+                // Center the image
+                child: Image.asset(
+                  'assets/images/KULTURA.png',
+                  height: 40,
+                ),
               ),
             ),
             const SizedBox(height: 16),
 
-            const Text(
-              'Tap the video preview to watch the full video on YouTube.',
-              style: TextStyle(color: Colors.grey),
+            // Search Bar with centered italic text
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search',
+                    hintStyle: const TextStyle(
+                      fontStyle: FontStyle.italic,
+                    ),
+                    prefixIcon: const Icon(Icons.search, color: Colors.black),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.filter_list, color: Colors.black),
+                      onPressed: () {
+                        // Handle filter action
+                      },
+                    ),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Embedded Videos
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      // Embedded video
+                      EmbeddedVideoCard(
+                        videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                        title: 'Music Theory Basics',
+                        description:
+                            'Learn the fundamentals of music theory in this introduction.',
+                      ),
+                      const SizedBox(height: 16),
+                      EmbeddedVideoCard(
+                        videoUrl: 'https://www.youtube.com/watch?v=3JZ_D3ELwOQ',
+                        title: 'How to Play Guitar',
+                        description:
+                            'This video covers the basics of playing guitar.',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: const BottomNavigation(selectedIndex: 1), // Bottom Nav
+    );
+  }
+}
+
+// Custom Embedded Video Card Widget
+class EmbeddedVideoCard extends StatefulWidget {
+  final String videoUrl;
+  final String title;
+  final String description;
+
+  const EmbeddedVideoCard({
+    super.key,
+    required this.videoUrl,
+    required this.title,
+    required this.description,
+  });
+
+  @override
+  EmbeddedVideoCardState createState() => EmbeddedVideoCardState();
+}
+
+class EmbeddedVideoCardState extends State<EmbeddedVideoCard> {
+  late YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(widget.videoUrl)!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Video player
+            YoutubePlayer(
+              controller: _controller,
+              showVideoProgressIndicator: true,
+            ),
+            const SizedBox(height: 16),
+
+            // Title and description
+            Text(
+              widget.title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              widget.description,
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
           ],
         ),
