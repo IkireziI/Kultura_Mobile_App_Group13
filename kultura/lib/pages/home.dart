@@ -52,8 +52,27 @@ class HomePageContent extends StatelessWidget {
                   Color.fromARGB(255, 202, 62, 226),
                   Color.fromARGB(255, 217, 100, 238),
                   Color.fromARGB(255, 212, 131, 226),
-                ]
+                ],
               ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Recent Posts',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: PostsSection(),
+                ),
+              ],
             ),
           ), 
         ),
@@ -68,19 +87,65 @@ class Stories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 120,
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          StoryItem(imagePath: 'assets/pp.jpg', label: 'Your Story'),
-          StoryItem(imagePath: 'assets/story1.png', label: 'Aurel'),
-          StoryItem(imagePath: 'assets/story2.jpg', label: 'Ines'),
-          StoryItem(imagePath: 'assets/story3.jpeg', label: 'Liliane'),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          color: Colors.purple,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Stories',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              // Notifications and Messages Icons
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      // Notification Logic
+                    },
+                    icon: const Icon(Icons.notifications, color: Colors.white),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      // Message Logic
+                    },
+                    icon: const Icon(Icons.message, color: Colors.white),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      
+        // Stories Section
+        Container(
+          height: 120,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          decoration: BoxDecoration(
+            color: Colors.purple,
+          ),
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              StoryItem(imagePath: 'assets/pp.jpg', label: 'Your Story'),
+              StoryItem(imagePath: 'assets/story1.png', label: 'Aurel'),
+              StoryItem(imagePath: 'assets/story2.jpg', label: 'Ines'),
+              StoryItem(imagePath: 'assets/story3.jpeg', label: 'Liliane'),
+            ],
+          ),
+        ),
+      ],
     );
+
+    
   }
 }
 
@@ -94,16 +159,17 @@ class StoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(10.0),
       child: Container(
-        width: 80,
+        width: 100,
+        height: 100,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white, width: 1),
+          border: Border.all(color: const Color.fromARGB(255, 65, 108, 226), width: 2),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -111,7 +177,7 @@ class StoryItem extends StatelessWidget {
                 radius: 30,
                 backgroundImage: AssetImage(imagePath),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Text(
                 label,
                 style: const TextStyle(color: Colors.white, fontSize: 12),
@@ -120,6 +186,72 @@ class StoryItem extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+// Post Section
+class PostsSection extends StatelessWidget {
+  const PostsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        PostItem(
+          userName: 'Marc_aurel',
+          timeAgo: '2 mins ago',
+          postText: 'Join my Team and I for this session we are organizing in Collaboration with a painting school.',
+          postImage: 'assets/post_home.jpg',
+        ),
+      ],
+    );
+  }
+}
+
+// Post Item Class
+class PostItem extends StatelessWidget {
+  final String userName;
+  final String timeAgo;
+  final String postText;
+  final String postImage;
+
+  const PostItem({super.key, required this.userName, required this.timeAgo, required this.postText, required this.postImage});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            leading: CircleAvatar(
+              backgroundImage: AssetImage('assets/marc.jpg'),
+            ),
+            title: Text(userName),
+            subtitle: Text(timeAgo),
+            trailing: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+              ),
+              child: Text(
+                'Follow',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(postText),
+          ),
+          Image.asset(postImage),
+        ],
       ),
     );
   }
