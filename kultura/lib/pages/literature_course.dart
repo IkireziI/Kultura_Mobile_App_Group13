@@ -41,7 +41,7 @@ class LiteratureCourseScreen extends StatelessWidget {
             const SizedBox(height: 16),
             GestureDetector(
               onTap: () => _launchURL(
-                  'https://www.youtube.com/watch?v=VIDEO_ID2'), // Video 2 link
+                  'https://youtu.be/rqqh9hg3Roc?si=uNbzEepgOAdHB4-o'), // Video 2 link
               child: Image.network(
                 'https://img.youtube.com/vi/VIDEO_ID2/0.jpg',
                 fit: BoxFit.cover,

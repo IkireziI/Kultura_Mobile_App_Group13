@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kultura/pages/resource_center.dart';
-import 'package:kultura/pages/course_content.dart' as course_content;
 import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
@@ -19,14 +18,32 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      initialRoute: '/resource_center',
+      initialRoute: '/home',
       routes: {
+        '/home': (context) => const HomeScreen(),
         '/resource_center': (context) => const ArtisticCourseScreen(),
-        '/course_content': (context) => const course_content.CourseContentScreen(courseTitle: 'All Courses',),
         '/music': (context) => const MusicCourseScreen(),
         '/painting': (context) => const PaintingCourseScreen(),
         '/literature': (context) => const LiteratureCourseScreen(),
       },
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('Home'),
+      ),
+      body: const Center(
+        child: Text('Home Screen Content'),
+      ),
+      bottomNavigationBar: const BottomNavigation(),
     );
   }
 }

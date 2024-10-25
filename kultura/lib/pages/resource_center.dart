@@ -8,6 +8,7 @@ class ArtisticCourseScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           'Artistic Course',
           style: TextStyle(
@@ -31,7 +32,7 @@ class ArtisticCourseScreen extends StatelessWidget {
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 120,
                 onTap: () {
-                  Navigator.pushNamed(context, '/course_content');
+                  Navigator.pushNamed(context, '/music');
                 },
               ),
               const SizedBox(height: 32),
@@ -41,7 +42,7 @@ class ArtisticCourseScreen extends StatelessWidget {
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 150,
                 onTap: () {
-                  Navigator.pushNamed(context, '/course_content');
+                  Navigator.pushNamed(context, '/painting');
                 },
               ),
               const SizedBox(height: 32),
@@ -51,7 +52,7 @@ class ArtisticCourseScreen extends StatelessWidget {
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 120,
                 onTap: () {
-                  Navigator.pushNamed(context, '/course_content');
+                  Navigator.pushNamed(context, '/literature');
                 },
               ),
             ],
@@ -146,9 +147,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
           _selectedIndex = index;
         });
         if (index == 0) {
-          Navigator.pushNamed(context, '/resource_center');
+          Navigator.pushNamed(context, '/home');
         } else if (index == 1) {
-          Navigator.pushReplacementNamed(context, '/course_content');
+          Navigator.pushReplacementNamed(context, '/resource_center');
         }
       },
       items: const [
@@ -158,7 +159,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.auto_stories_outlined),
-          label: 'Stories',
+          label: 'Resource Center',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.search_outlined),
@@ -173,28 +174,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
           label: 'Profile',
         ),
       ],
-    );
-  }
-}
-
-class ResourceCenterScreen extends StatelessWidget {
-  const ResourceCenterScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text('Resource Center'),
-      ),
-      body: const Center(
-        child: Text('Resource Center Content'),
-      ),
     );
   }
 }
