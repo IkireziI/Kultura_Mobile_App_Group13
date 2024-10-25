@@ -87,19 +87,19 @@ class MusicCourseScreen extends StatelessWidget {
                       // First embedded video card
                       EmbeddedVideoCard(
                         videoUrl:
-                            'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Video URL
-                        title: 'Music Theory Basics', // Video title
+                            'https://youtu.be/2pirdPK5avU?si=qRvFGwAQ0ke1kH24', // Video URL
+                        title: "How I'd Learn Music Theory (If I Had To Start Over)", // Video title
                         description:
-                            'Learn the fundamentals of music theory in this introduction.', // Video description
+                            "Knowing what I know now, how would I advise the old 2009 Cory on how to do things better? Or, perhaps more relevantly, how would I advise people who are just starting their own journeys into music theory?", // Video description
                       ),
                       const SizedBox(height: 16), // Spacing between video cards
                       // Second embedded video card
                       EmbeddedVideoCard(
                         videoUrl:
-                            'https://www.youtube.com/watch?v=3JZ_D3ELwOQ', // Video URL
-                        title: 'How to Play Guitar', // Video title
+                            'https://youtu.be/mWpXy57-mvc?si=fu6WJdXJc4PEBg_2', // Video URL
+                        title: 'The BASICS Of Music Theory EXPLAINED (in 10 minutes)', // Video title
                         description:
-                            'This video covers the basics of playing guitar.', // Video description
+                            'In this episode we revisit the basics of music theory exploring intervals, chord construction, and ear training. All in 10 minutes! Beato Ear Training and Beato Book links below.', // Video description
                       ),
                     ],
                   ),
