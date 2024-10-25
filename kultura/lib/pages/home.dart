@@ -15,7 +15,16 @@ class Home extends StatelessWidget {
             backgroundColor: Colors.purple,
         ),
 
-        body: HomePageContent(),
+        body: Column(
+          children: [
+            // Stories Section
+            Stories(),
+            // HomePage
+            Expanded(
+              child: HomePageContent()
+            ),
+          ],
+        ),
         // Body
         bottomNavigationBar: BottomNavigation(),
         // Bottom Navigation Bar
@@ -30,25 +39,70 @@ class HomePageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: [
-            Expanded(
-                child: Container(
-                    decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                                Colors.purple,
-                                Color.fromARGB(255, 172, 48, 194),
-                                Color.fromARGB(255, 202, 62, 226),
-                                Color.fromARGB(255, 217, 100, 238),
-                                Color.fromARGB(255, 212, 131, 226),
-                            ]
-                        ),
-                    ),
-                ), 
+      children: [
+        Expanded(
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.purple,
+                  Color.fromARGB(255, 172, 48, 194),
+                  Color.fromARGB(255, 202, 62, 226),
+                  Color.fromARGB(255, 217, 100, 238),
+                  Color.fromARGB(255, 212, 131, 226),
+                ]
+              ),
             ),
+          ), 
+        ),
+      ],
+    );
+  }
+}
+
+// Stories Section
+class Stories extends StatelessWidget {
+  const Stories({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          StoryItem(imagePath: 'assets/pp.jpg', label: 'Your Story'),
+          StoryItem(imagePath: 'assets/story1.png', label: 'Aurel'),
+          StoryItem(imagePath: 'assets/story2.jpg', label: 'Ines'),
+          StoryItem(imagePath: 'assets/story3.jpeg', label: 'Liliane'),
         ],
+      ),
+    );
+  }
+}
+
+// Story Items
+class StoryItem extends StatelessWidget {
+  final String imagePath;
+  final String label;
+
+  const StoryItem({super.key, required this.imagePath, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundImage: AssetImage(imagePath),
+          ),
+          Text(label, style: TextStyle(color: Colors.white),),
+        ],
+      ),
     );
   }
 }
