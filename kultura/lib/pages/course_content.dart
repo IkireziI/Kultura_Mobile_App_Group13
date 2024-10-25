@@ -78,7 +78,8 @@ class CourseContentScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(), // Bottom Navigation
+      bottomNavigationBar: const BottomNavigation(
+          selectedIndex: 1), // Bottom Navigation with selectedIndex
     );
   }
 }

@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
       body: const Center(
         child: Text('Home Screen Content'),
       ),
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar: const BottomNavigation(selectedIndex: 0),
     );
   }
 }

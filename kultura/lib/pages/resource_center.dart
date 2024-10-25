@@ -59,7 +59,7 @@ class ArtisticCourseScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar: const BottomNavigation(selectedIndex: 1),
     );
   }
 }
@@ -123,14 +123,39 @@ class CourseCard extends StatelessWidget {
 }
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({super.key});
+  final int selectedIndex;
+
+  const BottomNavigation({super.key, required this.selectedIndex});
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int _selectedIndex = 1;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex;
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(context, '/resource_center');
+        break;
+      // Additional cases for other tabs if needed
+      default:
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,16 +167,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       showSelectedLabels: false,
       showUnselectedLabels: false,
       iconSize: 30,
-      onTap: (index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-        if (index == 0) {
-          Navigator.pushNamed(context, '/home');
-        } else if (index == 1) {
-          Navigator.pushReplacementNamed(context, '/resource_center');
-        }
-      },
+      onTap: _onItemTapped,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.add_home_outlined),

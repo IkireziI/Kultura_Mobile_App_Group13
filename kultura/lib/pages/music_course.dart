@@ -43,7 +43,7 @@ class MusicCourseScreen extends StatelessWidget {
             // Display video thumbnail and clickable link to YouTube
             GestureDetector(
               onTap: () => _launchURL(
-                  'https://www.youtube.com/watch?v=VIDEO_ID1'), // Video 1 link
+                  'https://youtu.be/2pirdPK5avU?si=wB1GR-GtpnKN1_fV'), // Video 1 link
               child: Image.network(
                 'https://img.youtube.com/vi/VIDEO_ID1/0.jpg',
                 fit: BoxFit.cover,
