@@ -26,7 +26,7 @@ class Home extends StatelessWidget {
           ],
         ),
         // Body
-        bottomNavigationBar: BottomNavigation(),
+        bottomNavigationBar: BottomNavigation(selectedIndex: 0,),
         // Bottom Navigation Bar
     );
   }
@@ -259,36 +259,86 @@ class PostItem extends StatelessWidget {
 
 // Bottom Navigation bar widget
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({super.key});
+  final int selectedIndex; // Tracks the currently selected tab
+
+  const BottomNavigation({super.key, required this.selectedIndex});
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex; // Sets the initial selected tab
+  }
+
+  // Handles tap events for each navigation item
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(
+            context, '/resource_center'); // Navigates to Resource Center
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(
+            context, '/search'); // Navigates to Search
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context,
+            '/opportunities_board'); // Navigates to Opportunities Board
+        break;
+      case 4:
+        Navigator.pushReplacementNamed(
+            context, '/profile'); // Navigates to Profile
+        break;
+      default:
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.purple,
-      unselectedItemColor: Colors.grey,
-      onTap: (index) {
-        setState(() {
-          _selectedIndex = index;
-        });
-        // Add your navigation logic here
-      },
+      currentIndex: _selectedIndex, // Highlights the selected tab
+      type: BottomNavigationBarType.fixed, // Fixed tab type
+      selectedItemColor: Colors.purple, // Selected icon color
+      unselectedItemColor: Colors.grey, // Unselected icon color
+      showSelectedLabels: false, // Hides selected labels
+      showUnselectedLabels: false, // Hides unselected labels
+      iconSize: 30, // Sets icon size
+      onTap: _onItemTapped, // Triggers _onItemTapped on tap
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.add_home_outlined), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.auto_stories_outlined), label: 'Resources'),
-        BottomNavigationBarItem(icon: Icon(Icons.search_outlined), label: 'Search'),
-        BottomNavigationBarItem(icon: Icon(Icons.language_outlined), label: 'Opportunities'),
-        BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add_home_outlined),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.auto_stories_outlined),
+          label: 'Resource Center',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search_outlined),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.language_outlined),
+          label: 'Marketplace',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle_outlined),
+          label: 'Profile',
+        ),
       ],
     );
   }
 }
-
