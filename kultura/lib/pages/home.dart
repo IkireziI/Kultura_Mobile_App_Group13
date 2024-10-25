@@ -18,7 +18,7 @@ class Home extends StatelessWidget {
         body: Column(
           children: [
             // Stories Section
-            Stories(),
+            const Stories(),
             // HomePage
             Expanded(
               child: HomePageContent()
@@ -68,8 +68,9 @@ class Stories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
+    return Container(
+      height: 120,
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
@@ -94,14 +95,31 @@ class StoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage(imagePath),
+      child: Container(
+        width: 80,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.white, width: 1),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage(imagePath),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
-          Text(label, style: TextStyle(color: Colors.white),),
-        ],
+        ),
       ),
     );
   }
