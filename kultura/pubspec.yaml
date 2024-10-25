@@ -66,6 +66,7 @@ flutter:
     - assets/images/music.png
     - assets/images/painting.png
     - assets/images/KULTURA.png
+    - assets/kultura.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
