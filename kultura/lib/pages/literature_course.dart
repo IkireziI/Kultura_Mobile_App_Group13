@@ -154,14 +154,7 @@ class EmbeddedVideoCardState extends State<EmbeddedVideoCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Video player
-            YoutubePlayer(
-              controller: _controller,
-              showVideoProgressIndicator: true,
-            ),
-            const SizedBox(height: 16),
-
-            // Title and description
+            // Title
             Text(
               widget.title,
               style: const TextStyle(
@@ -170,6 +163,13 @@ class EmbeddedVideoCardState extends State<EmbeddedVideoCard> {
               ),
             ),
             const SizedBox(height: 8),
+            // Video player
+            YoutubePlayer(
+              controller: _controller,
+              showVideoProgressIndicator: true,
+            ),
+            const SizedBox(height: 16),
+            // Description
             Text(
               widget.description,
               style: const TextStyle(fontSize: 14, color: Colors.grey),
