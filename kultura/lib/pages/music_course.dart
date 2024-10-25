@@ -25,24 +25,35 @@ class MusicCourseScreen extends StatelessWidget {
           children: [
             // Custom App Bar with back button and logo
             AppBar(
-              elevation: 0, // No shadow effect
-              backgroundColor: Colors.transparent, // Transparent background
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back,
-                    color: Colors.white), // Back button icon
-                onPressed: () {
-                  Navigator.pop(context); // Go back to the previous screen
-                },
-              ),
-              title: Center(
-                // Centering the image logo
-                child: Image.asset(
-                  'assets/images/KULTURA.png', // Logo asset
-                  height: 40, // Height of the logo
-                ),
+              elevation: 0, // No shadow under the AppBar.
+              backgroundColor: Colors.transparent,
+              automaticallyImplyLeading: false, // No default back button.
+              title: Row(
+                children: [
+                  IconButton(
+                    // Custom back button that navigates to the previous screen.
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/KULTURA.png', // App logo.
+                        height: 40, // Logo height.
+                      ),
+                    ),
+                  ),
+                  // Empty IconButton for layout symmetry.
+                  const IconButton(
+                    icon: Icon(null),
+                    onPressed: null,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 16), // Spacing
+            const SizedBox(height: 16), // Spacing below AppBar.
 
             // Search bar with centered italic text
             Padding(

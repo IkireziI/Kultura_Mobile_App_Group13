@@ -25,24 +25,35 @@ class PaintingCourseScreen extends StatelessWidget {
           children: [
             // Custom App Bar with a logo and back button
             AppBar(
-              elevation: 0,
+              elevation: 0, // No shadow under the AppBar.
               backgroundColor: Colors.transparent,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () {
-                  // Navigate back to the previous screen
-                  Navigator.pop(context);
-                },
-              ),
-              title: Center(
-                // Centered logo image
-                child: Image.asset(
-                  'assets/images/KULTURA.png', // Path to the logo image
-                  height: 40,
-                ),
+              automaticallyImplyLeading: false, // No default back button.
+              title: Row(
+                children: [
+                  IconButton(
+                    // Custom back button that navigates to the previous screen.
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Image.asset(
+                        'assets/images/KULTURA.png', // App logo.
+                        height: 40, // Logo height.
+                      ),
+                    ),
+                  ),
+                  // Empty IconButton for layout symmetry.
+                  const IconButton(
+                    icon: Icon(null),
+                    onPressed: null,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 16), // Space between app bar and search bar
+            const SizedBox(height: 16), // Spacing below AppBar.
 
             // Search bar with an input field
             Padding(
