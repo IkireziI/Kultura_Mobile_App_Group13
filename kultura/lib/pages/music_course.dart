@@ -99,8 +99,7 @@ class MusicCourseScreen extends StatelessWidget {
                       EmbeddedVideoCard(
                         videoUrl:
                             'https://youtu.be/2pirdPK5avU?si=qRvFGwAQ0ke1kH24', // Video URL
-                        title:
-                            "How I'd Learn Music Theory (If I Had To Start Over)", // Video title
+                        title: "How I'd Learn Music Theory (If I Had To Start Over)", // Video title
                         description:
                             "Knowing what I know now, how would I advise the old 2009 Cory on how to do things better? Or, perhaps more relevantly, how would I advise people who are just starting their own journeys into music theory?", // Video description
                       ),
@@ -109,8 +108,7 @@ class MusicCourseScreen extends StatelessWidget {
                       EmbeddedVideoCard(
                         videoUrl:
                             'https://youtu.be/mWpXy57-mvc?si=fu6WJdXJc4PEBg_2', // Video URL
-                        title:
-                            'The BASICS Of Music Theory EXPLAINED (in 10 minutes)', // Video title
+                        title: 'The BASICS Of Music Theory EXPLAINED (in 10 minutes)', // Video title
                         description:
                             'In this episode we revisit the basics of music theory exploring intervals, chord construction, and ear training. All in 10 minutes! Beato Ear Training and Beato Book links below.', // Video description
                       ),
