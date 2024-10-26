@@ -8,7 +8,7 @@ import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
 import 'pages/profile.dart';
-import 'pages/market_painting.dart';
+import 'pages/marketplace.dart';
 import 'pages/market_music.dart';
 import 'pages/market_literature.dart';
 
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple, // Set the primary color theme to purple
       ),
-      initialRoute: '/login', // Set the initial route to home
+      initialRoute: '/home', // Set the initial route to home
       routes: {
         // Authentication routes
         '/login': (context) => const LoginScreen(),
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
 
         '/home': (context) => const Home(), // Route for the home screen
 
-        'market_painting': (context) => const MarketplacePainting(), // Route for the Marketplace (Painting)
+        '/marketplace': (context) => const MarketplacePage(), // Route for the Marketplace (Painting)
         'market_music': (context) => const MarketplaceMusic(), // Route for the Marketplace (Music)
         'market_literature': (context) => const MarketplaceLiterature(), // Route for the Marketplace (Literature)
 
