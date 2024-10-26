@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/pages/settings.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   const ProfileSettingsScreen({super.key});
@@ -63,7 +64,7 @@ class ProfileSettingsPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SettingsPage()),
+                          builder: (context) => const SettingsScreen()),
                     );
                   },
                 ),
@@ -113,25 +114,6 @@ class ProfileMenuItem extends StatelessWidget {
         style: const TextStyle(fontSize: 18),
       ),
       onTap: onTap,
-    );
-  }
-}
-
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: const Center(
-        child: Text(
-          'Settings Page',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
     );
   }
 }

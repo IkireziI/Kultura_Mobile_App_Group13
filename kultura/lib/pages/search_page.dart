@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(KulturaApp());
+  runApp(const SearchScreen());
 }
 
-class KulturaApp extends StatelessWidget {
-  const KulturaApp({super.key});
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +56,13 @@ class KulturaHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.center,
             colors: [
               Color(0xFFA020F0), // Purple color at the top
-              Colors.white,       // White background at the bottom
+              Colors.white, // White background at the bottom
             ],
             stops: [0.3, 1.0],
           ),
@@ -74,12 +74,10 @@ class KulturaHomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 50.0, bottom: 10.0),
               child: Center(
-                child: Center(
-                  child: Image.asset(
-                    'assets/kultura.png',
-                    height: 40,
-                    fit: BoxFit.contain,
-                  ),
+                child: Image.asset(
+                  'assets/kultura.png',
+                  height: 40,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -87,12 +85,12 @@ class KulturaHomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(30),
                 ),
-                child: TextField(
+                child: const TextField(
                   decoration: InputDecoration(
                     hintText: 'Search',
                     hintStyle: TextStyle(
@@ -108,7 +106,7 @@ class KulturaHomePage extends StatelessWidget {
             // Profiles Suggested for You
             Padding(
               padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
-              child: Text(
+              child: const Text(
                 'Profiles suggested for you',
                 style: TextStyle(
                   fontSize: 20,
@@ -137,18 +135,19 @@ class KulturaHomePage extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              Spacer(),
+                              const Spacer(),
                               CircleAvatar(
                                 radius: 25,
-                                backgroundImage: AssetImage(profileImages[index]),
+                                backgroundImage:
+                                    AssetImage(profileImages[index]),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               Container(
                                 width: 90,
                                 alignment: Alignment.bottomCenter,
                                 child: Text(
                                   'Username ${index + 1}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -166,8 +165,9 @@ class KulturaHomePage extends StatelessWidget {
             ),
             // Explore Section
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: Text(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+              child: const Text(
                 'Explore',
                 style: TextStyle(
                   fontSize: 16,
@@ -176,14 +176,14 @@ class KulturaHomePage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: Container(
-                margin: EdgeInsets.only(top: 0),
-                padding: EdgeInsets.all(0),
+                margin: const EdgeInsets.only(top: 0),
+                padding: const EdgeInsets.all(0),
                 child: GridView.builder(
                   padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 0,
                     mainAxisSpacing: 0,
@@ -196,7 +196,8 @@ class KulturaHomePage extends StatelessWidget {
                         // Grid background image
                         Positioned.fill(
                           child: Image.asset(
-                            exploreBackgrounds[index % exploreBackgrounds.length],
+                            exploreBackgrounds[
+                                index % exploreBackgrounds.length],
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -208,12 +209,13 @@ class KulturaHomePage extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 15,
-                                backgroundImage: AssetImage(exploreImages[index]),
+                                backgroundImage:
+                                    AssetImage(exploreImages[index]),
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
                                 'Username ${index + 1}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -231,35 +233,94 @@ class KulturaHomePage extends StatelessWidget {
           ],
         ),
       ),
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.purpleAccent,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 2,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.auto_stories_outlined),
-            label: 'Resource Center',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search_outlined),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.language_outlined),
-            label: 'Marketplace',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: 'Profile',
-          ),
-        ],
-      ),
+      bottomNavigationBar: const BottomNavigation(selectedIndex: 2,),
     );
   }
 }
+
+// Bottom navigation bar widget with 5 items
+class BottomNavigation extends StatefulWidget {
+  final int selectedIndex; // Tracks the currently selected tab
+
+  const BottomNavigation({super.key, required this.selectedIndex});
+
+  @override
+  State<BottomNavigation> createState() => _BottomNavigationState();
+}
+
+class _BottomNavigationState extends State<BottomNavigation> {
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex; // Sets the initial selected tab
+  }
+
+  // Handles tap events for each navigation item
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(
+            context, '/resource_center'); // Navigates to Resource Center
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(
+            context, '/search'); // Navigates to Search Screen
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context,
+            '/opportunities_board'); // Navigates to Opportunities board
+        break;
+      case 4:
+        Navigator.pushReplacementNamed(
+            context, '/profile'); // Navigates to Profile Screen
+        break;
+      default:
+        break;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex, // Highlights the selected tab
+      type: BottomNavigationBarType.fixed, // Fixed tab type
+      selectedItemColor: Colors.purple, // Selected icon color
+      unselectedItemColor: Colors.grey, // Unselected icon color
+      showSelectedLabels: false, // Hides selected labels
+      showUnselectedLabels: false, // Hides unselected labels
+      iconSize: 30, // Sets icon size
+      onTap: _onItemTapped, // Triggers _onItemTapped on tap
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add_home_outlined),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.auto_stories_outlined),
+          label: 'Resource Center',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search_outlined),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.language_outlined),
+          label: 'Opportunities Board',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle_outlined),
+          label: 'Profile',
+        ),
+      ],
+    );
+  }
+}
+

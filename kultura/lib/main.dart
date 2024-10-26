@@ -12,7 +12,7 @@ import 'pages/marketplace.dart';
 import 'pages/market_music.dart';
 import 'pages/market_literature.dart';
 import 'pages/profile_setting.dart';
-import 'pages/profile.dart';
+import 'pages/search_page.dart';
 
 // Entry point of the application
 void main() {
@@ -54,28 +54,8 @@ class MyApp extends StatelessWidget {
             const opportunities.OpportunitiesBoard(), // Route for the Opportunities board
         '/profile': (context) => const Profile(), // Route for the Profile Screen
         '/profile_setting': (context) => const ProfileSettingsScreen(), // Route for the Profile Settings Screen
+        '/search': (context) => const SearchScreen(), // Route for the Search Screen
       },
-    );
-  }
-}
-
-// HomeScreen class, which is a StatelessWidget
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading:
-            false, // Disable the back button in the app bar
-        title: const Text('Home'), // Title of the app bar
-      ),
-      body: const Center(
-        child: Text('Home Screen Content'), // Centered text in the body
-      ),
-      bottomNavigationBar: const resources.BottomNavigation(
-          selectedIndex: 0), // Bottom navigation bar with selected index
     );
   }
 }
