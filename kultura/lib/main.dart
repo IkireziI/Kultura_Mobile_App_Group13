@@ -7,6 +7,10 @@ import 'package:kultura/pages/sign_up.dart';
 import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
+import 'pages/profile.dart';
+import 'pages/market_painting.dart';
+import 'pages/market_music.dart';
+import 'pages/market_literature.dart';
 
 // Entry point of the application
 void main() {
@@ -32,6 +36,12 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUpScreen(),
 
         '/home': (context) => const Home(), // Route for the home screen
+
+        'market_painting': (context) => const MarketplacePainting(), // Route for the Marketplace (Painting)
+        'market_music': (context) => const MarketplaceMusic(), // Route for the Marketplace (Music)
+        'market_literature': (context) => const MarketplaceLiterature(), // Route for the Marketplace (Literature)
+
+        '/profile': (context) => const Profile(), // Route for the Profile Screen
         '/resource_center': (context) =>
             const resources.ArtisticCourseScreen(), // Route for the resource center
         '/music': (context) =>

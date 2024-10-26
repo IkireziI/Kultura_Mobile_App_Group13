@@ -178,6 +178,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
         Navigator.pushReplacementNamed(
             context, '/opportunities_board'); // Navigates to Opportunities Board
         break;
+      case 4:
+        Navigator.pushReplacementNamed(
+            context, '/profile'); // Navigates to Profile
+        break;
       default:
         break;
     }
@@ -191,7 +195,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       selectedItemColor: Colors.purple, // Selected icon color
       unselectedItemColor: Colors.grey, // Unselected icon color
       showSelectedLabels: false, // Hides selected labels
-      showUnselectedLabels: false, // Hides unselected labels
+      showUnselectedLabels: true, // Hides unselected labels
       iconSize: 30, // Sets icon size
       onTap: _onItemTapped, // Triggers _onItemTapped on tap
       items: const [
@@ -209,7 +213,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.language_outlined),
-          label: 'Marketplace',
+          label: 'Opportunities',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_outlined),
