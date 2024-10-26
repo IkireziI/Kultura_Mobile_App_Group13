@@ -24,6 +24,10 @@ class SettingsPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
+        title: const Text(
+          'Back',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Column(
         children: [
