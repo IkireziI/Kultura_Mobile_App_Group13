@@ -39,9 +39,9 @@ class MyApp extends StatelessWidget {
 
         '/home': (context) => const Home(), // Route for the home screen
 
-        '/marketplace': (context) => const MarketplacePage(), // Route for the Marketplace (Painting)
-        'market_music': (context) => const MarketplaceMusic(), // Route for the Marketplace (Music)
-        'market_literature': (context) => const MarketplaceLiterature(), // Route for the Marketplace (Literature)
+        '/market_painting': (context) =>  MarketplacePage(), // Route for the Marketplace (Painting)
+        '/market_music': (context) => const MarketplaceMusic(), // Route for the Marketplace (Music)
+        '/market_literature': (context) => const MarketplaceLiterature(), // Route for the Marketplace (Literature)
         '/resource_center': (context) =>
             const resources.ArtisticCourseScreen(), // Route for the resource center
         '/music': (context) =>
