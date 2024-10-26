@@ -103,20 +103,13 @@ class KulturaHomePage extends StatelessWidget {
             ),
             // Profiles Suggested for You
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  'Profiles suggested for you',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Roboto',
-                  ),
+              padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
+              child: Text(
+                'Profiles suggested for you',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Roboto',
                 ),
               ),
             ),
