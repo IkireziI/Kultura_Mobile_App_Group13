@@ -48,13 +48,37 @@ class OpportunitiesBoard extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: const DrawingWidget(),
       bottomNavigationBar: const BottomNavigation(
         selectedIndex: 3,
       ),
     );
   }
 }
+class DrawingWidget extends StatefulWidget{
+  const DrawingWidget({super.key});
 
+@override
+  State<DrawingWidget> createState() => _DrawingWidgetState();
+}
+
+class _DrawingWidgetState extends State<DrawingWidget> {
+  bool _isChipsVisible = false;
+
+  void _toggleChipsVisibility(){
+    setState(() {
+      _isChipsVisible = !_isChipsVisible;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: _toggleChipsVisibility,
+      backgroundColor: Colors.purple,
+      child: const Icon(Icons.draw),
+    );
+  }
+}
 class OpportunitiesBoardContent extends StatelessWidget {
   const OpportunitiesBoardContent({super.key});
 
@@ -71,9 +95,21 @@ class OpportunitiesBoardContent extends StatelessWidget {
   }
 }
 
-class SearchBarAndFilters extends StatelessWidget {
+class SearchBarAndFilters extends StatefulWidget {
   const SearchBarAndFilters({super.key});
 
+  @override
+  State<SearchBarAndFilters> createState() => _SearchBarAndFiltersState();
+}
+class _SearchBarAndFiltersState extends State<SearchBarAndFilters>{
+  bool _isChipVisible = false;
+
+  void _toggleChipsVisibility() {
+    setState(() {
+      _isChipVisible = !_isChipVisible;
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -92,7 +128,23 @@ class SearchBarAndFilters extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Wrap(
+           Row(
+           mainAxisAlignment:MainAxisAlignment.start,
+           children: [
+    IconButton(
+    onPressed: _toggleChipsVisibility,
+    icon: Icon(
+    _isChipVisible ? Icons.close: Icons.menu,
+    color: Colors.black,
+
+    ),
+    )
+    ],
+           ),
+
+           Visibility(
+             visible: _isChipVisible,
+           child: Wrap(
             spacing: 8.0,
             children: const [
               CustomFilterChip(label: 'Music', isSelected: false),
@@ -100,9 +152,12 @@ class SearchBarAndFilters extends StatelessWidget {
               CustomFilterChip(label: 'Literature', isSelected: false),
             ],
           ),
-        ],
-      ),
+    ),
+    ],
+    ),
     );
+
+
   }
 }
 
