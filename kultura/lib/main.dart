@@ -7,10 +7,11 @@ import 'package:kultura/pages/sign_up.dart';
 import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
-import 'pages/profile.dart';
 import 'pages/market_painting.dart';
 import 'pages/market_music.dart';
 import 'pages/market_literature.dart';
+import 'pages/profile_setting.dart';
+import 'pages/profile.dart';
 
 // Entry point of the application
 void main() {
@@ -41,7 +42,9 @@ class MyApp extends StatelessWidget {
         'market_music': (context) => const MarketplaceMusic(), // Route for the Marketplace (Music)
         'market_literature': (context) => const MarketplaceLiterature(), // Route for the Marketplace (Literature)
 
-        '/profile': (context) => const Profile(), // Route for the Profile Screen
+        '/profile_setting': (context) => const ProfileSettingsScreen(
+
+        ), // Route for the Profile Screen
         '/resource_center': (context) =>
             const resources.ArtisticCourseScreen(), // Route for the resource center
         '/music': (context) =>
@@ -52,28 +55,8 @@ class MyApp extends StatelessWidget {
             const LiteratureCourseScreen(), // Route for the literature course
         '/opportunities_board': (context) =>
             const opportunities.OpportunitiesBoard(), // Route for the Opportunities board
+        '/profile': (context) => const Profile(), // Route for the Profile Screen
       },
-    );
-  }
-}
-
-// HomeScreen class, which is a StatelessWidget
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading:
-            false, // Disable the back button in the app bar
-        title: const Text('Home'), // Title of the app bar
-      ),
-      body: const Center(
-        child: Text('Home Screen Content'), // Centered text in the body
-      ),
-      bottomNavigationBar: const resources.BottomNavigation(
-          selectedIndex: 0), // Bottom navigation bar with selected index
     );
   }
 }
