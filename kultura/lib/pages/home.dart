@@ -318,7 +318,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         break;
       case 2:
         Navigator.pushReplacementNamed(
-            context, '/search'); // Navigates to Search Screen
+            context, '/marketplace'); // Navigates to marketplac
         break;
       case 3:
         Navigator.pushReplacementNamed(context,
@@ -327,6 +327,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
       case 4:
         Navigator.pushReplacementNamed(
             context, '/profile'); // Navigates to Profile Screen
+        break;
+       case 5:
+        Navigator.pushReplacementNamed(
+            context, '/search'); // Navigates to search
         break;
       default:
         break;
@@ -354,8 +358,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
           label: 'Resource Center',
         ),
         BottomNavigationBarItem(
+          icon:Icon(Icons.storefront),
+          label: 'marketplace',
+        ),
+        
+        BottomNavigationBarItem(
           icon: Icon(Icons.search_outlined),
-          label: 'Search',
+          label: 'search',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.language_outlined),

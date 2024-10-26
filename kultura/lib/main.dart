@@ -7,7 +7,8 @@ import 'package:kultura/pages/sign_up.dart';
 import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
-import 'pages/market_painting.dart';
+import 'pages/profile.dart';
+import 'pages/marketplace.dart';
 import 'pages/market_music.dart';
 import 'pages/market_literature.dart';
 import 'pages/profile_setting.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple, // Set the primary color theme to purple
       ),
-      initialRoute: '/login', // Set the initial route to home
+      initialRoute: '/home', // Set the initial route to home
       routes: {
         // Authentication routes
         '/login': (context) => const LoginScreen(),
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
 
         '/home': (context) => const Home(), // Route for the home screen
 
-        'market_painting': (context) => const MarketplacePainting(), // Route for the Marketplace (Painting)
+        '/marketplace': (context) => const MarketplacePage(), // Route for the Marketplace (Painting)
         'market_music': (context) => const MarketplaceMusic(), // Route for the Marketplace (Music)
         'market_literature': (context) => const MarketplaceLiterature(), // Route for the Marketplace (Literature)
         '/resource_center': (context) =>
@@ -54,6 +55,27 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const Profile(), // Route for the Profile Screen
         '/profile_setting': (context) => const ProfileSettingsScreen(), // Route for the Profile Settings Screen
       },
+    );
+  }
+}
+
+// HomeScreen class, which is a StatelessWidget
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading:
+            false, // Disable the back button in the app bar
+        title: const Text('Home'), // Title of the app bar
+      ),
+      body: const Center(
+        child: Text('Home Screen Content'), // Centered text in the body
+      ),
+      bottomNavigationBar: const resources.BottomNavigation(
+          selectedIndex: 0), // Bottom navigation bar with selected index
     );
   }
 }
