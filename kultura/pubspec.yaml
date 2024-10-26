@@ -67,6 +67,9 @@ flutter:
     - assets/images/painting.png
     - assets/images/KULTURA.png
     - assets/kultura.png
+    - assets/facebook_icon.png
+    - assets/google_icon.png
+    - assets/kultura_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
