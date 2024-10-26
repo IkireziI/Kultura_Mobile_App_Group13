@@ -326,7 +326,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         break;
       case 4:
         Navigator.pushReplacementNamed(
-            context, '/profile'); // Navigates to Profile
+            context, '/profile_setting'); // Navigates to Profile
         break;
       default:
         break;
