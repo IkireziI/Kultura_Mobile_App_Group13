@@ -9,7 +9,7 @@ class OpportunitiesBoard extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.purple,
         title: SizedBox(
-          width: double.infinity, // This makes the container take the full width
+          width: double.infinity,
           child: Center(
             child: Image.asset(
               'assets/images/KULTURA.png',
@@ -21,12 +21,11 @@ class OpportunitiesBoard extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Main body content for the page
           const OpportunitiesBoardContent(),
           Positioned(
             bottom: 70.0,
-            left: 0,
-            right: 0,
+            left: 16.0, // Added padding for better positioning
+            right: 16.0, // Added padding for better positioning
             child: Center(
               child: ElevatedButton.icon(
                 onPressed: () {
@@ -93,10 +92,10 @@ class SearchBarAndFilters extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Wrap(
+            spacing: 8.0,
             children: const [
-              CustomFilterChip(label: 'Music', isSelected: true),
+              CustomFilterChip(label: 'Music', isSelected: false),
               CustomFilterChip(label: 'Painting', isSelected: false),
               CustomFilterChip(label: 'Literature', isSelected: false),
             ],
@@ -119,19 +118,25 @@ class CustomFilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChoiceChip(
+    return FilterChip(
       label: Text(label),
       selected: isSelected,
       onSelected: (bool selected) {
-        // Handle filter selection logic
+        // Logic to handle selection
       },
+      backgroundColor: Colors.purple[100],
       selectedColor: Colors.purple,
       labelStyle: TextStyle(
         color: isSelected ? Colors.white : Colors.black,
       ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30), // Rounded rectangular shape
+        side: BorderSide(color: Colors.purple, width: 1), // Border color and width
+      ),
     );
   }
 }
+
 
 class OpportunitiesList extends StatelessWidget {
   const OpportunitiesList({super.key});
@@ -143,8 +148,7 @@ class OpportunitiesList extends StatelessWidget {
         'title': 'Music Teacher',
         'category': 'Job',
         'location': 'Kigali',
-        'description':
-        'Looking for a music teacher to teach guitar and piano to students.',
+        'description': 'Looking for a music teacher to teach guitar and piano to students.',
       },
       {
         'title': 'Rock Band Audition',
@@ -156,8 +160,7 @@ class OpportunitiesList extends StatelessWidget {
         'title': 'Choral Singing Contest',
         'category': 'Contest',
         'location': 'India',
-        'description':
-        'Join the International Singing Competition for a chance to win \$15,000.',
+        'description': 'Join the International Singing Competition for a chance to win \$15,000.',
       },
     ];
 
@@ -253,19 +256,19 @@ class _BottomNavigationState extends State<BottomNavigation> {
     });
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushNamed(context, '/home');
         break;
       case 1:
-        Navigator.pushReplacementNamed(context, '/resource_center');
+        Navigator.pushNamed(context, '/resource_center');
         break;
       case 2:
-        Navigator.pushReplacementNamed(context, '/search');
+        Navigator.pushNamed(context, '/search');
         break;
       case 3:
-        Navigator.pushReplacementNamed(context, '/opportunities_board');
+        Navigator.pushNamed(context, '/opportunities_board');
         break;
       case 4:
-        Navigator.pushReplacementNamed(context, '/profile');
+        Navigator.pushNamed(context, '/profile');
         break;
       default:
         break;
