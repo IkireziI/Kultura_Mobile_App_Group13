@@ -84,6 +84,10 @@ flutter:
       - assets/images/music.png
       - assets/images/painting.png
       - assets/images/KULTURA.png
+      - assets/paint1.png
+      - assets/paint2.png
+      - assets/paint3.png
+      - assets/paint4.png
       
 
   #   - images/a_dot_burr.jpeg
