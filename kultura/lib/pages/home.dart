@@ -7,12 +7,12 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            centerTitle: true,
-            title: Image.asset(
-                'assets/kultura.png',
-                height: 40,
-            ),
-            backgroundColor: Colors.purple,
+          centerTitle: true,
+          title: Image.asset(
+            'assets/kultura.png',
+            height: 40,
+          ),
+          backgroundColor: Colors.purple,
         ),
 
         body: Column(
