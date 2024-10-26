@@ -9,8 +9,7 @@ class OpportunitiesBoard extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.purple,
         title: SizedBox(
-          width:
-              double.infinity, // This makes the container take the full width
+          width: double.infinity, // This makes the container take the full width
           child: Center(
             child: Image.asset(
               'assets/images/KULTURA.png',
@@ -20,11 +19,39 @@ class OpportunitiesBoard extends StatelessWidget {
           ),
         ),
       ),
-      // Main body content for the page
-      body: OpportunitiesBoardContent(),
+      body: Stack(
+        children: [
+          // Main body content for the page
+          const OpportunitiesBoardContent(),
+          Positioned(
+            bottom: 70.0,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/marketplace');
+                },
+                icon: const Icon(Icons.local_offer_outlined, color: Colors.black),
+                label: const Text(
+                  'Marketplace',
+                  style: TextStyle(color: Colors.black, fontSize: 16),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: const BottomNavigation(
-          selectedIndex:
-              3), // Update selectedIndex to the appropriate tab index for the OpportunitiesBoard
+        selectedIndex: 3,
+      ),
     );
   }
 }
@@ -36,9 +63,7 @@ class OpportunitiesBoardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Search bar and filters section
         const SearchBarAndFilters(),
-        // Expanded list of opportunities
         Expanded(
           child: const OpportunitiesList(),
         ),
@@ -56,11 +81,10 @@ class SearchBarAndFilters extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          // Search bar for searching opportunities
           TextField(
             decoration: InputDecoration(
               hintText: 'Search Opportunities',
-              prefixIcon: Icon(Icons.search_outlined),
+              prefixIcon: const Icon(Icons.search_outlined),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -68,12 +92,8 @@ class SearchBarAndFilters extends StatelessWidget {
               fillColor: Colors.purple[200],
             ),
           ),
-          const SizedBox(height: 16), // Space between search bar and filters
-          // Filter chips (Music, Painting, Literature)
+          const SizedBox(height: 16),
           Row(
-            leading : IconButton(
-              icons:Icon(Icons.Hamburger)
-            )
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
               CustomFilterChip(label: 'Music', isSelected: true),
@@ -87,7 +107,6 @@ class SearchBarAndFilters extends StatelessWidget {
   }
 }
 
-// Custom filter chip widget
 class CustomFilterChip extends StatelessWidget {
   final String label;
   final bool isSelected;
@@ -114,20 +133,18 @@ class CustomFilterChip extends StatelessWidget {
   }
 }
 
-// List of opportunities (Music Teacher, Rock Band Audition, etc.)
 class OpportunitiesList extends StatelessWidget {
   const OpportunitiesList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Sample Opportunities List
     final opportunities = [
       {
         'title': 'Music Teacher',
         'category': 'Job',
         'location': 'Kigali',
         'description':
-            'Looking for a music teacher to teach guitar and piano to students.',
+        'Looking for a music teacher to teach guitar and piano to students.',
       },
       {
         'title': 'Rock Band Audition',
@@ -140,7 +157,7 @@ class OpportunitiesList extends StatelessWidget {
         'category': 'Contest',
         'location': 'India',
         'description':
-            'Join the International Singing Competition for a chance to win \$15,000.',
+        'Join the International Singing Competition for a chance to win \$15,000.',
       },
     ];
 
@@ -158,7 +175,6 @@ class OpportunitiesList extends StatelessWidget {
   }
 }
 
-// Card widget for each opportunity
 class OpportunityCard extends StatelessWidget {
   final String title;
   final String category;
@@ -213,9 +229,8 @@ class OpportunityCard extends StatelessWidget {
   }
 }
 
-// Bottom navigation bar widget with 5 items
 class BottomNavigation extends StatefulWidget {
-  final int selectedIndex; // Tracks the currently selected tab
+  final int selectedIndex;
 
   const BottomNavigation({super.key, required this.selectedIndex});
 
@@ -229,33 +244,28 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.selectedIndex; // Sets the initial selected tab
+    _selectedIndex = widget.selectedIndex;
   }
 
-  // Handles tap events for each navigation item
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
+        Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1:
-        Navigator.pushReplacementNamed(
-            context, '/resource_center'); // Navigates to Resource Center
+        Navigator.pushReplacementNamed(context, '/resource_center');
         break;
       case 2:
-        Navigator.pushReplacementNamed(
-            context, '/search'); // Navigates to Search
+        Navigator.pushReplacementNamed(context, '/search');
         break;
       case 3:
-        Navigator.pushReplacementNamed(context,
-            '/opportunities_board'); // Navigates to Opportunities Board
+        Navigator.pushReplacementNamed(context, '/opportunities_board');
         break;
       case 4:
-        Navigator.pushReplacementNamed(
-            context, '/profile'); // Navigates to Profile
+        Navigator.pushReplacementNamed(context, '/profile');
         break;
       default:
         break;
@@ -265,14 +275,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _selectedIndex, // Highlights the selected tab
-      type: BottomNavigationBarType.fixed, // Fixed tab type
-      selectedItemColor: Colors.purple, // Selected icon color
-      unselectedItemColor: Colors.grey, // Unselected icon color
-      showSelectedLabels: false, // Hides selected labels
-      showUnselectedLabels: true, // Hides unselected labels
-      iconSize: 30, // Sets icon size
-      onTap: _onItemTapped, // Triggers _onItemTapped on tap
+      currentIndex: _selectedIndex,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.purple,
+      unselectedItemColor: Colors.grey,
+      showSelectedLabels: false,
+      showUnselectedLabels: true,
+      iconSize: 30,
+      onTap: _onItemTapped,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.add_home_outlined),
