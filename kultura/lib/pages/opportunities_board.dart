@@ -65,12 +65,15 @@ class SearchBarAndFilters extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               filled: true,
-              fillColor: Colors.grey[200],
+              fillColor: Colors.purple[200],
             ),
           ),
           const SizedBox(height: 16), // Space between search bar and filters
           // Filter chips (Music, Painting, Literature)
           Row(
+            leading : IconButton(
+              icons:Icon(Icons.Hamburger)
+            )
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
               CustomFilterChip(label: 'Music', isSelected: true),
