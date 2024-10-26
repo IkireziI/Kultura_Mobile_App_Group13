@@ -41,10 +41,6 @@ class MyApp extends StatelessWidget {
         'market_painting': (context) => const MarketplacePainting(), // Route for the Marketplace (Painting)
         'market_music': (context) => const MarketplaceMusic(), // Route for the Marketplace (Music)
         'market_literature': (context) => const MarketplaceLiterature(), // Route for the Marketplace (Literature)
-
-        '/profile_setting': (context) => const ProfileSettingsScreen(
-
-        ), // Route for the Profile Screen
         '/resource_center': (context) =>
             const resources.ArtisticCourseScreen(), // Route for the resource center
         '/music': (context) =>
@@ -56,6 +52,7 @@ class MyApp extends StatelessWidget {
         '/opportunities_board': (context) =>
             const opportunities.OpportunitiesBoard(), // Route for the Opportunities board
         '/profile': (context) => const Profile(), // Route for the Profile Screen
+        '/profile_setting': (context) => const ProfileSettingsScreen(), // Route for the Profile Settings Screen
       },
     );
   }

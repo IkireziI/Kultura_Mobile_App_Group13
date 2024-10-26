@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/pages/profile_setting.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -13,6 +14,19 @@ class Profile extends StatelessWidget {
           height: 40,
         ),
         backgroundColor: Colors.purple,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProfileSettingsScreen(),
+              ),
+            );
+          },
+          child: const Text('Go to Profile Settings'),
+        ),
       ),
       bottomNavigationBar: BottomNavigation(selectedIndex: 4),
     );
@@ -60,8 +74,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
             '/opportunities_board'); // Navigates to Opportunities board
         break;
       case 4:
-        Navigator.pushReplacementNamed(
-            context, '/profile'); // Navigates to Profile Screen
+        Navigator.pushReplacementNamed(context,
+            '/profile_settings'); // Navigates directly to ProfileSettingsScreen
         break;
       default:
         break;

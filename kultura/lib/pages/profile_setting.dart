@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const ProfileSettingsScreen());
-}
-
 class ProfileSettingsScreen extends StatelessWidget {
   const ProfileSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const ProfileSettingsPage(),
-      debugShowCheckedModeBanner: false,
-    );
+    return const ProfileSettingsPage();
   }
 }
 
@@ -38,7 +31,6 @@ class ProfileSettingsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Profile Picture and Title
           const SizedBox(height: 20),
           const CircleAvatar(
             radius: 50,
@@ -53,8 +45,6 @@ class ProfileSettingsPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-
-          // Menu List Items
           Expanded(
             child: ListView(
               children: [
@@ -72,7 +62,8 @@ class ProfileSettingsPage extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SettingsPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const SettingsPage()),
                     );
                   },
                 ),
@@ -101,7 +92,6 @@ class ProfileSettingsPage extends StatelessWidget {
   }
 }
 
-// Custom widget for the list items
 class ProfileMenuItem extends StatelessWidget {
   final IconData icon;
   final String text;
@@ -122,7 +112,7 @@ class ProfileMenuItem extends StatelessWidget {
         text,
         style: const TextStyle(fontSize: 18),
       ),
-      onTap: onTap, // Use the passed onTap callback
+      onTap: onTap,
     );
   }
 }
