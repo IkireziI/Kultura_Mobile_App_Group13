@@ -232,8 +232,9 @@ class OpportunityCard extends StatelessWidget {
   }
 }
 
+// Bottom navigation bar widget with 5 items
 class BottomNavigation extends StatefulWidget {
-  final int selectedIndex;
+  final int selectedIndex; // Tracks the currently selected tab
 
   const BottomNavigation({super.key, required this.selectedIndex});
 
@@ -247,29 +248,23 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.selectedIndex;
+    _selectedIndex = widget.selectedIndex; // Sets the initial selected tab
   }
 
+  // Handles tap events for each navigation item
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
         break;
       case 1:
-        Navigator.pushNamed(context, '/resource_center');
+        Navigator.pushReplacementNamed(
+            context, '/resource_center'); // Navigates to Resource Center
         break;
-      case 2:
-        Navigator.pushNamed(context, '/search');
-        break;
-      case 3:
-        Navigator.pushNamed(context, '/opportunities_board');
-        break;
-      case 4:
-        Navigator.pushNamed(context, '/profile');
-        break;
+      // Add cases for other tabs if needed
       default:
         break;
     }
@@ -278,14 +273,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.purple,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: true,
-      iconSize: 30,
-      onTap: _onItemTapped,
+      currentIndex: _selectedIndex, // Highlights the selected tab
+      type: BottomNavigationBarType.fixed, // Fixed tab type
+      selectedItemColor: Colors.purple, // Selected icon color
+      unselectedItemColor: Colors.grey, // Unselected icon color
+      showSelectedLabels: false, // Hides selected labels
+      showUnselectedLabels: false, // Hides unselected labels
+      iconSize: 30, // Sets icon size
+      onTap: _onItemTapped, // Triggers _onItemTapped on tap
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.add_home_outlined),
@@ -301,7 +296,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.language_outlined),
-          label: 'Opportunities',
+          label: 'Marketplace',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_outlined),
