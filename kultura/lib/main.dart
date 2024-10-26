@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/pages/home.dart';
+import 'package:kultura/pages/log_in.dart';
 import 'package:kultura/pages/opportunities_board.dart' as opportunities;
 import 'package:kultura/pages/resource_center.dart' as resources;
+import 'package:kultura/pages/sign_up.dart';
 import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
-import 'pages/home.dart';
 
 // Entry point of the application
 void main() {
@@ -25,7 +27,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/home', // Set the initial route to home
       routes: {
-        // Define the application's routes
+        // Authentication routes
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignUpScreen(),
+
         '/home': (context) => const Home(), // Route for the home screen
         '/resource_center': (context) =>
             const resources.ArtisticCourseScreen(), // Route for the resource center
@@ -38,6 +43,27 @@ class MyApp extends StatelessWidget {
         '/opportunities_board': (context) =>
             const opportunities.OpportunitiesBoard(), // Route for the Opportunities board
       },
+    );
+  }
+}
+
+// HomeScreen class, which is a StatelessWidget
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading:
+            false, // Disable the back button in the app bar
+        title: const Text('Home'), // Title of the app bar
+      ),
+      body: const Center(
+        child: Text('Home Screen Content'), // Centered text in the body
+      ),
+      bottomNavigationBar: const resources.BottomNavigation(
+          selectedIndex: 0), // Bottom navigation bar with selected index
     );
   }
 }
