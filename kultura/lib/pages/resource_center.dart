@@ -178,6 +178,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
         Navigator.pushReplacementNamed(
             context, '/opportunities_board'); // Navigates to Opportunities Board
         break;
+      case 4:
+        Navigator.pushReplacementNamed(
+            context, '/profile'); // Navigates to Profile
+        break;
       default:
         break;
     }

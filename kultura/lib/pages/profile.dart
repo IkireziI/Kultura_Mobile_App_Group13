@@ -14,7 +14,7 @@ class Profile extends StatelessWidget {
         ),
         backgroundColor: Colors.purple,
       ),
-      bottomNavigationBar: BottomNavigation(selectedIndex: 0,),
+      bottomNavigationBar: BottomNavigation(selectedIndex: 4,),
     );
   }
 }
