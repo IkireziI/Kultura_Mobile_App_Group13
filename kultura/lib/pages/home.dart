@@ -48,10 +48,10 @@ class HomePageContent extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.purple,
-                  Color.fromARGB(255, 172, 48, 194),
-                  Color.fromARGB(255, 202, 62, 226),
-                  Color.fromARGB(255, 217, 100, 238),
-                  Color.fromARGB(255, 212, 131, 226),
+                  Color.fromARGB(255, 184, 70, 204),
+                  Color.fromARGB(255, 166, 66, 184),
+                  Color.fromARGB(255, 234, 153, 248),
+                  Color.fromARGB(255, 235, 150, 250),
                 ],
               ),
             ),
@@ -107,17 +107,34 @@ class Stories extends StatelessWidget {
               // Notifications and Messages Icons
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      // Notification Logic
-                    },
-                    icon: const Icon(Icons.notifications, color: Colors.white),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                    color: Colors.white,
+                    child: IconButton(
+                      onPressed: () {
+                        // Notification Logic
+                      },
+                      icon: const Icon(Icons.notifications, color: Colors.purple),
+                    ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      // Message Logic
-                    },
-                    icon: const Icon(Icons.message, color: Colors.white),
+                  SizedBox(width: 10),
+
+                  // Messages Card
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 5,
+                    color: Colors.white,
+                    child: IconButton(
+                      onPressed: () {
+                        // Message Logic
+                      },
+                      icon: const Icon(Icons.message, color: Colors.purple),
+                    ),
                   ),
                 ],
               ),
@@ -127,8 +144,8 @@ class Stories extends StatelessWidget {
       
         // Stories Section
         Container(
-          height: 120,
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          height: 151,
+          padding: const EdgeInsets.symmetric(vertical: 10,),
           decoration: BoxDecoration(
             color: Colors.purple,
           ),
@@ -180,7 +197,7 @@ class StoryItem extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 label,
-                style: const TextStyle(color: Colors.white, fontSize: 12),
+                style: const TextStyle(color: Colors.black, fontSize: 12),
                 overflow: TextOverflow.ellipsis,
               ),
             ],
@@ -250,7 +267,17 @@ class PostItem extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(postText),
           ),
-          Image.asset(postImage),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            width: double.infinity,
+            height: 250,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(postImage),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
         ],
       ),
     );
