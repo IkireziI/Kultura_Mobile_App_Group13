@@ -84,6 +84,10 @@ flutter:
       - assets/images/music.png
       - assets/images/painting.png
       - assets/images/KULTURA.png
+<<<<<<< Updated upstream
+=======
+      - assets/girl.png
+>>>>>>> Stashed changes
       - assets/assets/
       
 
