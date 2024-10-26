@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const SettingsScreen());
-}
-
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SettingsPage(),
-      debugShowCheckedModeBanner: false,
-    );
+    return const SettingsPage();
   }
 }
 
@@ -34,7 +27,6 @@ class SettingsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Header with image and title
           Container(
             width: double.infinity,
             height: 200,
@@ -48,19 +40,8 @@ class SettingsPage extends StatelessWidget {
                 bottomRight: Radius.circular(30),
               ),
             ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-
-                  SizedBox(height: 10), // Space between image and title
-
-                ],
-              ),
-            ),
           ),
           const SizedBox(height: 20),
-          // Settings options
           ListTile(
             leading: const Icon(Icons.manage_accounts, color: Colors.grey),
             title: const Text('Manage Account', style: TextStyle(fontSize: 18)),
@@ -71,7 +52,7 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.lock, color: Colors.grey),
             title:
-            const Text('Change Password', style: TextStyle(fontSize: 18)),
+                const Text('Change Password', style: TextStyle(fontSize: 18)),
             onTap: () {
               // Handle tap
             },
