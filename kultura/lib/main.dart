@@ -11,7 +11,6 @@ import 'pages/profile.dart';
 import 'pages/market_painting.dart';
 import 'pages/market_music.dart';
 import 'pages/market_literature.dart';
-import 'pages/search_page.dart';
 
 // Entry point of the application
 void main() {

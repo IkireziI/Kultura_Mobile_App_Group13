@@ -5,6 +5,8 @@ void main() {
 }
 
 class KulturaApp extends StatelessWidget {
+  const KulturaApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -47,6 +49,8 @@ class KulturaHomePage extends StatelessWidget {
     'assets/people8.jpeg',
     'assets/people9.jpeg',
   ];
+
+  KulturaHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
