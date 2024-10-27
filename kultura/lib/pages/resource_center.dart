@@ -174,13 +174,17 @@ class _BottomNavigationState extends State<BottomNavigation> {
         Navigator.pushReplacementNamed(
             context, '/resource_center'); // Navigates to Resource Center
         break;
-      case 3:
+      case 2:
         Navigator.pushReplacementNamed(
-            context, '/opportunities_board'); // Navigates to Opportunities Board
+            context, '/search'); // Navigates to Search Screen
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context,
+            '/opportunities_board'); // Navigates to Opportunities board
         break;
       case 4:
         Navigator.pushReplacementNamed(
-            context, '/profile'); // Navigates to Profile
+            context, '/profile'); // Navigates to Profile Screen
         break;
       default:
         break;
@@ -195,7 +199,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       selectedItemColor: Colors.purple, // Selected icon color
       unselectedItemColor: Colors.grey, // Unselected icon color
       showSelectedLabels: false, // Hides selected labels
-      showUnselectedLabels: true, // Hides unselected labels
+      showUnselectedLabels: false, // Hides unselected labels
       iconSize: 30, // Sets icon size
       onTap: _onItemTapped, // Triggers _onItemTapped on tap
       items: const [
@@ -213,7 +217,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.language_outlined),
-          label: 'Opportunities',
+          label: 'Opportunities Board',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_outlined),

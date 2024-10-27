@@ -25,6 +25,7 @@ class Home extends StatelessWidget {
             ),
           ],
         ),
+        floatingActionButton: const AddPost(),
         // Body
         bottomNavigationBar: BottomNavigation(selectedIndex: 0,),
         // Bottom Navigation Bar
@@ -117,7 +118,7 @@ class Stories extends StatelessWidget {
                       onPressed: () {
                         // Notification Logic
                       },
-                      icon: const Icon(Icons.notifications, color: Colors.purple),
+                      icon: const Icon(Icons.notifications, color: Colors.black),
                     ),
                   ),
                   SizedBox(width: 10),
@@ -133,7 +134,7 @@ class Stories extends StatelessWidget {
                       onPressed: () {
                         // Message Logic
                       },
-                      icon: const Icon(Icons.message, color: Colors.purple),
+                      icon: const Icon(Icons.message, color: Colors.black),
                     ),
                   ),
                 ],
@@ -284,7 +285,34 @@ class PostItem extends StatelessWidget {
   }
 }
 
-// Bottom Navigation bar widget
+// Add Post Button
+class AddPost extends StatefulWidget{
+  const AddPost({super.key});
+
+@override
+  State<AddPost> createState() => _AddPostState();
+}
+
+class _AddPostState extends State<AddPost> {
+  bool _isChipsVisible = false;
+
+  void _toggleChipsVisibility(){
+    setState(() {
+      _isChipsVisible = !_isChipsVisible;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: _toggleChipsVisibility,
+      backgroundColor: Colors.purple,
+      elevation: 5,
+      child: const Icon(Icons.add, size: 50, color: Colors.black),
+    );
+  }
+}
+
+// Bottom navigation bar widget with 5 items
 class BottomNavigation extends StatefulWidget {
   final int selectedIndex; // Tracks the currently selected tab
 
@@ -318,15 +346,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
         break;
       case 2:
         Navigator.pushReplacementNamed(
-            context, '/search'); // Navigates to Search
+            context, '/search'); // Navigates to Search Screen
         break;
       case 3:
         Navigator.pushReplacementNamed(context,
-            '/opportunities_board'); // Navigates to Opportunities Board
+            '/opportunities_board'); // Navigates to Opportunities board
         break;
       case 4:
         Navigator.pushReplacementNamed(
-            context, '/profile'); // Navigates to Profile
+            context, '/profile'); // Navigates to Profile Screen
         break;
       default:
         break;
@@ -341,7 +369,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       selectedItemColor: Colors.purple, // Selected icon color
       unselectedItemColor: Colors.grey, // Unselected icon color
       showSelectedLabels: false, // Hides selected labels
-      showUnselectedLabels: true, // Hides unselected labels
+      showUnselectedLabels: false, // Hides unselected labels
       iconSize: 30, // Sets icon size
       onTap: _onItemTapped, // Triggers _onItemTapped on tap
       items: const [
@@ -359,7 +387,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.language_outlined),
-          label: 'Opportunities',
+          label: 'Opportunities Board',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_outlined),

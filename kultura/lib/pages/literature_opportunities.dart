@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class OpportunitiesBoard extends StatelessWidget {
-  const OpportunitiesBoard({super.key});
+class LiteratureOpportunities extends StatelessWidget {
+  const LiteratureOpportunities({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +21,9 @@ class OpportunitiesBoard extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          const OpportunitiesBoardContent(),
+          const LiteratureBoardContent(),
           Positioned(
-            bottom: 30.0,
+            bottom: 70.0,
             left: 16.0,
             right: 16.0,
             child: Center(
@@ -49,14 +49,14 @@ class OpportunitiesBoard extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: const BottomNavigation(
-        selectedIndex: 3,
+        selectedIndex: 4, // Adjust as necessary
       ),
     );
   }
 }
 
-class OpportunitiesBoardContent extends StatelessWidget {
-  const OpportunitiesBoardContent({super.key});
+class LiteratureBoardContent extends StatelessWidget {
+  const LiteratureBoardContent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class OpportunitiesBoardContent extends StatelessWidget {
       children: [
         const SearchBarAndFilters(),
         Expanded(
-          child: const OpportunitiesList(),
+          child: const OpportunitiesList(category: 'Literature'), // Pass category if needed
         ),
       ],
     );
@@ -79,8 +79,13 @@ class SearchBarAndFilters extends StatefulWidget {
 }
 
 class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
-  bool _isFilterVisible = false;
-  String selectedCategory = 'Music';
+  bool _isChipVisible = false;
+
+  void _toggleChipsVisibility() {
+    setState(() {
+      _isChipVisible = !_isChipVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,98 +106,95 @@ class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
           ),
           const SizedBox(height: 16),
           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isFilterVisible = !_isFilterVisible;
-                  });
-                },
+                onPressed: _toggleChipsVisibility,
                 icon: Icon(
-                  _isFilterVisible ? Icons.close : Icons.filter_list,
+                  _isChipVisible ? Icons.close : Icons.menu,
                   color: Colors.black,
                 ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 8.0,
-                    children: ['Music', 'Painting', 'Literature'].map((category) {
-                      return FilterChip(
-                        label: Text(category),
-                        selected: selectedCategory == category,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            selectedCategory = selected ? category : '';
-                          });
-
-                          if (selected) {
-                            // Navigate based on the selected category
-                            if (category == 'Painting') {
-                              Navigator.pushNamed(context, '/paintings_opportunities');
-                            } else if (category == 'Literature') {
-                              Navigator.pushNamed(context, '/literature_opportunities');
-                            }
-                          }
-                        },
-                        backgroundColor: Colors.purple[100],
-                        selectedColor: Colors.purple,
-                        labelStyle: TextStyle(
-                          color: selectedCategory == category
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          side: const BorderSide(color: Colors.purple, width: 1),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 48),
+              )
             ],
           ),
-          if (_isFilterVisible)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Column(
-                children: [
-                  // Add your additional filters here
-                ],
-              ),
+          Visibility(
+            visible: _isChipVisible,
+            child: Wrap(
+              spacing: 8.0,
+              children: const [
+                CustomFilterChip(label: 'Music', isSelected: false),
+                CustomFilterChip(label: 'Painting', isSelected: false),
+                CustomFilterChip(label: 'Literature', isSelected: false),
+              ],
             ),
+          ),
         ],
       ),
     );
   }
 }
 
+class CustomFilterChip extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+
+  const CustomFilterChip({
+    required this.label,
+    required this.isSelected,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FilterChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (bool selected) {
+        if (label == 'Paintings' && selected) {
+          Navigator.pushNamed(context, '/paintings_opportunities');
+        }
+        if (label == 'Music' && selected) {
+          Navigator.pushNamed(context, '/opportunities_board');
+        }
+      },
+      backgroundColor: Colors.purple[100],
+      selectedColor: Colors.purple,
+      labelStyle: TextStyle(
+        color: isSelected ? Colors.white : Colors.black,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30),
+        side: BorderSide(color: Colors.purple, width: 1),
+      ),
+    );
+  }
+}
+
 class OpportunitiesList extends StatelessWidget {
-  const OpportunitiesList({super.key});
+  final String category; // Added category parameter
+
+  const OpportunitiesList({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
     final opportunities = [
       {
-        'title': 'Music Teacher',
-        'category': 'Job',
-        'location': 'Kigali',
-        'description': 'Looking for a music teacher to teach guitar and piano to students.',
+        'title': 'Writing Workshop',
+        'category': 'Workshop',
+        'location': 'New York, USA',
+        'description': 'Join our writing workshop to enhance your skills.',
       },
       {
-        'title': 'Rock Band Audition',
-        'category': 'Audition',
-        'location': 'Nigeria',
-        'description': 'We are holding auditions for a Rock Band in the city.',
-      },
-      {
-        'title': 'Choral Singing Contest',
+        'title': 'Literary Contest',
         'category': 'Contest',
-        'location': 'India',
-        'description': 'Join the International Singing Competition for a chance to win \$15,000.',
+        'location': 'Online',
+        'description': 'Submit your best short story for a chance to win prizes.',
+      },
+      {
+        'title': 'Author Needed',
+        'category': 'Job',
+        'location': 'London, UK',
+        'description': 'Seeking an author to write a series of short stories.',
       },
     ];
 
@@ -266,7 +268,7 @@ class OpportunityCard extends StatelessWidget {
 
 // Bottom navigation bar widget with 5 items
 class BottomNavigation extends StatefulWidget {
-  final int selectedIndex;
+  final int selectedIndex; // Tracks the currently selected tab
 
   const BottomNavigation({super.key, required this.selectedIndex});
 
@@ -280,28 +282,29 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.selectedIndex;
+    _selectedIndex = widget.selectedIndex; // Sets the initial selected tab
   }
 
+  // Handles tap events for each navigation item
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/home'); // Navigates to Home
         break;
       case 1:
-        Navigator.pushNamed(context, '/resource_center');
+        Navigator.pushNamed(context, '/resource_center'); // Navigates to Resource Center
         break;
       case 2:
-        Navigator.pushNamed(context, '/search');
+        Navigator.pushNamed(context, '/search'); // Navigates to Search Screen
         break;
       case 3:
-        Navigator.pushNamed(context, '/opportunities_board');
+        Navigator.pushNamed(context, '/opportunities_board'); // Navigates to Opportunities board
         break;
       case 4:
-        Navigator.pushNamed(context, '/profile');
+        Navigator.pushNamed(context, '/profile'); // Navigates to Profile Screen
         break;
       default:
         break;
@@ -311,15 +314,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.purple,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      iconSize: 30,
-      onTap: _onItemTapped,
-      items: const [
+        currentIndex: _selectedIndex, // Highlights the selected tab
+        type: BottomNavigationBarType.fixed, // Fixed tab type
+        selectedItemColor: Colors.purple, // Selected icon color
+        unselectedItemColor: Colors.grey, // Unselected icon color
+        showSelectedLabels: false, // Hides selected labels
+        showUnselectedLabels: false, // Hides unselected labels
+        iconSize: 30, // Sets icon size
+        onTap: _onItemTapped, // Triggers _onItemTapped on tap
+        items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.add_home_outlined),
           label: 'Home',
@@ -329,18 +332,19 @@ class _BottomNavigationState extends State<BottomNavigation> {
           label: 'Resource Center',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined),
+        icon: Icon(Icons.search_outlined),
           label: 'Search',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.language_outlined),
-          label: 'Opportunities Board',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined),
-          label: 'Profile',
-        ),
-      ],
+          BottomNavigationBarItem(
+            icon: Icon(Icons.language_outlined),
+            label: 'Opportunities Board',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined),
+            label: 'Profile',
+          ),
+        ],
     );
   }
 }
+
