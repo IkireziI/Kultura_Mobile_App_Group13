@@ -18,6 +18,8 @@ class LiteratureOpportunities extends StatelessWidget {
             ),
           ),
         ),
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Change back arrow color to white
       ),
       body: Stack(
         children: [
@@ -31,7 +33,8 @@ class LiteratureOpportunities extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, '/marketplace');
                 },
-                icon: const Icon(Icons.local_offer_outlined, color: Colors.black),
+                icon:
+                    const Icon(Icons.local_offer_outlined, color: Colors.black),
                 label: const Text(
                   'Marketplace',
                   style: TextStyle(color: Colors.black, fontSize: 16),
@@ -41,7 +44,8 @@ class LiteratureOpportunities extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                 ),
               ),
             ),
