@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:kultura/pages/home.dart';
 import 'package:kultura/pages/log_in.dart';
+
 import 'package:kultura/pages/opportunities_board.dart' as opportunities;
 import 'package:kultura/pages/resource_center.dart' as resources;
 import 'package:kultura/pages/sign_up.dart';
+import 'pages/market_painting.dart';
 import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
 import 'pages/profile.dart';
-import 'pages/marketplace.dart';
+
 import 'pages/market_music.dart';
 import 'pages/market_literature.dart';
 import 'pages/profile_setting.dart';
