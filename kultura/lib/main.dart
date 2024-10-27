@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple, // Set the primary color theme to purple
       ),
-      initialRoute: '/home', // Set the initial route to home
+      initialRoute: '/login',
       routes: {
         // Authentication routes
         '/login': (context) => const LoginScreen(),
