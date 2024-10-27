@@ -34,7 +34,7 @@ class MarketplacePage extends StatelessWidget {
             ),
           ],
         ),
-        actions: [
+        actions: const [
           SizedBox(width: 48)
         ], // Balances the AppBar with leading icon space
       ),
@@ -127,12 +127,19 @@ class SearchAndFilters extends StatefulWidget {
 class _SearchAndFiltersState extends State<SearchAndFilters> {
   bool _isFilterVisible = false;
   String selectedCategory = 'Painting'; // Default to 'Painting'
+  String searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextField(
+          onChanged: (value) {
+            setState(() {
+              searchQuery = value; // Update search query
+            });
+            // Implement filtering logic if needed
+          },
           decoration: InputDecoration(
             hintText: 'Search Opportunities',
             prefixIcon: const Icon(Icons.search_outlined),
@@ -171,6 +178,21 @@ class _SearchAndFiltersState extends State<SearchAndFilters> {
                         setState(() {
                           selectedCategory = selected ? category : '';
                         });
+                        if (selected) {
+                          // Navigate to the respective route based on the selected category
+                          switch (category) {
+                            case 'Music':
+                              Navigator.pushNamed(context, '/market_music');
+                              break;
+                            case 'Literature':
+                              Navigator.pushNamed(
+                                  context, '/market_literature');
+                              break;
+                            case 'Painting':
+                              // You can handle the painting case as needed
+                              break;
+                          }
+                        }
                       },
                       backgroundColor: Colors.purple[100],
                       selectedColor: Colors.purple,
