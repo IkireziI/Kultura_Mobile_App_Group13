@@ -13,6 +13,8 @@ import 'pages/market_music.dart';
 import 'pages/market_literature.dart';
 import 'pages/profile_setting.dart';
 import 'pages/search_page.dart';
+import 'pages/paintings_opportunities.dart';
+import 'pages/literature_opportunities.dart';
 
 // Entry point of the application
 void main() {
@@ -52,6 +54,9 @@ class MyApp extends StatelessWidget {
             const LiteratureCourseScreen(), // Route for the literature course
         '/opportunities_board': (context) =>
             const opportunities.OpportunitiesBoard(), // Route for the Opportunities board
+        '/paintings_opportunities': (context) => const PaintingOpportunities(),
+        '/literature_opportunities': (context) => const LiteratureOpportunities(),
+
         '/profile': (context) => const Profile(), // Route for the Profile Screen
         '/profile_setting': (context) => const ProfileSettingsScreen(), // Route for the Profile Settings Screen
         '/search': (context) => const SearchScreen(), // Route for the Search Screen
