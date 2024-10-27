@@ -126,7 +126,7 @@ class SearchAndFilters extends StatefulWidget {
 
 class _SearchAndFiltersState extends State<SearchAndFilters> {
   bool _isFilterVisible = false;
-  String selectedCategory = 'Music';
+  String selectedCategory = 'Painting'; // Default to 'Painting'
 
   @override
   Widget build(BuildContext context) {
