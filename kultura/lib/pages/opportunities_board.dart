@@ -23,7 +23,7 @@ class OpportunitiesBoard extends StatelessWidget {
         children: [
           const OpportunitiesBoardContent(),
           Positioned(
-            bottom: 70.0,
+            bottom: 30.0,
             left: 16.0, // Added padding for better positioning
             right: 16.0, // Added padding for better positioning
             child: Center(

@@ -25,6 +25,7 @@ class Home extends StatelessWidget {
             ),
           ],
         ),
+        floatingActionButton: const AddPost(),
         // Body
         bottomNavigationBar: BottomNavigation(selectedIndex: 0,),
         // Bottom Navigation Bar
@@ -117,7 +118,7 @@ class Stories extends StatelessWidget {
                       onPressed: () {
                         // Notification Logic
                       },
-                      icon: const Icon(Icons.notifications, color: Colors.purple),
+                      icon: const Icon(Icons.notifications, color: Colors.black),
                     ),
                   ),
                   SizedBox(width: 10),
@@ -133,7 +134,7 @@ class Stories extends StatelessWidget {
                       onPressed: () {
                         // Message Logic
                       },
-                      icon: const Icon(Icons.message, color: Colors.purple),
+                      icon: const Icon(Icons.message, color: Colors.black),
                     ),
                   ),
                 ],
@@ -280,6 +281,33 @@ class PostItem extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+// Add Post Button
+class AddPost extends StatefulWidget{
+  const AddPost({super.key});
+
+@override
+  State<AddPost> createState() => _AddPostState();
+}
+
+class _AddPostState extends State<AddPost> {
+  bool _isChipsVisible = false;
+
+  void _toggleChipsVisibility(){
+    setState(() {
+      _isChipsVisible = !_isChipsVisible;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: _toggleChipsVisibility,
+      backgroundColor: Colors.purple,
+      elevation: 5,
+      child: const Icon(Icons.add, size: 50, color: Colors.black),
     );
   }
 }
