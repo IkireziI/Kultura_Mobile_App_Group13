@@ -94,8 +94,8 @@ class KulturaHomePage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.center,
           colors: [
-            Color(0xFFA020F0),
-            Colors.white,
+            Color(0xFF9C27B0),
+            Color(0xFFE1BEE7),
           ],
           stops: [0.3, 1.0],
         ),

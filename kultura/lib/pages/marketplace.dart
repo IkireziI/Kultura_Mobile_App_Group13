@@ -5,27 +5,38 @@ class MarketplacePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> imagePaths = [
+      'assets/Rectangle103.png',
+      'assets/Rectangle104.png',
+      'assets/Rectangle105.png',
+      'assets/Rectangle106.png',
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.purple,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Center(
-          child: SizedBox(
-            height: 40,
-            child: Center(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 40,
               child: Image.asset(
                 'assets/images/KULTURA.png',
                 fit: BoxFit.contain,
               ),
             ),
-          ),
+          ],
         ),
+        actions: [
+          SizedBox(width: 48)
+        ], // Balances the AppBar with leading icon space
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -52,10 +63,10 @@ class MarketplacePage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-            // Grid of items
-            Expanded(
+            // GridView Section in a Flexible widget
+            Flexible(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -63,7 +74,7 @@ class MarketplacePage extends StatelessWidget {
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
-                itemCount: 4,
+                itemCount: imagePaths.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
@@ -76,16 +87,14 @@ class MarketplacePage extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              image: const DecorationImage(
-                                image: NetworkImage(
-                                  'https://cdn.shopify.com/s/files/1/0369/6522/0411/files/a16fd418-b113-4a17-890b-ed277c0197f8_600x600.jpg?v=1698914599',
-                                ),
+                              image: DecorationImage(
+                                image: AssetImage(imagePaths[index]),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           index % 2 == 0 ? '25,000 RWF' : '68,000 RWF',
                           style: const TextStyle(
@@ -107,6 +116,7 @@ class MarketplacePage extends StatelessWidget {
   }
 }
 
+// SearchAndFilters and BottomNavigation classes remain unchanged
 class SearchAndFilters extends StatefulWidget {
   const SearchAndFilters({super.key});
 
@@ -116,13 +126,12 @@ class SearchAndFilters extends StatefulWidget {
 
 class _SearchAndFiltersState extends State<SearchAndFilters> {
   bool _isFilterVisible = false;
-  String selectedCategory = 'Music';
+  String selectedCategory = 'Painting'; // Default to 'Painting'
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Search Box matching Opportunities screen
         TextField(
           decoration: InputDecoration(
             hintText: 'Search Opportunities',
@@ -135,13 +144,10 @@ class _SearchAndFiltersState extends State<SearchAndFilters> {
           ),
         ),
         const SizedBox(height: 16),
-
-        // Categories and Filter Row
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              // Filter icon on the left
               IconButton(
                 onPressed: () {
                   setState(() {
@@ -153,8 +159,6 @@ class _SearchAndFiltersState extends State<SearchAndFilters> {
                   color: Colors.black,
                 ),
               ),
-
-              // Categories in a single row
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: ['Music', 'Painting', 'Literature'].map((category) {
@@ -183,19 +187,16 @@ class _SearchAndFiltersState extends State<SearchAndFilters> {
                   );
                 }).toList(),
               ),
-
-              // Padding at the end for better scrolling
               const SizedBox(width: 16),
             ],
           ),
         ),
-
         if (_isFilterVisible)
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Column(
               children: [
-                // Add your additional filters here
+                // Additional filters can be added here
               ],
             ),
           ),
@@ -204,7 +205,6 @@ class _SearchAndFiltersState extends State<SearchAndFilters> {
   }
 }
 
-// Bottom Navigation Bar (unchanged)
 class BottomNavigation extends StatefulWidget {
   final int selectedIndex;
 
