@@ -48,37 +48,13 @@ class OpportunitiesBoard extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: const DrawingWidget(),
       bottomNavigationBar: const BottomNavigation(
         selectedIndex: 3,
       ),
     );
   }
 }
-class DrawingWidget extends StatefulWidget{
-  const DrawingWidget({super.key});
 
-@override
-  State<DrawingWidget> createState() => _DrawingWidgetState();
-}
-
-class _DrawingWidgetState extends State<DrawingWidget> {
-  bool _isChipsVisible = false;
-
-  void _toggleChipsVisibility(){
-    setState(() {
-      _isChipsVisible = !_isChipsVisible;
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: _toggleChipsVisibility,
-      backgroundColor: Colors.purple,
-      child: const Icon(Icons.draw),
-    );
-  }
-}
 class OpportunitiesBoardContent extends StatelessWidget {
   const OpportunitiesBoardContent({super.key});
 
@@ -101,15 +77,11 @@ class SearchBarAndFilters extends StatefulWidget {
   @override
   State<SearchBarAndFilters> createState() => _SearchBarAndFiltersState();
 }
-class _SearchBarAndFiltersState extends State<SearchBarAndFilters>{
-  bool _isChipVisible = false;
 
-  void _toggleChipsVisibility() {
-    setState(() {
-      _isChipVisible = !_isChipVisible;
+class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
+  bool _isFilterVisible = false;
+  String selectedCategory = 'Music';
 
-    });
-  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -128,36 +100,71 @@ class _SearchBarAndFiltersState extends State<SearchBarAndFilters>{
             ),
           ),
           const SizedBox(height: 16),
-           Row(
-           mainAxisAlignment:MainAxisAlignment.start,
-           children: [
-    IconButton(
-    onPressed: _toggleChipsVisibility,
-    icon: Icon(
-    _isChipVisible ? Icons.close: Icons.menu,
-    color: Colors.black,
+          Row(
+            children: [
+              // Filter icon on the left
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _isFilterVisible = !_isFilterVisible;
+                  });
+                },
+                icon: Icon(
+                  _isFilterVisible ? Icons.close : Icons.filter_list,
+                  color: Colors.black,
+                ),
+              ),
 
-    ),
-    )
-    ],
-           ),
+              // Centered categories
+              Expanded(
+                child: Center(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 8.0,
+                    children:
+                        ['Music', 'Painting', 'Literature'].map((category) {
+                      return FilterChip(
+                        label: Text(category),
+                        selected: selectedCategory == category,
+                        onSelected: (bool selected) {
+                          setState(() {
+                            selectedCategory = selected ? category : '';
+                          });
+                        },
+                        backgroundColor: Colors.purple[100],
+                        selectedColor: Colors.purple,
+                        labelStyle: TextStyle(
+                          color: selectedCategory == category
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          side:
+                              const BorderSide(color: Colors.purple, width: 1),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
 
-           Visibility(
-             visible: _isChipVisible,
-           child: Wrap(
-            spacing: 8.0,
-            children: const [
-              CustomFilterChip(label: 'Music', isSelected: false),
-              CustomFilterChip(label: 'Painting', isSelected: false),
-              CustomFilterChip(label: 'Literature', isSelected: false),
+              // Empty SizedBox to balance the layout
+              const SizedBox(width: 48), // Width matches IconButton
             ],
           ),
-    ),
-    ],
-    ),
+          if (_isFilterVisible)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Column(
+                children: [
+                  // Add your additional filters here
+                ],
+              ),
+            ),
+        ],
+      ),
     );
-
-
   }
 }
 
@@ -319,7 +326,18 @@ class _BottomNavigationState extends State<BottomNavigation> {
         Navigator.pushReplacementNamed(
             context, '/resource_center'); // Navigates to Resource Center
         break;
-      // Add cases for other tabs if needed
+      case 2:
+        Navigator.pushReplacementNamed(
+            context, '/search'); // Navigates to Search Screen
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context,
+            '/opportunities_board'); // Navigates to Opportunities board
+        break;
+      case 4:
+        Navigator.pushReplacementNamed(
+            context, '/profile'); // Navigates to Profile Screen
+        break;
       default:
         break;
     }
@@ -351,7 +369,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.language_outlined),
-          label: 'Marketplace',
+          label: 'Opportunities Board',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_outlined),

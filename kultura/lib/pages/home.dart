@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/pages/opportunities_board.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -285,6 +286,7 @@ class PostItem extends StatelessWidget {
   }
 }
 
+<<<<<<< HEAD
 // Add Post Button
 class AddPost extends StatefulWidget{
   const AddPost({super.key});
@@ -397,3 +399,5 @@ class _BottomNavigationState extends State<BottomNavigation> {
     );
   }
 }
+=======
+>>>>>>> ffc4e336b78e5a61cb2d601b4a1745351ed737d8

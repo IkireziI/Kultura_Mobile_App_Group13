@@ -7,11 +7,12 @@ import 'package:kultura/pages/sign_up.dart';
 import 'pages/music_course.dart';
 import 'pages/painting_course.dart';
 import 'pages/literature_course.dart';
-import 'pages/market_painting.dart';
+import 'pages/profile.dart';
+import 'pages/marketplace.dart';
 import 'pages/market_music.dart';
 import 'pages/market_literature.dart';
 import 'pages/profile_setting.dart';
-import 'pages/profile.dart';
+import 'pages/search_page.dart';
 
 // Entry point of the application
 void main() {
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple, // Set the primary color theme to purple
       ),
-      initialRoute: '/login', // Set the initial route to home
+      initialRoute: '/home', // Set the initial route to home
       routes: {
         // Authentication routes
         '/login': (context) => const LoginScreen(),
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
 
         '/home': (context) => const Home(), // Route for the home screen
 
-        'market_painting': (context) => const MarketplacePainting(), // Route for the Marketplace (Painting)
+        '/marketplace': (context) => const MarketplacePage(), // Route for the Marketplace (Painting)
         'market_music': (context) => const MarketplaceMusic(), // Route for the Marketplace (Music)
         'market_literature': (context) => const MarketplaceLiterature(), // Route for the Marketplace (Literature)
         '/resource_center': (context) =>
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
             const opportunities.OpportunitiesBoard(), // Route for the Opportunities board
         '/profile': (context) => const Profile(), // Route for the Profile Screen
         '/profile_setting': (context) => const ProfileSettingsScreen(), // Route for the Profile Settings Screen
+        '/search': (context) => const SearchScreen(), // Route for the Search Screen
       },
     );
   }
