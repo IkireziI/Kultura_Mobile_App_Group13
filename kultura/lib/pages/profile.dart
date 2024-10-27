@@ -25,8 +25,7 @@ class Profile extends StatelessWidget {
         child: Column(
           children: [
             // App Bar with the Settings Icon and the Title
-            AppliBar(),
-
+            const AppliBar(),
             const SizedBox(height: 5),
             // Profile Content
             Expanded(
@@ -36,14 +35,12 @@ class Profile extends StatelessWidget {
                     SizedBox(height: 20),
                     // Profile Picture, Username, Bio and Location
                     ProfileHeader(),
-
                     SizedBox(height: 10),
                     // Profile Infos
                     ProfileInfos(),
-
                     SizedBox(height: 10),
                     // Post Grid
-                    PostGrid(),
+                    GridBar(),
                   ],
                 ),
               ),
@@ -51,7 +48,7 @@ class Profile extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigation(selectedIndex: 4),
+      bottomNavigationBar: const BottomNavigation(selectedIndex: 4),
     );
   }
 }
@@ -65,15 +62,15 @@ class AppliBar extends StatelessWidget {
     return AppBar(
       centerTitle: true,
       elevation: 0,
-      backgroundColor: Colors.transparent, // To display the general background color
+      backgroundColor: Colors.transparent,
       leading: Padding(
         padding: const EdgeInsets.all(0.0),
         child: Card(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           elevation: 5,
           color: Colors.grey,
           child: IconButton(
-            icon: Icon(Icons.settings, size: 30),
+            icon: const Icon(Icons.settings, size: 30),
             onPressed: () {
               Navigator.push(
                 context,
@@ -83,7 +80,7 @@ class AppliBar extends StatelessWidget {
               );
             },
           ),
-        ),      
+        ),
       ),
       title: Image.asset(
         'assets/kultura.png',
@@ -103,57 +100,33 @@ class ProfileHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(width: 120),
-          // Profile Pic
-          Container(
-            width: 120,
-            height: 138,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(120),
-              image: const DecorationImage(
-                image: AssetImage('assets/pp.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
+          const SizedBox(width: 100),
+          // Profile Picture
+          CircleAvatar(
+            radius: 60,
+            backgroundImage: const AssetImage('assets/pp.jpg'),
           ),
-          const SizedBox(width: 30),
-          
-          // Profile Statistics (Posts, Followers, Following)
+          const SizedBox(width: 60),
+
+          // Profile Stats
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const ProfileStats(),
-              const SizedBox(height: 8),
+            children: const [
+              StatItem(count: '4', label: 'Posts'),
+              SizedBox(height: 10),
+              StatItem(count: '783', label: 'Followers'),
+              SizedBox(height: 10),
+              StatItem(count: '496', label: 'Following'),
             ],
           ),
+          const SizedBox(width: 20),
         ],
-      ), 
+      ),
     );
   }
 }
 
 // Profile Statistics
-class ProfileStats extends StatelessWidget {
-  const ProfileStats({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        StatItem(count: '4', label: 'Posts'),
-        const SizedBox(height: 10),
-        StatItem(count: '783', label: 'Followers'),
-        const SizedBox(height: 10),
-        StatItem(count: '496', label: 'Following'),
-      ],
-    );
-  }
-}
-
 class StatItem extends StatelessWidget {
   final String count;
   final String label;
@@ -203,8 +176,9 @@ class ProfileInfos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      width: 400,
+      padding: const EdgeInsets.all(0),
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -217,25 +191,25 @@ class ProfileInfos extends StatelessWidget {
         ],
       ),
       child: Column(
-          children: [
-          // Username
+        children: [
+          // Username and Artist Badge
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: 150, height: 0),
+              const SizedBox(width: 180),
               const Icon(Icons.person, size: 16, color: Colors.black),
               const SizedBox(width: 5),
               const Text(
                 '@Bry_aurel',
                 style: TextStyle(color: Colors.black),
               ),
-              SizedBox(width: 100),
+              const Spacer(),
               // Artist Badge
               Container(
-                padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 decoration: BoxDecoration(
                   color: Colors.green,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Text(
                   'Artist',
@@ -245,7 +219,6 @@ class ProfileInfos extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 5),
-
           // Location
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -259,36 +232,86 @@ class ProfileInfos extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 5),
-
           // Bio
           const Text(
-            'Your bio goes here',
+            'Your Bio goes here',
             style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
           ),
           const SizedBox(height: 10),
-
-          // Artist Badge and Edit Profile Button
+          // Edit Profile Button
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: 280),
-              // Edit Profile Button
+              const SizedBox(width: 351),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.purple,
-                ),
-                child: const Text(
-                  'Edit Profile',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
               ),
+            ),
+            child: const Text(
+              'Edit Profile',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+// Grid Bar
+
+class GridBar extends StatefulWidget {
+  const GridBar({super.key});
+
+  @override
+  State<GridBar> createState() => _GridBarState();
+}
+
+class _GridBarState extends State<GridBar> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.purple,
+          tabs: const [
+            Tab(icon: Icon(Icons.grid_on, color: Colors.black)),
+            Tab(icon: Icon(Icons.bookmark_border, color: Colors.black)),
+          ],
+        ),
+        SizedBox(
+          height: 200,
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              const PostGrid(),
+              const Center(
+                child: Text('No saved Posts'),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -310,11 +333,11 @@ class PostGrid extends StatelessWidget {
           crossAxisSpacing: 8,
           childAspectRatio: 1,
         ),
-        itemCount: 6,
+        itemCount: 4,
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
-              image: DecorationImage(
+              image: const DecorationImage(
                 image: AssetImage('assets/post1.jpg'),
                 fit: BoxFit.cover,
               ),
@@ -329,7 +352,7 @@ class PostGrid extends StatelessWidget {
 
 // Bottom navigation bar widget with 5 items
 class BottomNavigation extends StatefulWidget {
-  final int selectedIndex; // Tracks the currently selected tab
+  final int selectedIndex;
 
   const BottomNavigation({super.key, required this.selectedIndex});
 
@@ -343,71 +366,30 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.selectedIndex; // Sets the initial selected tab
-  }
-
-  // Handles tap events for each navigation item
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(
-            context, '/resource_center'); // Navigates to Resource Center
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(
-            context, '/search'); // Navigates to Search Screen
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(context,
-            '/opportunities_board'); // Navigates to Opportunities board
-        break;
-      case 4:
-        Navigator.pushReplacementNamed(context,
-            '/profile_settings'); // Navigates directly to ProfileSettingsScreen
-        break;
-      default:
-        break;
-    }
+    _selectedIndex = widget.selectedIndex;
   }
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _selectedIndex, // Highlights the selected tab
-      type: BottomNavigationBarType.fixed, // Fixed tab type
-      selectedItemColor: Colors.purple, // Selected icon color
-      unselectedItemColor: Colors.grey, // Unselected icon color
-      showSelectedLabels: false, // Hides selected labels
-      showUnselectedLabels: false, // Hides unselected labels
-      iconSize: 30, // Sets icon size
-      onTap: _onItemTapped, // Triggers _onItemTapped on tap
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.purple,
+      unselectedItemColor: Colors.grey,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      currentIndex: _selectedIndex,
+      onTap: (index) {
+        setState(() {
+          _selectedIndex = index;
+        });
+        // Add Navigation logic for each index
+      },
       items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.add_home_outlined),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.auto_stories_outlined),
-          label: 'Resource Center',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined),
-          label: 'Search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.language_outlined),
-          label: 'Opportunities Board',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined),
-          label: 'Profile',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.book), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
       ],
     );
   }
