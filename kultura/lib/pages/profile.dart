@@ -241,7 +241,7 @@ class ProfileInfos extends StatelessWidget {
           // Edit Profile Button
           Row(
             children: [
-              const SizedBox(width: 351),
+              const SizedBox(width: 241),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
