@@ -119,7 +119,7 @@ class ProfileHeader extends StatelessWidget {
               StatItem(count: '496', label: 'Following'),
             ],
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 10),
         ],
       ),
     );
@@ -322,6 +322,14 @@ class PostGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // List of Posts
+    final List<String> images = [
+      'assets/post1.jpg',
+      'assets/post2.jpeg',
+      'assets/post3.jpeg',
+      'assets/post4.jpg',
+    ];
+    
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
@@ -333,12 +341,12 @@ class PostGrid extends StatelessWidget {
           crossAxisSpacing: 8,
           childAspectRatio: 1,
         ),
-        itemCount: 4,
+        itemCount: images.length,  // Use the number of posts in the List
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/post1.jpg'),
+              image: DecorationImage(
+                image: AssetImage(images[index]),
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(8),
