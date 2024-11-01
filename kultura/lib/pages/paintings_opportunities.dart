@@ -8,6 +8,8 @@ class PaintingOpportunities extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
+        iconTheme: const IconThemeData(
+            color: Colors.white), // Set back arrow color to white
         title: SizedBox(
           width: double.infinity,
           child: Center(
@@ -31,7 +33,8 @@ class PaintingOpportunities extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, '/marketplace');
                 },
-                icon: const Icon(Icons.local_offer_outlined, color: Colors.black),
+                icon:
+                    const Icon(Icons.local_offer_outlined, color: Colors.black),
                 label: const Text(
                   'Marketplace',
                   style: TextStyle(color: Colors.black, fontSize: 16),
@@ -41,7 +44,8 @@ class PaintingOpportunities extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                 ),
               ),
             ),
@@ -79,13 +83,8 @@ class SearchBarAndFilters extends StatefulWidget {
 }
 
 class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
-  bool _isChipVisible = false;
-
-  void _toggleChipsVisibility() {
-    setState(() {
-      _isChipVisible = !_isChipVisible;
-    });
-  }
+  bool _isFilterVisible = false;
+  String selectedCategory = 'Painting';
 
   @override
   Widget build(BuildContext context) {
@@ -106,28 +105,73 @@ class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
           ),
           const SizedBox(height: 16),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(
-                onPressed: _toggleChipsVisibility,
+                onPressed: () {
+                  setState(() {
+                    _isFilterVisible = !_isFilterVisible;
+                  });
+                },
                 icon: Icon(
-                  _isChipVisible ? Icons.close : Icons.menu,
+                  _isFilterVisible ? Icons.close : Icons.filter_list,
                   color: Colors.black,
                 ),
-              )
+              ),
+              Expanded(
+                child: Center(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 8.0,
+                    children:
+                        ['Music', 'Painting', 'Literature'].map((category) {
+                      return FilterChip(
+                        label: Text(category),
+                        selected: selectedCategory == category,
+                        onSelected: (bool selected) {
+                          setState(() {
+                            selectedCategory = selected ? category : '';
+                          });
+
+                          if (selected) {
+                            // Navigate based on the selected category
+                            if (category == 'Painting') {
+                              Navigator.pushNamed(
+                                  context, '/paintings_opportunities');
+                            } else if (category == 'Literature') {
+                              Navigator.pushNamed(
+                                  context, '/literature_opportunities');
+                            }
+                          }
+                        },
+                        backgroundColor: Colors.purple[100],
+                        selectedColor: Colors.purple,
+                        labelStyle: TextStyle(
+                          color: selectedCategory == category
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          side:
+                              const BorderSide(color: Colors.purple, width: 1),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 48),
             ],
           ),
-          Visibility(
-            visible: _isChipVisible,
-            child: Wrap(
-              spacing: 8.0,
-              children: const [
-                CustomFilterChip(label: 'Music', isSelected: false),
-                CustomFilterChip(label: 'Painting', isSelected: false),
-                CustomFilterChip(label: 'Literature', isSelected: false),
-              ],
+          if (_isFilterVisible)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Column(
+                children: [
+                  // Add your additional filters here
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -324,7 +368,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         onTap: _onItemTapped, // Triggers _onItemTapped on tap
         items: const [
         BottomNavigationBarItem(
-        icon: Icon(Icons.add_home_outlined),
+        icon: Icon(Icons.home_outlined),
           label: 'Home',
         ),
           BottomNavigationBarItem(

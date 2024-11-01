@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 
 class MarketplaceLiterature extends StatelessWidget {
   const MarketplaceLiterature({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
         title: SizedBox(
-          width:
-              double.infinity, // This makes the container take the full width
+          width: double.infinity, // Makes the container take the full width
           child: Center(
             child: Image.asset(
               'assets/images/KULTURA.png',
@@ -21,15 +19,15 @@ class MarketplaceLiterature extends StatelessWidget {
         ),
       ),
       // Main body content for the page
-      body: MarketplaceLiteratureContent(),
+      body: const MarketplaceLiteratureContent(),
       bottomNavigationBar: const BottomNavigation(
-          selectedIndex:
-              3), // Update selectedIndex to the appropriate tab index for the OpportunitiesBoard
+        selectedIndex: 3, // Sets the OpportunitiesBoard as the selected tab
+      ),
     );
   }
 }
 
-// Content
+// Main content of the Marketplace Literature page
 class MarketplaceLiteratureContent extends StatelessWidget {
   const MarketplaceLiteratureContent({super.key});
 
@@ -39,15 +37,16 @@ class MarketplaceLiteratureContent extends StatelessWidget {
       children: [
         // Search bar and filters section
         const SearchBarAndFilters(),
-        // Expanded list of opportunities
-        Expanded(
-          child: const LiteratureList(),
+        // Expanded list of literature opportunities
+        const Expanded(
+          child: LiteratureList(),
         ),
       ],
     );
   }
 }
 
+// Search bar and filter chips for filtering opportunities
 class SearchBarAndFilters extends StatelessWidget {
   const SearchBarAndFilters({super.key});
 
@@ -61,7 +60,7 @@ class SearchBarAndFilters extends StatelessWidget {
           TextField(
             decoration: InputDecoration(
               hintText: 'Search',
-              prefixIcon: Icon(Icons.search_outlined),
+              prefixIcon: const Icon(Icons.search_outlined),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -70,7 +69,7 @@ class SearchBarAndFilters extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16), // Space between search bar and filters
-          // Filter chips (Music, Painting, Literature)
+          // Filter chips for categories (Music, Painting, Literature)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
@@ -85,6 +84,7 @@ class SearchBarAndFilters extends StatelessWidget {
   }
 }
 
+// Custom filter chip for selecting categories
 class CustomFilterChip extends StatelessWidget {
   final String label;
   final bool isSelected;
@@ -101,7 +101,21 @@ class CustomFilterChip extends StatelessWidget {
       label: Text(label),
       selected: isSelected,
       onSelected: (bool selected) {
-        // Handle filter selection logic
+        if (selected) {
+          // Navigate to the corresponding filter screen
+          switch (label) {
+            case 'Music':
+              Navigator.pushReplacementNamed(context, '/marketplace_music');
+              break;
+            case 'Painting':
+              Navigator.pushReplacementNamed(context, '/marketplace_painting');
+              break;
+            case 'Literature':
+              Navigator.pushReplacementNamed(
+                  context, '/marketplace_literature');
+              break;
+          }
+        }
       },
       selectedColor: Colors.purple,
       labelStyle: TextStyle(
@@ -111,13 +125,32 @@ class CustomFilterChip extends StatelessWidget {
   }
 }
 
-// Paints List Class
+// List of literature opportunities
 class LiteratureList extends StatelessWidget {
   const LiteratureList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    // Temporary mock data for literature items
+    final List<String> literatureItems = [
+      'Classic Literature 1',
+      'Modern Poetry',
+      'Historical Fiction',
+      'Science Fiction Novels',
+      'Literary Criticism'
+    ];
+
+    return ListView.builder(
+      itemCount: literatureItems.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(literatureItems[index]),
+          onTap: () {
+            // Define actions on tap, like navigating to a detail screen
+          },
+        );
+      },
+    );
   }
 }
 
@@ -147,23 +180,21 @@ class _BottomNavigationState extends State<BottomNavigation> {
     });
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
+        Navigator.pushReplacementNamed(context, '/home'); // Home screen
         break;
       case 1:
         Navigator.pushReplacementNamed(
-            context, '/resource_center'); // Navigates to Resource Center
+            context, '/resource_center'); // Resource Center
         break;
       case 2:
-        Navigator.pushReplacementNamed(
-            context, '/search'); // Navigates to Search Screen
+        Navigator.pushReplacementNamed(context, '/search'); // Search Screen
         break;
       case 3:
-        Navigator.pushReplacementNamed(context,
-            '/opportunities_board'); // Navigates to Opportunities board
+        Navigator.pushReplacementNamed(
+            context, '/opportunities_board'); // Opportunities Board
         break;
       case 4:
-        Navigator.pushReplacementNamed(
-            context, '/profile'); // Navigates to Profile Screen
+        Navigator.pushReplacementNamed(context, '/profile'); // Profile Screen
         break;
       default:
         break;
@@ -183,7 +214,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       onTap: _onItemTapped, // Triggers _onItemTapped on tap
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.add_home_outlined),
+          icon: Icon(Icons.home_outlined),
           label: 'Home',
         ),
         BottomNavigationBarItem(

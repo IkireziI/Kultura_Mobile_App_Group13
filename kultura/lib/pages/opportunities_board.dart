@@ -321,7 +321,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       onTap: _onItemTapped,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.add_home_outlined),
+          icon: Icon(Icons.home_outlined),
           label: 'Home',
         ),
         BottomNavigationBarItem(

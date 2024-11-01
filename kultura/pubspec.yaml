@@ -131,7 +131,10 @@ flutter:
     - assets/paint2.png
     - assets/paint3.png
     - assets/paint4.png
-
+    - assets/Rectangle107.png
+    - assets/Rectangle108.png
+    - assets/Rectangle109.png
+    - assets/Rectangle110.png
 
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

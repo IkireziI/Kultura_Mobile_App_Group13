@@ -119,7 +119,7 @@ class ProfileHeader extends StatelessWidget {
               StatItem(count: '496', label: 'Following'),
             ],
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 10),
         ],
       ),
     );
@@ -241,7 +241,7 @@ class ProfileInfos extends StatelessWidget {
           // Edit Profile Button
           Row(
             children: [
-              const SizedBox(width: 351),
+              const SizedBox(width: 241),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -322,6 +322,14 @@ class PostGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // List of Posts
+    final List<String> images = [
+      'assets/post1.jpg',
+      'assets/post2.jpeg',
+      'assets/post3.jpeg',
+      'assets/post4.jpg',
+    ];
+    
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
@@ -333,12 +341,12 @@ class PostGrid extends StatelessWidget {
           crossAxisSpacing: 8,
           childAspectRatio: 1,
         ),
-        itemCount: 4,
+        itemCount: images.length,  // Use the number of posts in the List
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/post1.jpg'),
+              image: DecorationImage(
+                image: AssetImage(images[index]),
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(8),
@@ -361,12 +369,42 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  late int _selectedIndex;
+  late int selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.selectedIndex;
+    selectedIndex = widget.selectedIndex; // Sets the initial selected tab
+  }
+
+  // Handles tap events for each navigation item
+  void onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(
+            context, '/resource_center'); // Navigates to Resource Center
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(
+            context, '/search'); // Navigates to Search Screen
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context,
+            '/opportunities_board'); // Navigates to Opportunities board
+        break;
+      case 4:
+        Navigator.pushReplacementNamed(
+            context, '/profile'); // Navigates to Profile Screen
+        break;
+      default:
+        break;
+    }
   }
 
   @override
@@ -377,19 +415,34 @@ class _BottomNavigationState extends State<BottomNavigation> {
       unselectedItemColor: Colors.grey,
       showSelectedLabels: false,
       showUnselectedLabels: false,
-      currentIndex: _selectedIndex,
+      currentIndex: selectedIndex,
       onTap: (index) {
         setState(() {
-          _selectedIndex = index;
+          selectedIndex = index;
         });
         // Add Navigation logic for each index
       },
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.book), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.notifications), label: ''),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.auto_stories_outlined),
+          label: 'Resource Center',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search_outlined),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.language_outlined),
+          label: 'Opportunities Board',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle_outlined),
+          label: 'Profile',
+        ),
       ],
     );
   }
