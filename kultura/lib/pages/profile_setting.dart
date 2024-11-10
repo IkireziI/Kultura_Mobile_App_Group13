@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/pages/log_in.dart';
 import 'package:kultura/pages/settings.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
@@ -80,9 +81,17 @@ class ProfileSettingsPage extends StatelessWidget {
                   icon: Icons.help_outline,
                   text: 'Help & Support',
                 ),
-                const ProfileMenuItem(
+                ProfileMenuItem(
                   icon: Icons.logout,
                   text: 'Logout',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kultura/config/styles_constants.dart';
+import 'package:provider/provider.dart';
+import 'provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,14 +12,14 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<LoginScreenProvider>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -74,18 +76,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ).copyWith(
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible
+                        loginProvider.isPasswordVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
+                      onPressed: loginProvider.togglePasswordVisibility,
                     ),
                   ),
-                  obscureText: !_isPasswordVisible,
+                  obscureText: !loginProvider.isPasswordVisible,
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter your password';
@@ -103,11 +101,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       children: [
                         Checkbox(
-                          value: _rememberMe,
+                          value: loginProvider.rememberMe,
                           onChanged: (value) {
-                            setState(() {
-                              _rememberMe = value ?? false;
-                            });
+                            if (value != null) {
+                              loginProvider.toggleRememberMe(value);
+                            }
                           },
                         ),
                         const Text('Remember Password'),

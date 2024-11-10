@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kultura/config/styles_constants.dart';
+import 'package:provider/provider.dart';
+import 'provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -10,8 +12,6 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _isPasswordVisible = false;
-  bool _isConfirmPasswordVisible = false;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -20,6 +20,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final signUpProvider = Provider.of<SignUpScreenProvider>(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -93,18 +95,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ).copyWith(
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isPasswordVisible
+                        signUpProvider.isPasswordVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
+                      onPressed: signUpProvider.togglePasswordVisibility,
                     ),
                   ),
-                  obscureText: !_isPasswordVisible,
+                  obscureText: !signUpProvider.isPasswordVisible,
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
                       return 'Please enter a password';
@@ -127,18 +125,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ).copyWith(
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isConfirmPasswordVisible
+                        signUpProvider.isConfirmPasswordVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
-                        });
-                      },
+                      onPressed: signUpProvider.toggleConfirmPasswordVisibility
                     ),
                   ),
-                  obscureText: !_isConfirmPasswordVisible,
+                  obscureText: !signUpProvider.isConfirmPasswordVisible,
                   validator: (value) {
                     if (value != _passwordController.text) {
                       return 'Passwords do not match';

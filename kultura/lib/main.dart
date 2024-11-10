@@ -15,10 +15,21 @@ import 'pages/profile_setting.dart';
 import 'pages/search_page.dart';
 import 'pages/paintings_opportunities.dart';
 import 'pages/literature_opportunities.dart';
+import 'package:provider/provider.dart';
+import 'pages/provider.dart';
 
 // Entry point of the application
 void main() {
-  runApp(const MyApp()); // Run the MyApp widget
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginScreenProvider()),
+        ChangeNotifierProvider(create: (_) => SignUpScreenProvider()),
+        // Add more providers here if needed
+      ],
+      child: const MyApp(),
+    ), // Run the MyApp widget
+  );
 }
 
 // MyApp class, which is a StatelessWidget
