@@ -21,6 +21,7 @@ import 'pages/literature_opportunities.dart';
 // Entry point of the application
 Future<void> main() async {
   // initialise firebase
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
