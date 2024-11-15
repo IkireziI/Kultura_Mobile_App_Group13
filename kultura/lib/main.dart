@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kultura/firebase_options.dart';
 import 'package:kultura/pages/home.dart';
 import 'package:kultura/pages/log_in.dart';
 import 'package:kultura/pages/opportunities_board.dart' as opportunities;
@@ -17,7 +19,12 @@ import 'pages/paintings_opportunities.dart';
 import 'pages/literature_opportunities.dart';
 
 // Entry point of the application
-void main() {
+Future<void> main() async {
+  // initialise firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
   runApp(const MyApp()); // Run the MyApp widget
 }
 
