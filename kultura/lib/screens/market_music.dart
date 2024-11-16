@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/pages/opportunities_board.dart';
+import 'package:kultura/screens/opportunities_board.dart';
 
-class MarketplacePainting extends StatelessWidget {
-  const MarketplacePainting({super.key});
+class MarketplaceMusic extends StatelessWidget {
+  const MarketplaceMusic({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +21,24 @@ class MarketplacePainting extends StatelessWidget {
           ),
         ),
       ),
-      // Main body content for the page
-      body: MarketplacePaintingContent(),
+      body: MarketplaceMusicContent(),
       bottomNavigationBar: const BottomNavigation(
-          selectedIndex:
-              3), // Update selectedIndex to the appropriate tab index for the OpportunitiesBoard
+          selectedIndex: 2), // Set to the index for MarketplaceMusic
     );
   }
 }
 
 // Content
-class MarketplacePaintingContent extends StatelessWidget {
-  const MarketplacePaintingContent({super.key});
+class MarketplaceMusicContent extends StatelessWidget {
+  const MarketplaceMusicContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Search bar and filters section
         const SearchBarAndFilters(),
-        // Expanded list of opportunities
         Expanded(
-          child: const PaintsList(),
+          child: const MusicList(),
         ),
       ],
     );
@@ -69,14 +65,17 @@ class SearchBarAndFilters extends StatelessWidget {
               filled: true,
               fillColor: Colors.grey[200],
             ),
+            onChanged: (value) {
+              // Handle search logic (if needed)
+            },
           ),
           const SizedBox(height: 16), // Space between search bar and filters
           // Filter chips (Music, Painting, Literature)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: const [
-              CustomFilterChip(label: 'Music', isSelected: false),
-              CustomFilterChip(label: 'Painting', isSelected: true),
+              CustomFilterChip(label: 'Music', isSelected: true),
+              CustomFilterChip(label: 'Painting', isSelected: false),
               CustomFilterChip(label: 'Literature', isSelected: false),
             ],
           ),
@@ -102,7 +101,20 @@ class CustomFilterChip extends StatelessWidget {
       label: Text(label),
       selected: isSelected,
       onSelected: (bool selected) {
-        // Handle filter selection logic
+        if (selected) {
+          // Navigate to the appropriate page based on the label
+          switch (label) {
+            case 'Music':
+              // Already on Music page
+              break;
+            case 'Painting':
+              Navigator.pushReplacementNamed(context, '/market_painting');
+              break;
+            case 'Literature':
+              Navigator.pushReplacementNamed(context, '/market_literature');
+              break;
+          }
+        }
       },
       selectedColor: Colors.purple,
       labelStyle: TextStyle(
@@ -112,13 +124,12 @@ class CustomFilterChip extends StatelessWidget {
   }
 }
 
-// Paints List Class
-class PaintsList extends StatelessWidget {
-  const PaintsList({super.key});
+// Music List Class
+class MusicList extends StatelessWidget {
+  const MusicList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
   }
 }
-

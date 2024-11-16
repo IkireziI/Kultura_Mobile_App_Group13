@@ -1,22 +1,22 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kultura/firebase_options.dart';
-import 'package:kultura/pages/home.dart';
-import 'package:kultura/pages/log_in.dart';
-import 'package:kultura/pages/opportunities_board.dart' as opportunities;
-import 'package:kultura/pages/resource_center.dart' as resources;
-import 'package:kultura/pages/sign_up.dart';
-import 'pages/music_course.dart';
-import 'pages/painting_course.dart';
-import 'pages/literature_course.dart';
-import 'pages/profile.dart';
-import 'pages/marketplace.dart';
-import 'pages/market_music.dart';
-import 'pages/market_literature.dart';
-import 'pages/profile_setting.dart';
-import 'pages/search_page.dart';
-import 'pages/paintings_opportunities.dart';
-import 'pages/literature_opportunities.dart';
+import 'package:kultura/screens/home.dart';
+import 'package:kultura/screens/log_in.dart';
+import 'package:kultura/screens/opportunities_board.dart' as opportunities;
+import 'package:kultura/screens/resource_center.dart' as resources;
+import 'package:kultura/screens/sign_up.dart';
+import 'screens/music_course.dart';
+import 'screens/painting_course.dart';
+import 'screens/literature_course.dart';
+import 'screens/profile.dart';
+import 'screens/marketplace.dart';
+import 'screens/market_music.dart';
+import 'screens/market_literature.dart';
+import 'screens/profile_setting.dart';
+import 'screens/search_page.dart';
+import 'screens/paintings_opportunities.dart';
+import 'screens/literature_opportunities.dart';
 
 // Entry point of the application
 Future<void> main() async {

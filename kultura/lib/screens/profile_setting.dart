@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/pages/settings.dart';
+import 'package:kultura/screens/settings.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   const ProfileSettingsScreen({super.key});

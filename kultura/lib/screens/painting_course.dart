@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/pages/resource_center.dart';
+import 'package:kultura/screens/resource_center.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-// Main screen for the Music Course
-class MusicCourseScreen extends StatelessWidget {
-  const MusicCourseScreen({super.key});
+// Main screen for the Painting Course
+class PaintingCourseScreen extends StatelessWidget {
+  const PaintingCourseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +16,14 @@ class MusicCourseScreen extends StatelessWidget {
             colors: [
               Color(0xFF9C27B0),
               Color(0xFFE1BEE7)
-            ], // Purple gradient colors
-            begin: Alignment.topCenter, // Gradient starts from the top
-            end: Alignment.bottomCenter, // Gradient ends at the bottom
+            ], // Gradient colors (purple)
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Column(
           children: [
-            // Custom App Bar with back button and logo
+            // Custom App Bar with a logo and back button
             AppBar(
               elevation: 0, // No shadow under the AppBar.
               backgroundColor: Colors.transparent,
@@ -55,14 +55,13 @@ class MusicCourseScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16), // Spacing below AppBar.
 
-            // Search bar with centered italic text
+            // Search bar with an input field
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0), // Padding for the search bar
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white
-                      .withOpacity(0.8), // White background with opacity
+                      .withOpacity(0.8), // Semi-transparent background
                   borderRadius: BorderRadius.circular(30), // Rounded corners
                 ),
                 child: TextField(
@@ -77,40 +76,40 @@ class MusicCourseScreen extends StatelessWidget {
                       icon: const Icon(Icons.filter_list,
                           color: Colors.black), // Filter icon
                       onPressed: () {
-                        // Handle filter action here
+                        // Handle filter action (functionality to be implemented)
                       },
                     ),
-                    border: InputBorder.none, // No border around the text field
+                    border: InputBorder.none, // No border for the input field
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 16), // Spacing
+            const SizedBox(
+                height: 16), // Space between search bar and video list
 
-            // Scrollable area for embedded videos
+            // Section for embedded videos
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0), // Padding for video cards
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      // First embedded video card
+                      // First embedded video
                       EmbeddedVideoCard(
                         videoUrl:
-                            'https://youtu.be/2pirdPK5avU?si=qRvFGwAQ0ke1kH24', // Video URL
-                        title: "How I'd Learn Music Theory (If I Had To Start Over)", // Video title
+                            'https://youtu.be/rcfMSeilPkg?si=2FGH7DpHzXazyz2u',
+                        title: 'Paint ANYTHING in just 4 Simple Steps!',
                         description:
-                            "Knowing what I know now, how would I advise the old 2009 Cory on how to do things better? Or, perhaps more relevantly, how would I advise people who are just starting their own journeys into music theory?", // Video description
+                            'This four-step painting method will help you create realistic and expressive artwork.',
                       ),
-                      const SizedBox(height: 16), // Spacing between video cards
-                      // Second embedded video card
+                      const SizedBox(height: 16), // Space between videos
+                      // Second embedded video
                       EmbeddedVideoCard(
                         videoUrl:
-                            'https://youtu.be/mWpXy57-mvc?si=fu6WJdXJc4PEBg_2', // Video URL
-                        title: 'The BASICS Of Music Theory EXPLAINED (in 10 minutes)', // Video title
+                            'https://youtu.be/UO1qql_4WSA?si=8KpzdZHCs7PZJV0H',
+                        title: '50 Easy Acrylic Painting Ideas for Beginners',
                         description:
-                            'In this episode we revisit the basics of music theory exploring intervals, chord construction, and ear training. All in 10 minutes! Beato Ear Training and Beato Book links below.', // Video description
+                            'Here is a showcase of every painting Cheloc Arts made in 2022, find your inspo.',
                       ),
                     ],
                   ),
@@ -120,15 +119,15 @@ class MusicCourseScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar:
-          const BottomNavigation(selectedIndex: 1), // Bottom navigation bar
+      // Bottom navigation bar with the selected index
+      bottomNavigationBar: const BottomNavigation(selectedIndex: 1),
     );
   }
 }
 
 // Custom widget for displaying an embedded video card
 class EmbeddedVideoCard extends StatefulWidget {
-  final String videoUrl; // URL of the YouTube video
+  final String videoUrl; // URL of the video
   final String title; // Title of the video
   final String description; // Description of the video
 
@@ -140,8 +139,7 @@ class EmbeddedVideoCard extends StatefulWidget {
   });
 
   @override
-  EmbeddedVideoCardState createState() =>
-      EmbeddedVideoCardState(); // Create the state for the video card
+  EmbeddedVideoCardState createState() => EmbeddedVideoCardState();
 }
 
 class EmbeddedVideoCardState extends State<EmbeddedVideoCard> {
@@ -152,18 +150,18 @@ class EmbeddedVideoCardState extends State<EmbeddedVideoCard> {
     super.initState();
     // Initialize the YouTube player controller with the video URL
     _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(
-          widget.videoUrl)!, // Convert URL to video ID
+      initialVideoId: YoutubePlayer.convertUrlToId(widget.videoUrl)!,
       flags: const YoutubePlayerFlags(
         autoPlay: false, // Do not auto-play the video
-        mute: false, // Sound is not muted
+        mute: false, // Start with sound on
       ),
     );
   }
 
   @override
   void dispose() {
-    _controller.dispose(); // Dispose of the controller when done
+    // Dispose of the controller when the widget is removed from the widget tree
+    _controller.dispose();
     super.dispose();
   }
 
@@ -175,32 +173,32 @@ class EmbeddedVideoCardState extends State<EmbeddedVideoCard> {
         borderRadius: BorderRadius.circular(10), // Rounded corners for the card
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0), // Padding inside the card
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align text to the start
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title of the video
+            // Video title
             Text(
               widget.title,
               style: const TextStyle(
-                fontSize: 18, // Font size for the title
-                fontWeight: FontWeight.bold, // Bold font weight for the title
+                fontSize: 18, // Font size for title
+                fontWeight: FontWeight.bold, // Bold font style
               ),
             ),
-            const SizedBox(height: 8), // Spacing below the title
+            const SizedBox(height: 8), // Space between title and video player
             // YouTube player widget
             YoutubePlayer(
-              controller: _controller, // Provide the controller
-              showVideoProgressIndicator: true, // Show progress indicator
+              controller: _controller, // Pass the controller to the player
+              showVideoProgressIndicator: true, // Show video progress indicator
             ),
-            const SizedBox(height: 16), // Spacing below the video
-            // Description of the video
+            const SizedBox(
+                height: 16), // Space between video player and description
+            // Video description
             Text(
               widget.description,
               style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.grey), // Style for the description
+                  color: Colors.grey), // Grey text for description
             ),
           ],
         ),

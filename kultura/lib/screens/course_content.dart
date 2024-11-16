@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart'; // Importing Flutter material design package
-import 'package:kultura/pages/resource_center.dart'; // Importing resource center page
+import 'package:kultura/screens/resource_center.dart'; // Importing resource center page
 import 'music_course.dart'; // Importing music course page
 import 'literature_course.dart'; // Importing literature course page
 import 'painting_course.dart'; // Importing painting course page
