@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kultura/screens/settings.dart';
+import 'package:kultura/screens/form.dart';
+import 'package:kultura/screens/view_portfolios.dart';
+
 
 class ProfileSettingsScreen extends StatelessWidget {
   const ProfileSettingsScreen({super.key});
@@ -53,9 +56,17 @@ class ProfileSettingsPage extends StatelessWidget {
                   icon: Icons.person_outline,
                   text: 'Personal Information',
                 ),
-                const ProfileMenuItem(
+                ProfileMenuItem(
                   icon: Icons.folder_open,
-                  text: 'Create Portfolio',
+                  text: 'Add Portfolio',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddPortfolioPage()),
+                    );
+                  },
+
                 ),
                 ProfileMenuItem(
                   icon: Icons.settings_outlined,
@@ -68,9 +79,16 @@ class ProfileSettingsPage extends StatelessWidget {
                     );
                   },
                 ),
-                const ProfileMenuItem(
+                ProfileMenuItem(
                   icon: Icons.info_outline,
                   text: 'Account Information',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewPortfoliosPage()),
+                    );
+                  },
                 ),
                 const ProfileMenuItem(
                   icon: Icons.notifications_none,
