@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// ignore: use_key_in_widget_constructors
 class AddPortfolioPage extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _AddPortfolioPageState createState() => _AddPortfolioPageState();
 }
 
@@ -41,6 +45,8 @@ class _AddPortfolioPageState extends State<AddPortfolioPage> {
         Navigator.pop(context); // Go back to the previous page
       } catch (e) {
         // Show error SnackBar
+        // ignore: duplicate_ignore
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to add portfolio: $e'),
@@ -89,7 +95,7 @@ class _AddPortfolioPageState extends State<AddPortfolioPage> {
               SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Image URL (optional)',
+                  labelText: 'Portfolio URL (optional)',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
