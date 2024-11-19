@@ -5,7 +5,7 @@ class ViewPortfoliosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Portfolios')),
+      appBar: AppBar(title: Text('Kultura Portfolios')),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('portfolios')
