@@ -2,19 +2,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kultura/screens/services/firestore_service.dart';
+import 'package:logger/logger.dart';
 
 void main() {
   late FirebaseFirestore firestore;
   late FirestoreService firestoreService;
+  final Logger logger = Logger(); // Initialize logger
 
   group('Firestore Tests', () {
     setUpAll(() async {
       TestWidgetsFlutterBinding.ensureInitialized();
-      await Firebase.initializeApp();
+
+      try {
+        await Firebase.initializeApp();
+      } catch (e) {
+        logger.w('Firebase already initialized: $e');
+      }
 
       // Use Firestore Emulator
       firestore = FirebaseFirestore.instance;
-      firestore.useFirestoreEmulator('localhost', 8081);
+      firestore.useFirestoreEmulator('localhost', 8080);
 
       // Initialize FirestoreService
       firestoreService = FirestoreService();
@@ -26,6 +33,7 @@ void main() {
       for (var doc in coursesSnapshot.docs) {
         await doc.reference.delete();
       }
+      logger.i('Cleaned up test data in Firestore');
     });
 
     // Test individual course creation using FirestoreService
@@ -46,6 +54,7 @@ void main() {
       expect(addedCourse.exists, true);
       expect(addedCourse.data()?['title'], courseData['title']);
       expect(addedCourse.data()?['description'], courseData['description']);
+      logger.i('Course $courseId added successfully');
     });
 
     // Test batch setup of courses using FirestoreService
@@ -56,12 +65,14 @@ void main() {
       // Assert: Verify that at least the expected courses were added
       final coursesSnapshot = await firestore.collection('courses').get();
       expect(coursesSnapshot.docs.length, greaterThanOrEqualTo(3));
+      logger.i('Batch setup added ${coursesSnapshot.docs.length} courses');
 
       // Optional: Verify specific course data if needed
       final musicCourse =
           await firestore.collection('courses').doc('music').get();
       expect(musicCourse.exists, true);
       expect(musicCourse.data()?['title'], 'Music Course');
+      logger.i('Music Course exists and is verified');
     });
   });
 }
