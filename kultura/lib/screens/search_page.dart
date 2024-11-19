@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kultura/screens/home.dart';
-import 'package:kultura/screens/literature_course.dart';
-import 'package:kultura/screens/music_course.dart';
+import 'package:kultura/screens/courses/literature_course.dart';
+import 'package:kultura/screens/courses/music_course.dart';
 import 'package:kultura/screens/opportunities_board.dart' as opportunities;
-import 'package:kultura/screens/painting_course.dart';
+import 'package:kultura/screens/courses/painting_course.dart';
 import 'package:kultura/screens/profile.dart';
 import 'package:kultura/screens/profile_setting.dart';
-import 'package:kultura/screens/resource_center.dart' as resources;
+import 'package:kultura/screens/courses/resource_center.dart' as resources;
 
 void main() {
   runApp(const KulturaApp());
