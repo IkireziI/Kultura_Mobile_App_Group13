@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:kultura/firebase_options.dart';
 import 'package:kultura/pages/home.dart';
 import 'package:kultura/pages/log_in.dart';
 import 'package:kultura/pages/opportunities_board.dart' as opportunities;
@@ -17,7 +19,12 @@ import 'pages/paintings_opportunities.dart';
 import 'pages/literature_opportunities.dart';
 
 // Entry point of the application
-void main() {
+ Future <void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(const MyApp()); // Run the MyApp widget
 }
 
@@ -54,8 +61,8 @@ class MyApp extends StatelessWidget {
             const LiteratureCourseScreen(), // Route for the literature course
         '/opportunities_board': (context) =>
             const opportunities.OpportunitiesBoard(), // Route for the Opportunities board
-        '/paintings_opportunities': (context) => const PaintingOpportunities(),
-        '/literature_opportunities': (context) => const LiteratureOpportunities(),
+        '/paintings_opportunities': (context) => const PaintingOpportunities(), //Route for Painting opportunities
+        '/literature_opportunities': (context) => const LiteratureOpportunities(), //Route for Literature Opportunities
 
         '/profile': (context) => const Profile(), // Route for the Profile Screen
         '/profile_setting': (context) => const ProfileSettingsScreen(), // Route for the Profile Settings Screen
