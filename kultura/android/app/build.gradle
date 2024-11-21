@@ -60,13 +60,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.kultura"
-
-        minSdkVersion flutter.minSdkVersion
         minSdkVersion 23
-
-        // change to version 21 - minSdkVersion flutter.minSdkVersion
-        minSdkVersion 21
-
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

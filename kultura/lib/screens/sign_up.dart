@@ -1,7 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:kultura/config/styles_constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kultura/service/auth_service.dart';
 import 'package:provider/provider.dart';
-import 'provider.dart';
+import 'provider.dart'; // Ensure this file contains the SignUpScreenProvider class.
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,6 +22,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +49,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   'assets/kultura_logo.png',
                   height: 200,
                 ),
-
                 const SizedBox(height: 20),
 
                 const Text(
@@ -45,7 +58,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 const SizedBox(height: 20),
 
                 // Full Name TextField
@@ -62,7 +74,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-
                 const SizedBox(height: 15),
 
                 // Email TextField
@@ -83,7 +94,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-
                 const SizedBox(height: 15),
 
                 // Password TextField
@@ -113,7 +123,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-
                 const SizedBox(height: 15),
 
                 // Confirm Password TextField
@@ -129,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ? Icons.visibility_off
                             : Icons.visibility,
                       ),
-                      onPressed: signUpProvider.toggleConfirmPasswordVisibility
+                      onPressed: signUpProvider.toggleConfirmPasswordVisibility,
                     ),
                   ),
                   obscureText: !signUpProvider.isConfirmPasswordVisible,
@@ -140,7 +149,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-
                 const SizedBox(height: 25),
 
                 // Sign Up Button
@@ -148,50 +156,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: AppStyles.primaryButtonStyle,
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
-                        // Handle sign up logic
-                        Navigator.pushReplacementNamed(context, '/home');
-                        // Navigate to the HomePage after successful registration
+                        try {
+                          await AuthService().signup(
+                            email: _emailController.text.trim(),
+                            password: _passwordController.text.trim(), context: context,
+                          );
+                          // Navigate to HomePage after successful registration
+                          Navigator.pushReplacementNamed(context, '/home');
+                        } on FirebaseAuthException catch (e) {
+                          Fluttertoast.showToast(
+                            msg: e.message ?? 'An error occurred',
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.SNACKBAR,
+                            backgroundColor: Colors.black54,
+                            textColor: Colors.white,
+                            fontSize: 14.0,
+                          );
+                        } catch (e) {
+                          Fluttertoast.showToast(
+                            msg: 'Unexpected error occurred. Please try again.',
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.SNACKBAR,
+                            backgroundColor: Colors.black54,
+                            textColor: Colors.white,
+                            fontSize: 14.0,
+                          );
+                        }
                       }
                     },
                     child: const Text('Sign Up'),
                   ),
                 ),
-
-                const SizedBox(height: 20),
-
-                // Or Sign Up with section
-                const Row(
-                  children: [
-                    Expanded(child: Divider()),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text('Or Sign Up with'),
-                    ),
-                    Expanded(child: Divider()),
-                  ],
-                ),
-
-                const SizedBox(height: 20),
-
-                // Social login buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _socialLoginButton(
-                      'assets/google_icon.png',
-                          () {
-                      },
-                    ),
-                    _socialLoginButton(
-                      'assets/facebook_icon.png',
-                          () {
-                      },
-                    ),
-                  ],
-                ),
-
                 const SizedBox(height: 20),
 
                 // Login link
@@ -215,24 +212,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _socialLoginButton(String iconPath, VoidCallback onPressed) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: const BorderSide(color: Colors.grey),
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 30,
-          vertical: 12,
-        ),
-      ),
-      onPressed: onPressed,
-      child: Image.asset(iconPath, height: 24),
     );
   }
 }
