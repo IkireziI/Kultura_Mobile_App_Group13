@@ -165,6 +165,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (_formKey.currentState?.validate() ?? false) {
                         try {
                           await AuthService().signup(
+                            context: context,
                             email: _emailController.text.trim(),
                             password: _passwordController.text.trim(),
                           );

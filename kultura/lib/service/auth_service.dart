@@ -69,7 +69,7 @@ class AuthService {
       // Navigate to Login page after signing out
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const Login()),
+        MaterialPageRoute(builder: (_) => const LoginScreen ()),
       );
     } catch (e) {
       _showToast('An error occurred while signing out. Please try again.');
