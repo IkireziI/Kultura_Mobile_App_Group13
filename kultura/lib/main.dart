@@ -1,34 +1,40 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:kultura/firebase_options.dart';
-import 'package:kultura/pages/home.dart';
-import 'package:kultura/pages/log_in.dart';
-import 'package:kultura/pages/opportunities_board.dart' as opportunities;
-import 'package:kultura/pages/resource_center.dart' as resources;
-import 'package:kultura/pages/sign_up.dart';
-import 'pages/music_course.dart';
-import 'pages/painting_course.dart';
-import 'pages/literature_course.dart';
-import 'pages/profile.dart';
-import 'pages/marketplace.dart';
-import 'pages/market_music.dart';
-import 'pages/market_literature.dart';
-import 'pages/profile_setting.dart';
-import 'pages/search_page.dart';
-import 'pages/paintings_opportunities.dart';
-import 'pages/literature_opportunities.dart';
 
-// Entry point of the application
- Future <void> main() async {
+// Importing screens
+import 'package:kultura/screens/home.dart';
+import 'package:kultura/screens/log_in.dart';
+import 'package:kultura/screens/sign_up.dart';
+import 'package:kultura/screens/profile.dart';
+import 'package:kultura/screens/marketplace.dart';
+import 'package:kultura/screens/market_music.dart';
+import 'package:kultura/screens/market_literature.dart';
+import 'package:kultura/screens/profile_setting.dart';
+import 'package:kultura/screens/search_page.dart';
+import 'package:kultura/screens/opportunities_board.dart' as opportunities;
+import 'package:kultura/screens/courses/resource_center.dart' as resources;
+import 'package:kultura/screens/courses/music_course.dart';
+import 'package:kultura/screens/courses/painting_course.dart';
+import 'package:kultura/screens/courses/literature_course.dart';
+import 'package:kultura/screens/paintings_opportunities.dart';
+import 'package:kultura/screens/literature_opportunities.dart';
+
+Future<void> main() async {
+  // Ensures widgets and Firebase are initialized
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    debugPrint("Firebase successfully initialized.");
+  } catch (e) {
+    debugPrint("Error initializing Firebase: $e");
+  }
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
-  runApp(const MyApp()); // Run the MyApp widget
+  runApp(const MyApp()); // Runs the app
 }
 
-// MyApp class, which is a StatelessWidget
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -36,37 +42,43 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Kultura App',
-      debugShowCheckedModeBanner: false,// The title of the application
+      debugShowCheckedModeBanner: false, // Removes debug banner
       theme: ThemeData(
-        primarySwatch: Colors.purple, // Set the primary color theme to purple
+        primarySwatch: Colors.purple, // Sets the primary color theme to purple
       ),
-      initialRoute: '/login',
+      initialRoute: '/login', // Default initial route
       routes: {
         // Authentication routes
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignUpScreen(),
 
-        '/home': (context) => const Home(), // Route for the home screen
+        // Home
+        '/home': (context) => const Home(),
 
-        '/marketplace': (context) => const MarketplacePage(), // Route for the Marketplace (Painting)
-        'market_music': (context) => const MarketplaceMusic(), // Route for the Marketplace (Music)
-        'market_literature': (context) => const MarketplaceLiterature(), // Route for the Marketplace (Literature)
-        '/resource_center': (context) =>
-            const resources.ArtisticCourseScreen(), // Route for the resource center
-        '/music': (context) =>
-            const MusicCourseScreen(), // Route for the music course
-        '/painting': (context) =>
-            const PaintingCourseScreen(), // Route for the painting course
-        '/literature': (context) =>
-            const LiteratureCourseScreen(), // Route for the literature course
+        // Marketplace routes
+        '/marketplace': (context) => const MarketplacePage(),
+        '/market_music': (context) => const MarketplaceMusic(),
+        '/market_literature': (context) => const MarketplaceLiterature(),
+
+        // Resource center and courses
+        '/resource_center': (context) => const resources.ArtisticCourseScreen(),
+        '/music': (context) => const MusicCourseScreen(),
+        '/painting': (context) => const PaintingCourseScreen(),
+        '/literature': (context) => const LiteratureCourseScreen(),
+
+        // Opportunities board
         '/opportunities_board': (context) =>
-            const opportunities.OpportunitiesBoard(), // Route for the Opportunities board
-        '/paintings_opportunities': (context) => const PaintingOpportunities(), //Route for Painting opportunities
-        '/literature_opportunities': (context) => const LiteratureOpportunities(), //Route for Literature Opportunities
+            const opportunities.OpportunitiesBoard(),
+        '/paintings_opportunities': (context) => const PaintingOpportunities(),
+        '/literature_opportunities': (context) =>
+            const LiteratureOpportunities(),
 
-        '/profile': (context) => const Profile(), // Route for the Profile Screen
-        '/profile_setting': (context) => const ProfileSettingsScreen(), // Route for the Profile Settings Screen
-        '/search': (context) => const SearchScreen(), // Route for the Search Screen
+        // Profile and settings
+        '/profile': (context) => const Profile(),
+        '/profile_setting': (context) => const ProfileSettingsScreen(),
+
+        // Search
+        '/search': (context) => const SearchScreen(),
       },
     );
   }

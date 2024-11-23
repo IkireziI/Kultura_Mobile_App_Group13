@@ -1,1 +1,48 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"kultura-app-group13","appId":"1:748109815411:android:93a43eed2ecea267b6d406","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"kultura-app-group13","appId":"1:748109815411:ios:fca380cb61ef4bd1b6d406","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"kultura-app-group13","configurations":{"android":"1:748109815411:android:93a43eed2ecea267b6d406","ios":"1:748109815411:ios:fca380cb61ef4bd1b6d406"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "kultura-app-group13",
+          "appId": "1:748109815411:android:93a43eed2ecea267b6d406",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "kultura-app-group13",
+          "appId": "1:748109815411:ios:fca380cb61ef4bd1b6d406",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "kultura-app-group13",
+          "configurations": {
+            "android": "1:748109815411:android:93a43eed2ecea267b6d406",
+            "ios": "1:748109815411:ios:fca380cb61ef4bd1b6d406"
+          }
+        }
+      }
+    }
+  }
+}
+
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "emulators": {
+    "firestore": {
+      "host": "localhost",
+      "port": 8080
+    },
+    "ui": {
+      "enabled": true,
+      "host": "localhost",
+      "port": 4000
+    }
+  }
+}
+
