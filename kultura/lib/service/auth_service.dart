@@ -90,6 +90,14 @@ class AuthService {
         return 'Incorrect password. Please try again.';
       case 'invalid-email':
         return 'The email address is not valid.';
+      case 'user-disabled':
+        return 'This account has been disabled.';
+      case 'too-many-requests':
+        return 'Too many attempts. Please try again later.';
+      case 'operation-not-allowed':
+        return 'Email & Password accounts are not enabled.';
+      case 'invalid-credential':
+        return 'Incorrect email or password. Please try again.';
       default:
         return 'An error occurred. Please try again.';
     }
