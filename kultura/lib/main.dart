@@ -5,6 +5,7 @@ import 'package:kultura/firebase_options.dart';
 // Importing screens
 import 'package:kultura/screens/home.dart';
 import 'package:kultura/screens/log_in.dart';
+import 'package:kultura/screens/reset_password.dart';
 import 'package:kultura/screens/sign_up.dart';
 import 'package:kultura/screens/profile.dart';
 import 'package:kultura/screens/marketplace.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // Authentication routes
         '/login': (context) => const LoginScreen(),
+        '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/signup': (context) => const SignUpScreen(),
 
         // Home

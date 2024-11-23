@@ -44,6 +44,22 @@ class AuthService {
     }
   }
 
+  /// Reset Password
+  Future<String?> resetPassword({
+    required String email,
+    required BuildContext context,
+  }) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return 'Password reset link sent to your email';
+    } on FirebaseAuthException catch (e) {
+      return _handleAuthError(e);
+    } catch (e) {
+      debugPrint('Error during password reset: $e');
+      return 'An unexpected error occurred. Please try again.';
+    }
+  } // <-- Properly closed here
+
   /// Sign out the current user
   Future<String?> signout({required BuildContext context}) async {
     try {
