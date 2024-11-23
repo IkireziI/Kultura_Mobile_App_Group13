@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kultura/pages/settings.dart';
+import 'package:kultura/service/auth_service.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   const ProfileSettingsScreen({super.key});
@@ -80,9 +81,13 @@ class ProfileSettingsPage extends StatelessWidget {
                   icon: Icons.help_outline,
                   text: 'Help & Support',
                 ),
-                const ProfileMenuItem(
+                ProfileMenuItem(
                   icon: Icons.logout,
                   text: 'Logout',
+                  onTap: () async {
+                    // Call the logout function
+                    await AuthService().signout(context: context);
+                  },
                 ),
               ],
             ),

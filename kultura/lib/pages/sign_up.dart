@@ -30,6 +30,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  void _handleFirebaseAuthError(FirebaseAuthException e) {
+    String errorMessage = 'An error occurred. Please try again.';
+    
+    switch (e.code) {
+      case 'weak-password':
+        errorMessage = 'The password provided is too weak.';
+        break;
+      case 'email-already-in-use':
+        errorMessage = 'An account already exists with that email.';
+        break;
+      case 'invalid-email':
+        errorMessage = 'The email address is not valid.';
+        break;
+      case 'operation-not-allowed':
+        errorMessage = 'Email/password accounts are not enabled.';
+        break;
+      default:
+        errorMessage = e.message ?? errorMessage;
+        break;
+    }
+
+    Fluttertoast.showToast(
+      msg: errorMessage,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.SNACKBAR,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,14 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           // Navigate to HomePage after successful registration
                           Navigator.pushReplacementNamed(context, '/home');
                         } on FirebaseAuthException catch (e) {
-                          Fluttertoast.showToast(
-                            msg: e.message ?? 'An error occurred',
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.SNACKBAR,
-                            backgroundColor: Colors.black54,
-                            textColor: Colors.white,
-                            fontSize: 14.0,
-                          );
+                          _handleFirebaseAuthError(e);
                         } catch (e) {
                           Fluttertoast.showToast(
                             msg: 'Unexpected error occurred. Please try again.',

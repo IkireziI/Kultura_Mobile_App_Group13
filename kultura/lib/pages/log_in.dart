@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kultura/config/styles_constants.dart';
+import 'package:kultura/service/auth_service.dart';
+import 'package:kultura/pages/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,11 +13,54 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _isPasswordVisible = false;
-  bool _rememberMe = false;
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  bool _isPasswordVisible = false;
+  String? _errorMessage; // Holds the error message to display near the input fields
+
+  /// Displays a toast with a given message
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.SNACKBAR,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
+  }
+
+  /// Handles the login logic
+  Future<void> _handleLogin() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        _errorMessage = null; // Reset error message
+      });
+
+      String? errorMessage = await AuthService().signin(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+        context: context,
+      );
+
+      if (errorMessage == null) {
+        // Navigate to Home on successful login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const Home()),
+        );
+      } else {
+        // Display the error message
+        setState(() {
+          _errorMessage = errorMessage;
+        });
+
+        // toast for visibility
+        _showToast(errorMessage);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,38 +140,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
 
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
 
-                // Remember Me and Forgot Password
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: _rememberMe,
-                          onChanged: (value) {
-                            setState(() {
-                              _rememberMe = value ?? false;
-                            });
-                          },
-                        ),
-                        const Text('Remember Password'),
-                      ],
+                // Display error message if any
+                if (_errorMessage != null)
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        // Handle forgot password
-                      },
-                      child: const Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
 
                 const SizedBox(height: 25),
 
@@ -134,13 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: AppStyles.primaryButtonStyle,
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        // Handle login logic
-                        Navigator.pushReplacementNamed(context, '/home');
-                        // Navigate to the HomePage after successful connexion
-                      }
-                    },
+                    onPressed: _handleLogin,
                     child: const Text('Log In'),
                   ),
                 ),
@@ -161,27 +180,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 20),
 
-                // Social login buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _socialLoginButton(
-                      'assets/google_icon.png',
-                          () {
-                        // Handle Google login
-                      },
-                    ),
-                    _socialLoginButton(
-                      'assets/facebook_icon.png',
-                          () {
-                        // Handle Facebook login
-                      },
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 20),
-
                 // Sign Up link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -192,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacementNamed(context, '/signup');
                       },
                       child: const Text(
-                        'SignUp',
+                        'Sign Up',
                         style: TextStyle(color: AppStyles.primaryPurple),
                       ),
                     ),
@@ -203,24 +201,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _socialLoginButton(String iconPath, VoidCallback onPressed) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: const BorderSide(color: Colors.grey),
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 30,
-          vertical: 12,
-        ),
-      ),
-      onPressed: onPressed,
-      child: Image.asset(iconPath, height: 24),
     );
   }
 }
