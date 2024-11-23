@@ -62,10 +62,6 @@ android {
         applicationId "com.example.kultura"
 
         minSdkVersion 23
-        minSdkVersion 23
-
-        // change to version 21 - minSdkVersion flutter.minSdkVersion
-        minSdkVersion 21
 
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()

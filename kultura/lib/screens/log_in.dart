@@ -1,8 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kultura/config/styles_constants.dart';
 import 'package:kultura/service/auth_service.dart';
-import 'package:kultura/pages/home.dart';
+import 'package:kultura/screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

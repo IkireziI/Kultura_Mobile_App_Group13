@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kultura/screens/settings.dart';
 import 'package:kultura/screens/form.dart';
 import 'package:kultura/screens/view_portfolios.dart';
-
+import 'package:kultura/service/auth_service.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   const ProfileSettingsScreen({super.key});
@@ -66,7 +66,6 @@ class ProfileSettingsPage extends StatelessWidget {
                           builder: (context) => AddPortfolioPage()),
                     );
                   },
-
                 ),
                 ProfileMenuItem(
                   icon: Icons.settings_outlined,
@@ -98,9 +97,12 @@ class ProfileSettingsPage extends StatelessWidget {
                   icon: Icons.help_outline,
                   text: 'Help & Support',
                 ),
-                const ProfileMenuItem(
+                ProfileMenuItem(
                   icon: Icons.logout,
                   text: 'Logout',
+                  onTap: () async {
+                    await AuthService().signout(context: context);
+                  },
                 ),
               ],
             ),

@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   /// Sign up a new user
   Future<String?> signup({
     required String email,
-    required String password, required BuildContext context,
+    required String password,
+    required BuildContext context,
   }) async {
     try {
       await _auth.createUserWithEmailAndPassword(
@@ -27,7 +27,8 @@ class AuthService {
   /// Sign in an existing user
   Future<String?> signin({
     required String email,
-    required String password, required BuildContext context,
+    required String password,
+    required BuildContext context,
   }) async {
     try {
       await _auth.signInWithEmailAndPassword(
@@ -44,11 +45,35 @@ class AuthService {
   }
 
   /// Sign out the current user
-  Future<void> signout({required BuildContext context}) async {
+  Future<String?> signout({required BuildContext context}) async {
     try {
       await _auth.signOut();
+      if (context.mounted) {
+        // Navigate to login screen and clear the navigation stack
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/login', // Make sure this route is defined in your app
+          (route) => false,
+        );
+      }
+      return null; // Success
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_handleAuthError(e))),
+        );
+      }
+      return _handleAuthError(e);
     } catch (e) {
       debugPrint('Error during signout: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('An error occurred during sign out. Please try again.'),
+          ),
+        );
+      }
+      return 'An unexpected error occurred. Please try again.';
     }
   }
 
