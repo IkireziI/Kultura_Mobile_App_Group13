@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "748109815411",
+    "project_id": "kultura-app-group13",
+    "storage_bucket": "kultura-app-group13.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748109815411:android:93a43eed2ecea267b6d406",
+        "android_client_info": {
+          "package_name": "com.example.kultura"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAku7gwanS4rNKMZfmvP1q_T2jLx98kJw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
