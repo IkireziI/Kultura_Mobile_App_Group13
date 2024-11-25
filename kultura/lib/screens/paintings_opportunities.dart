@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/screens/services/job_opportunities_service.dart';
+
+final JobOpportunitiesService jobOpportunitiesService = JobOpportunitiesService();
 
 class PaintingOpportunities extends StatelessWidget {
   const PaintingOpportunities({super.key});

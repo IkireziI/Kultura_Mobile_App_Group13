@@ -1,7 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kultura/screens/services/job_opportunities_service.dart';
 
-class OpportunitiesBoard extends StatelessWidget {
+final JobOpportunitiesService jobOpportunitiesService = JobOpportunitiesService();
+
+class OpportunitiesBoard extends StatefulWidget {
   const OpportunitiesBoard({super.key});
+
+  @override
+  State<OpportunitiesBoard> createState() => _OpportunitiesBoardState();
+}
+
+class _OpportunitiesBoardState extends State<OpportunitiesBoard> {
+  String selectedCategory = "Music"; // Default category
 
   @override
   Widget build(BuildContext context) {
@@ -19,68 +31,123 @@ class OpportunitiesBoard extends StatelessWidget {
           ),
         ),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          const OpportunitiesBoardContent(),
-          Positioned(
-            bottom: 30.0,
-            left: 16.0,
-            right: 16.0,
-            child: Center(
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/marketplace');
-                },
-                icon: const Icon(Icons.local_offer_outlined, color: Colors.black),
-                label: const Text(
-                  'Marketplace',
-                  style: TextStyle(color: Colors.black, fontSize: 16),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                ),
-              ),
-            ),
+          SearchBarAndFilters(
+            selectedCategory: selectedCategory,
+            onCategoryChanged: (category) {
+              setState(() {
+                selectedCategory = category;
+              });
+
+              // Navigate to the appropriate category screen
+              if (category == "Painting") {
+                Navigator.pushNamed(context, '/paintings_opportunities');
+              } else if (category == "Literature") {
+                Navigator.pushNamed(context, '/literature_opportunities');
+              }
+              // Remain in Music by default (OpportunitiesBoard is for Music)
+            },
+          ),
+          Expanded(
+            child: OpportunitiesList(selectedCategory: selectedCategory),
           ),
         ],
       ),
-      bottomNavigationBar: const BottomNavigation(
-        selectedIndex: 3,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddOpportunityDialog(context),
+        backgroundColor: Colors.purple,
+        child: const Icon(Icons.add),
       ),
+      bottomNavigationBar: const BottomNavigation(selectedIndex: 3),
+    );
+  }
+
+  // Dialog to add a new opportunity
+  void _showAddOpportunityDialog(BuildContext context) {
+    final titleController = TextEditingController();
+    final locationController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Add New Opportunity"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: "Title"),
+              ),
+              DropdownButtonFormField<String>(
+                value: selectedCategory,
+                items: ["Music", "Painting", "Literature"]
+                    .map((category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(category),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  if (value != null) selectedCategory = value;
+                },
+                decoration: const InputDecoration(labelText: "Category"),
+              ),
+              TextField(
+                controller: locationController,
+                decoration: const InputDecoration(labelText: "Location"),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(labelText: "Description"),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            ElevatedButton(
+              child: const Text("Add"),
+              onPressed: () async {
+                await jobOpportunitiesService.addOpportunity(
+                  title: titleController.text,
+                  category: selectedCategory,
+                  location: locationController.text,
+                  description: descriptionController.text,
+                  createdBy: "UwDPz9tsuph75xDKjPClshSTohs2", 
+                );
+
+                // Navigate to the relevant screen after adding
+                if (selectedCategory == "Music") {
+                  Navigator.pushNamed(context, '/opportunities_board');
+                } else if (selectedCategory == "Painting") {
+                  Navigator.pushNamed(context, '/paintings_opportunities');
+                } else if (selectedCategory == "Literature") {
+                  Navigator.pushNamed(context, '/literature_opportunities');
+                }
+
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
-class OpportunitiesBoardContent extends StatelessWidget {
-  const OpportunitiesBoardContent({super.key});
+class SearchBarAndFilters extends StatelessWidget {
+  final String selectedCategory;
+  final Function(String) onCategoryChanged;
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SearchBarAndFilters(),
-        Expanded(
-          child: const OpportunitiesList(),
-        ),
-      ],
-    );
-  }
-}
-
-class SearchBarAndFilters extends StatefulWidget {
-  const SearchBarAndFilters({super.key});
-
-  @override
-  State<SearchBarAndFilters> createState() => _SearchBarAndFiltersState();
-}
-
-class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
-  bool _isFilterVisible = false;
-  String selectedCategory = 'Music';
+  const SearchBarAndFilters({
+    super.key,
+    required this.selectedCategory,
+    required this.onCategoryChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -101,69 +168,26 @@ class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
           ),
           const SizedBox(height: 16),
           Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isFilterVisible = !_isFilterVisible;
-                  });
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: ["Music", "Painting", "Literature"].map((category) {
+              return FilterChip(
+                label: Text(category),
+                selected: selectedCategory == category,
+                onSelected: (bool selected) {
+                  if (selected) onCategoryChanged(category);
                 },
-                icon: Icon(
-                  _isFilterVisible ? Icons.close : Icons.filter_list,
-                  color: Colors.black,
+                backgroundColor: Colors.purple[100],
+                selectedColor: Colors.purple,
+                labelStyle: TextStyle(
+                  color: selectedCategory == category ? Colors.white : Colors.black,
                 ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 8.0,
-                    children: ['Music', 'Painting', 'Literature'].map((category) {
-                      return FilterChip(
-                        label: Text(category),
-                        selected: selectedCategory == category,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            selectedCategory = selected ? category : '';
-                          });
-
-                          if (selected) {
-                            // Navigate based on the selected category
-                            if (category == 'Painting') {
-                              Navigator.pushNamed(context, '/paintings_opportunities');
-                            } else if (category == 'Literature') {
-                              Navigator.pushNamed(context, '/literature_opportunities');
-                            }
-                          }
-                        },
-                        backgroundColor: Colors.purple[100],
-                        selectedColor: Colors.purple,
-                        labelStyle: TextStyle(
-                          color: selectedCategory == category
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          side: const BorderSide(color: Colors.purple, width: 1),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  side: const BorderSide(color: Colors.purple, width: 1),
                 ),
-              ),
-              const SizedBox(width: 48),
-            ],
+              );
+            }).toList(),
           ),
-          if (_isFilterVisible)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Column(
-                children: [
-                  // Add your additional filters here
-                ],
-              ),
-            ),
         ],
       ),
     );
@@ -171,39 +195,39 @@ class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
 }
 
 class OpportunitiesList extends StatelessWidget {
-  const OpportunitiesList({super.key});
+  final String selectedCategory;
+
+  const OpportunitiesList({
+    super.key,
+    required this.selectedCategory,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final opportunities = [
-      {
-        'title': 'Music Teacher',
-        'category': 'Music',
-        'location': 'Kigali',
-        'description': 'Looking for a music teacher to teach guitar and piano to students.',
-      },
-      {
-        'title': 'Rock Band Audition',
-        'category': 'Music',
-        'location': 'Kenya',
-        'description': 'We are holding auditions for a Rock Band in the city.',
-      },
-      {
-        'title': 'Choral Singing Contest',
-        'category': 'Music',
-        'location': 'South Africa',
-        'description': 'Join the International Singing Competition for a chance to win \$15,000.',
-      },
-    ];
+    return StreamBuilder<QuerySnapshot>(
+      stream: jobOpportunitiesService.fetchOpportunitiesByCategory(selectedCategory),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    return ListView.builder(
-      itemCount: opportunities.length,
-      itemBuilder: (context, index) {
-        return OpportunityCard(
-          title: opportunities[index]['title']!,
-          category: opportunities[index]['category']!,
-          location: opportunities[index]['location']!,
-          description: opportunities[index]['description']!,
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text("No opportunities available."));
+        }
+
+        final opportunities = snapshot.data!.docs;
+
+        return ListView.builder(
+          itemCount: opportunities.length,
+          itemBuilder: (context, index) {
+            final opportunity = opportunities[index];
+            return OpportunityCard(
+              title: opportunity['title'],
+              category: opportunity['category'],
+              location: opportunity['location'],
+              description: opportunity['description'],
+            );
+          },
         );
       },
     );
@@ -263,6 +287,8 @@ class OpportunityCard extends StatelessWidget {
     );
   }
 }
+
+
 
 // Bottom navigation bar widget with 5 items
 class BottomNavigation extends StatefulWidget {
