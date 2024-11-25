@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/service/auth_service.dart';
+import 'package:kultura/screens/services/auth_service.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});

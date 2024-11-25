@@ -178,20 +178,20 @@ class OpportunitiesList extends StatelessWidget {
     final opportunities = [
       {
         'title': 'Music Teacher',
-        'category': 'Job',
+        'category': 'Music',
         'location': 'Kigali',
         'description': 'Looking for a music teacher to teach guitar and piano to students.',
       },
       {
         'title': 'Rock Band Audition',
-        'category': 'Audition',
-        'location': 'Nigeria',
+        'category': 'Music',
+        'location': 'Kenya',
         'description': 'We are holding auditions for a Rock Band in the city.',
       },
       {
         'title': 'Choral Singing Contest',
-        'category': 'Contest',
-        'location': 'India',
+        'category': 'Music',
+        'location': 'South Africa',
         'description': 'Join the International Singing Competition for a chance to win \$15,000.',
       },
     ];

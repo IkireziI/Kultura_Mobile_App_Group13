@@ -168,7 +168,6 @@ class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
               padding: const EdgeInsets.only(top: 8.0),
               child: Column(
                 children: [
-                  // Add your additional filters here
                 ],
               ),
             ),

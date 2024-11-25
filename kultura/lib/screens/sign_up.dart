@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kultura/config/styles_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kultura/service/auth_service.dart'; 
+import 'package:kultura/screens/services/auth_service.dart'; 
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

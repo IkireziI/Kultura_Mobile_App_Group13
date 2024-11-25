@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kultura/screens/settings.dart';
 import 'package:kultura/screens/form.dart';
 import 'package:kultura/screens/view_portfolios.dart';
-import 'package:kultura/service/auth_service.dart';
+import 'package:kultura/screens/services/auth_service.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   const ProfileSettingsScreen({super.key});
