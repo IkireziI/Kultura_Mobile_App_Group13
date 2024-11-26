@@ -109,7 +109,7 @@ class CourseContentScreen extends StatelessWidget {
           return const Center(child: Text('No courses available.'));
         },
       ),
-      bottomNavigationBar: const BottomNavigation(selectedIndex: 1),
+      // bottomNavigationBar: const BottomNavigation(selectedIndex: 1),
     );
   }
 }

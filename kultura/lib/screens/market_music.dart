@@ -22,8 +22,7 @@ class MarketplaceMusic extends StatelessWidget {
         ),
       ),
       body: MarketplaceMusicContent(),
-      bottomNavigationBar: const BottomNavigation(
-          selectedIndex: 2), // Set to the index for MarketplaceMusic
+
     );
   }
 }

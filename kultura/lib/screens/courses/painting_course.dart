@@ -120,7 +120,7 @@ class PaintingCourseScreen extends StatelessWidget {
         ),
       ),
       // Bottom navigation bar with the selected index
-      bottomNavigationBar: const BottomNavigation(selectedIndex: 1),
+      // bottomNavigationBar: const BottomNavigation(selectedIndex: 1),
     );
   }
 }

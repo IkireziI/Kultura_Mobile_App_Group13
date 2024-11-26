@@ -120,8 +120,8 @@ class MusicCourseScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar:
-          const BottomNavigation(selectedIndex: 1), // Bottom navigation bar
+      // bottomNavigationBar:
+      //     const BottomNavigation(selectedIndex: 1), // Bottom navigation bar
     );
   }
 }

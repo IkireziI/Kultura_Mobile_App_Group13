@@ -114,8 +114,8 @@ class LiteratureCourseScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar:
-          const BottomNavigation(selectedIndex: 1), // Bottom nav bar.
+      // bottomNavigationBar:
+      //     const BottomNavigation(selectedIndex: 1), // Bottom nav bar.
     );
   }
 }
