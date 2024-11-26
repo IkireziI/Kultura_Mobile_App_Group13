@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/screens/services/job_opportunities_service.dart';
+
+final JobOpportunitiesService jobOpportunitiesService = JobOpportunitiesService();
 
 class PaintingOpportunities extends StatelessWidget {
   const PaintingOpportunities({super.key});
@@ -9,7 +12,7 @@ class PaintingOpportunities extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.purple,
         iconTheme: const IconThemeData(
-            color: Colors.white), // Set back arrow color to white
+            color: Colors.white),
         title: SizedBox(
           width: double.infinity,
           child: Center(
@@ -53,7 +56,7 @@ class PaintingOpportunities extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: const BottomNavigation(
-        selectedIndex: 3, // Adjust as necessary
+        selectedIndex: 3, 
       ),
     );
   }
@@ -68,7 +71,7 @@ class PaintingBoardContent extends StatelessWidget {
       children: [
         const SearchBarAndFilters(),
         Expanded(
-          child: const OpportunitiesList(category: 'Painting'), // Pass category if needed
+          child: const OpportunitiesList(category: 'Painting'), 
         ),
       ],
     );
@@ -231,7 +234,7 @@ class OpportunitiesList extends StatelessWidget {
       {
         'title': 'Art Contest',
         'category': 'Contest',
-        'location': 'Online',
+        'location': 'Zanzibar',
         'description': 'Submit your best painting for a chance to win prizes.',
       },
       {

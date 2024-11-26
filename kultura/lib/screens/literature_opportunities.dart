@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/screens/services/job_opportunities_service.dart';
+
+final JobOpportunitiesService jobOpportunitiesService = JobOpportunitiesService();
 
 class LiteratureOpportunities extends StatelessWidget {
   const LiteratureOpportunities({super.key});
@@ -168,7 +171,6 @@ class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
               padding: const EdgeInsets.only(top: 8.0),
               child: Column(
                 children: [
-                  // Add your additional filters here
                 ],
               ),
             ),
@@ -391,4 +393,3 @@ class _BottomNavigationState extends State<BottomNavigation> {
     );
   }
 }
-
