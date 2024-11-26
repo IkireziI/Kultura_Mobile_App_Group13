@@ -140,9 +140,9 @@ class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
                             if (category == 'Painting') {
                               Navigator.pushNamed(
                                   context, '/paintings_opportunities');
-                            } else if (category == 'Literature') {
+                            } else if (category == 'Music') {
                               Navigator.pushNamed(
-                                  context, '/literature_opportunities');
+                                  context, '/opportunites_board');
                             }
                           }
                         },
