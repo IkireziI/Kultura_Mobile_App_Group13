@@ -1,3 +1,5 @@
+// Resource Center Screen
+
 import 'package:flutter/material.dart';
 
 // Defines the ArtisticCourseScreen as a stateless widget
