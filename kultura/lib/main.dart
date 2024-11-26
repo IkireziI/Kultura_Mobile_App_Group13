@@ -1,10 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kultura/firebase_options.dart';
+import 'package:kultura/screens/courses/resource_center.dart';
 
 // Importing screens
 import 'package:kultura/screens/home.dart';
 import 'package:kultura/screens/log_in.dart';
+import 'package:kultura/screens/opportunities_board.dart' as opportunities;
 import 'package:kultura/screens/sign_up.dart';
 import 'package:kultura/screens/profile.dart';
 import 'package:kultura/screens/marketplace.dart';
@@ -12,8 +14,6 @@ import 'package:kultura/screens/market_music.dart';
 import 'package:kultura/screens/market_literature.dart';
 import 'package:kultura/screens/profile_setting.dart';
 import 'package:kultura/screens/search_page.dart';
-import 'package:kultura/screens/opportunities_board.dart' as opportunities;
-import 'package:kultura/screens/courses/resource_center.dart' as resources;
 import 'package:kultura/screens/courses/music_course.dart';
 import 'package:kultura/screens/courses/painting_course.dart';
 import 'package:kultura/screens/courses/literature_course.dart';
@@ -42,7 +42,7 @@ Future<void> main() async {
         // Add more providers here if needed
       ],
       child: const MyApp(),
-    ), // Run the MyApp widget
+    ),
   );
 }
 
@@ -53,11 +53,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Kultura App',
-      debugShowCheckedModeBanner: false, // Removes debug banner
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple, // Sets the primary color theme to purple
+        primarySwatch: Colors.purple,
       ),
-      initialRoute: '/login', // Default initial route
+      initialRoute: '/login',
       routes: {
         // Authentication routes
         '/login': (context) => const LoginScreen(),
@@ -72,14 +72,13 @@ class MyApp extends StatelessWidget {
         '/market_literature': (context) => const MarketplaceLiterature(),
 
         // Resource center and courses
-        '/resource_center': (context) => const resources.ArtisticCourseScreen(),
+        '/resource_center': (context) => const ArtisticCourseScreen(),
         '/music': (context) => const MusicCourseScreen(),
         '/painting': (context) => const PaintingCourseScreen(),
         '/literature': (context) => const LiteratureCourseScreen(),
 
         // Opportunities board
-        '/opportunities_board': (context) =>
-            const opportunities.OpportunitiesBoard(),
+        '/opportunities_board': (context) => const opportunities.OpportunitiesBoard(),
         '/paintings_opportunities': (context) => const PaintingOpportunities(),
         '/literature_opportunities': (context) =>
             const LiteratureOpportunities(),

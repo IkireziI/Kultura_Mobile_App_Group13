@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/config/styles_constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:kultura/config/styles_constants.dart';
+import 'package:kultura/service/auth_service.dart';
+import 'package:kultura/screens/home.dart';
+import 'package:kultura/screens/reset_password.dart';
 import 'provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,9 +16,57 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String? _errorMessage;
+  bool _isLoading = false;
+
+  /// Displays a toast with a given message
+  void _showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.SNACKBAR,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
+  }
+
+  /// Handles the login logic
+  Future<void> _handleLogin(LoginScreenProvider loginProvider) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        _errorMessage = null; // Reset error message
+        _isLoading = true; // Show loading indicator
+      });
+
+      String errorMessage = await AuthService().signin(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+        context: context,
+      );
+
+      setState(() {
+        _isLoading = false; // Hide loading indicator
+      });
+
+      if (errorMessage == "Successfully logged in") {
+        // Navigate to Home on successful login
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const Home()),
+        );
+      } else {
+        // Display the error message
+        setState(() {
+          _errorMessage = errorMessage;
+        });
+        _showToast(errorMessage);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,38 +144,41 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
 
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
 
-                // Remember Me and Forgot Password
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: loginProvider.rememberMe,
-                          onChanged: (value) {
-                            if (value != null) {
-                              loginProvider.toggleRememberMe(value);
-                            }
-                          },
+                // "Forgot Password?" Button
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordScreen(),
                         ),
-                        const Text('Remember Password'),
-                      ],
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        // Handle forgot password
-                      },
-                      child: const Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(
+                        color: AppStyles.primaryPurple,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
+                  ),
                 ),
+
+                const SizedBox(height: 25),
+
+                // Display error message if any
+                if (_errorMessage != null)
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                    ),
+                  ),
 
                 const SizedBox(height: 25),
 
@@ -132,14 +187,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: AppStyles.primaryButtonStyle,
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        // Handle login logic
-                        Navigator.pushReplacementNamed(context, '/home');
-                        // Navigate to the HomePage after successful connexion
-                      }
-                    },
-                    child: const Text('Log In'),
+                    onPressed: _isLoading ? null : () => _handleLogin(loginProvider),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text('Log In'),
                   ),
                 ),
 
@@ -165,13 +216,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     _socialLoginButton(
                       'assets/google_icon.png',
-                          () {
+                      () {
                         // Handle Google login
                       },
                     ),
                     _socialLoginButton(
                       'assets/facebook_icon.png',
-                          () {
+                      () {
                         // Handle Facebook login
                       },
                     ),
@@ -190,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacementNamed(context, '/signup');
                       },
                       child: const Text(
-                        'SignUp',
+                        'Sign Up',
                         style: TextStyle(color: AppStyles.primaryPurple),
                       ),
                     ),

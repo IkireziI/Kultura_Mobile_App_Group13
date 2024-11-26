@@ -31,7 +31,7 @@ class KulturaApp extends StatelessWidget {
         '/painting': (context) => const PaintingCourseScreen(),
         '/literature': (context) => const LiteratureCourseScreen(),
         '/opportunities_board': (context) =>
-            const opportunities.OpportunitiesBoard(),
+            opportunities.OpportunitiesBoard(),
         '/profile': (context) => const Profile(),
         '/profile_setting': (context) => const ProfileSettingsScreen(),
         '/search': (context) => const SearchScreen(),

@@ -36,7 +36,7 @@ class AuthService {
   }
 
   /// Sign in an existing user
-  Future<void> signin({
+  Future<String> signin({
     required String email,
     required String password,
     required BuildContext context,
@@ -46,18 +46,9 @@ class AuthService {
         email: email,
         password: password,
       );
-
-      // Navigate to Home page on successful login
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const Home()),
-      );
+      return "Successfully logged in"; // Success message
     } on FirebaseAuthException catch (e) {
-      String message = _handleAuthError(e);
-      _showToast(message);
-    } catch (e) {
-      _showToast('An unexpected error occurred. Please try again.');
-      debugPrint('Error during signin: $e');
+      return e.message ?? "An error occurred"; // Error message
     }
   }
 
@@ -78,6 +69,24 @@ class AuthService {
       debugPrint('Error during signout: $e');
     }
   }
+
+ /// Reset user password
+Future<String> resetPassword({
+  required String email,
+  required BuildContext context,
+}) async {
+  try {
+    await _auth.sendPasswordResetEmail(email: email);
+    return 'Password reset email sent! Please check your inbox.';
+  } on FirebaseAuthException catch (e) {
+    return _handleAuthError(e);
+  } catch (e) {
+    debugPrint('Error during password reset: $e');
+    return 'An unexpected error occurred. Please try again.';
+  }
+}
+
+  
 
   /// Handle FirebaseAuthException errors
   String _handleAuthError(FirebaseAuthException e) {

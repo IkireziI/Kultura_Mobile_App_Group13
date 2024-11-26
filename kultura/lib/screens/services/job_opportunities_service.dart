@@ -3,67 +3,42 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class JobOpportunitiesService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> addOpportunity({
-    required String title, 
-    required String category, 
-    required String location, 
-    required String description, 
-    required String createdBy
-  }) async {
-    // Input validation
-    if (title.isEmpty || category.isEmpty || location.isEmpty || description.isEmpty) {
-      throw ArgumentError('All fields must be filled');
-    }
-
-    try {
-      CollectionReference opportunities = _firestore.collection('opportunities_board');
-      await opportunities.add({
-        'title': title,
-        'category': category,
-        'location': location,
-        'description': description,
-        'createdBy': createdBy,
-        'applicants': [],
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-    } catch (e) {
-      throw Exception('Failed to add opportunity: $e');
-    }
+  /// Fetch all opportunities
+  Stream<QuerySnapshot> fetchAllOpportunities() {
+    return _firestore.collection('opportunities_board').snapshots();
   }
 
+  /// Fetch opportunities filtered by category
   Stream<QuerySnapshot> fetchOpportunitiesByCategory(String category) {
     return _firestore
         .collection('opportunities_board')
         .where('category', isEqualTo: category)
-        .orderBy('timestamp', descending: true)
         .snapshots();
   }
 
-  Future<void> applyForJob(String jobId, String userId) async {
-    if (jobId.isEmpty || userId.isEmpty) {
-      throw ArgumentError('Job ID and User ID cannot be empty');
-    }
-
-    try {
-      DocumentReference jobRef = _firestore.collection('opportunities_board').doc(jobId);
-
-      await jobRef.update({
-        'applicants': FieldValue.arrayUnion([userId]),
-      });
-    } catch (e) {
-      throw Exception('Error applying for job: $e');
-    }
+  /// Add a new opportunity to Firestore
+  Future<void> addOpportunity(Map<String, dynamic> opportunity) async {
+    await _firestore.collection('opportunities_board').add(opportunity);
   }
 
-  Future<void> deleteOpportunity(String docId) async {
-    if (docId.isEmpty) {
-      throw ArgumentError('Document ID cannot be empty');
-    }
+  /// Update an existing opportunity in Firestore
+  Future<void> updateOpportunity(String id, Map<String, dynamic> updatedData) async {
+    await _firestore.collection('opportunities_board').doc(id).update(updatedData);
+  }
 
-    try {
-      await _firestore.collection('opportunities_board').doc(docId).delete();
-    } catch (e) {
-      throw Exception('Failed to delete opportunity: $e');
-    }
+  /// Delete an opportunity from Firestore
+  Future<void> deleteOpportunity(String id) async {
+    await _firestore.collection('opportunities_board').doc(id).delete();
+  }
+
+  /// Apply to an opportunity (example functionality)
+  Future<void> applyToOpportunity(String opportunityId, String userId) async {
+    final applicationRef = _firestore
+        .collection('opportunities_board')
+        .doc(opportunityId)
+        .collection('applications')
+        .doc(userId);
+
+    await applicationRef.set({'appliedAt': DateTime.now()});
   }
 }

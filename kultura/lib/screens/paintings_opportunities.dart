@@ -1,18 +1,29 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kultura/screens/services/job_opportunities_service.dart';
+import 'package:kultura/screens/add_opportunity_form.dart';
 
-final JobOpportunitiesService jobOpportunitiesService = JobOpportunitiesService();
-
-class PaintingOpportunities extends StatelessWidget {
+class PaintingOpportunities extends StatefulWidget {
   const PaintingOpportunities({super.key});
+
+  @override
+  State<PaintingOpportunities> createState() => _PaintingBoardState();
+}
+
+class _PaintingBoardState extends State<PaintingOpportunities> {
+  final JobOpportunitiesService jobOpportunitiesService = JobOpportunitiesService();
+  String selectedCategory = "Painting";
+
+  void _refreshOpportunities() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple,
-        iconTheme: const IconThemeData(
-            color: Colors.white),
         title: SizedBox(
           width: double.infinity,
           child: Center(
@@ -24,73 +35,112 @@ class PaintingOpportunities extends StatelessWidget {
           ),
         ),
       ),
-      body: Stack(
+      body: Column(
         children: [
-          const PaintingBoardContent(),
-          Positioned(
-            bottom: 70.0,
-            left: 16.0,
-            right: 16.0,
-            child: Center(
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/marketplace');
-                },
-                icon:
-                    const Icon(Icons.local_offer_outlined, color: Colors.black),
-                label: const Text(
-                  'Marketplace',
-                  style: TextStyle(color: Colors.black, fontSize: 16),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                ),
-              ),
+          SearchBarAndFilters(
+            selectedCategory: selectedCategory,
+            onCategoryChanged: (category) {
+              setState(() {
+                selectedCategory = category;
+              });
+            },
+          ),
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: jobOpportunitiesService.fetchOpportunitiesByCategory(selectedCategory),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text("No opportunities available."));
+                }
+
+                final opportunities = snapshot.data!.docs;
+
+                return ListView.builder(
+                  itemCount: opportunities.length,
+                  itemBuilder: (context, index) {
+                    final opportunity = opportunities[index].data() as Map<String, dynamic>;
+                    opportunity['id'] = opportunities[index].id; // Include Firestore ID
+                    return OpportunityCard(
+                      opportunity: opportunity,
+                      onEdit: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddOpportunityForm(
+                              existingOpportunity: opportunity,
+                              onComplete: _refreshOpportunities,
+                            ),
+                          ),
+                        );
+                      },
+                      onDelete: () async {
+                        try {
+                          await jobOpportunitiesService.deleteOpportunity(opportunity['id']);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Opportunity deleted successfully')),
+                          );
+                          _refreshOpportunities();
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to delete opportunity: $e')),
+                          );
+                        }
+                      },
+                      onApply: () async {
+                        try {
+                          await jobOpportunitiesService.applyToOpportunity(
+                              opportunity['id'], 'UwDPz9tsuph75xDKjPClshSTohs2'); // Example User ID
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Applied successfully')),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to apply: $e')),
+                          );
+                        }
+                      },
+                    );
+                  },
+                );
+              },
             ),
           ),
         ],
       ),
-      bottomNavigationBar: const BottomNavigation(
-        selectedIndex: 3, 
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddOpportunityForm(onComplete: _refreshOpportunities, existingOpportunity: {},),
+            ),
+          );
+        },
+        backgroundColor: Colors.purple,
+        child: const Icon(Icons.add),
       ),
+      bottomNavigationBar: const BottomNavigation(selectedIndex: 3),
     );
   }
 }
 
-class PaintingBoardContent extends StatelessWidget {
-  const PaintingBoardContent({super.key});
+class SearchBarAndFilters extends StatelessWidget {
+  final String selectedCategory;
+  final Function(String) onCategoryChanged;
+
+  const SearchBarAndFilters({
+    super.key,
+    required this.selectedCategory,
+    required this.onCategoryChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SearchBarAndFilters(),
-        Expanded(
-          child: const OpportunitiesList(category: 'Painting'), 
-        ),
-      ],
-    );
-  }
-}
-
-class SearchBarAndFilters extends StatefulWidget {
-  const SearchBarAndFilters({super.key});
-
-  @override
-  State<SearchBarAndFilters> createState() => _SearchBarAndFiltersState();
-}
-
-class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
-  bool _isFilterVisible = false;
-  String selectedCategory = 'Painting';
-
-  @override
-  Widget build(BuildContext context) {
+    const categories = ["Music", "Painting", "Literature"];
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -105,171 +155,49 @@ class _SearchBarAndFiltersState extends State<SearchBarAndFilters> {
               filled: true,
               fillColor: Colors.purple[200],
             ),
+            onChanged: (query) {
+              // Implement search logic if needed
+            },
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isFilterVisible = !_isFilterVisible;
-                  });
+          Wrap(
+            spacing: 8.0,
+            children: categories.map((category) {
+              return FilterChip(
+                label: Text(category),
+                selected: selectedCategory == category,
+                onSelected: (bool selected) {
+                  if (selected) onCategoryChanged(category);
                 },
-                icon: Icon(
-                  _isFilterVisible ? Icons.close : Icons.filter_list,
-                  color: Colors.black,
+                backgroundColor: Colors.purple[100],
+                selectedColor: Colors.purple,
+                labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: selectedCategory == category ? Colors.white : Colors.black,
                 ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 8.0,
-                    children:
-                        ['Music', 'Painting', 'Literature'].map((category) {
-                      return FilterChip(
-                        label: Text(category),
-                        selected: selectedCategory == category,
-                        onSelected: (bool selected) {
-                          setState(() {
-                            selectedCategory = selected ? category : '';
-                          });
-
-                          if (selected) {
-                            // Navigate based on the selected category
-                            if (category == 'Music') {
-                              Navigator.pushNamed(
-                                  context, '/opportunities_board');
-                            } else if (category == 'Literature') {
-                              Navigator.pushNamed(
-                                  context, '/literature_opportunities');
-                            }
-                          }
-                        },
-                        backgroundColor: Colors.purple[100],
-                        selectedColor: Colors.purple,
-                        labelStyle: TextStyle(
-                          color: selectedCategory == category
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          side:
-                              const BorderSide(color: Colors.purple, width: 1),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  side: const BorderSide(color: Colors.purple, width: 1),
                 ),
-              ),
-              const SizedBox(width: 48),
-            ],
+              );
+            }).toList(),
           ),
-          if (_isFilterVisible)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Column(
-                children: [
-                  // Add your additional filters here
-                ],
-              ),
-            ),
         ],
       ),
     );
   }
 }
 
-class CustomFilterChip extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-
-  const CustomFilterChip({
-    required this.label,
-    required this.isSelected,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FilterChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (bool selected) {
-        if (label == 'Literature' && selected) {
-          Navigator.pushNamed(context, '/literature_opportunities');
-        }
-        if (label == 'Music' && selected) {
-          Navigator.pushNamed(context, '/opportunities_board');
-        }
-      },
-      backgroundColor: Colors.purple[100],
-      selectedColor: Colors.purple,
-      labelStyle: TextStyle(
-        color: isSelected ? Colors.white : Colors.black,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
-        side: BorderSide(color: Colors.purple, width: 1),
-      ),
-    );
-  }
-}
-
-class OpportunitiesList extends StatelessWidget {
-  final String category; // Added category parameter
-
-  const OpportunitiesList({super.key, required this.category});
-
-  @override
-  Widget build(BuildContext context) {
-    final opportunities = [
-      {
-        'title': 'Painting Exhibition',
-        'category': 'Event',
-        'location': 'Los Angeles, USA',
-        'description': 'Join our painting exhibition showcasing local artists.',
-      },
-      {
-        'title': 'Art Contest',
-        'category': 'Contest',
-        'location': 'Zanzibar',
-        'description': 'Submit your best painting for a chance to win prizes.',
-      },
-      {
-        'title': 'Art Teacher Needed',
-        'category': 'Job',
-        'location': 'Paris, France',
-        'description': 'Seeking a painting teacher for art classes.',
-      },
-    ];
-
-    return ListView.builder(
-      itemCount: opportunities.length,
-      itemBuilder: (context, index) {
-        return OpportunityCard(
-          title: opportunities[index]['title']!,
-          category: opportunities[index]['category']!,
-          location: opportunities[index]['location']!,
-          description: opportunities[index]['description']!,
-        );
-      },
-    );
-  }
-}
-
 class OpportunityCard extends StatelessWidget {
-  final String title;
-  final String category;
-  final String location;
-  final String description;
+  final Map<String, dynamic> opportunity;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+  final VoidCallback onApply;
 
   const OpportunityCard({
-    required this.title,
-    required this.category,
-    required this.location,
-    required this.description,
+    required this.opportunity,
+    required this.onEdit,
+    required this.onDelete,
+    required this.onApply,
     super.key,
   });
 
@@ -284,27 +212,35 @@ class OpportunityCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              opportunity['title'] ?? '',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text("Category: $category"),
-            Text("Location: $location"),
+            Text("Category: ${opportunity['category'] ?? ''}"),
+            Text("Location: ${opportunity['location'] ?? ''}"),
             const SizedBox(height: 8),
-            Text(description),
+            Text(opportunity['description'] ?? ''),
             const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle the Apply Now button action
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  foregroundColor: Colors.white,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: onEdit,
+                  child: const Text('Edit'),
                 ),
-                child: const Text('Apply Now'),
-              ),
+                TextButton(
+                  onPressed: onDelete,
+                  child: const Text('Delete'),
+                ),
+                ElevatedButton(
+                  onPressed: onApply,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.purple,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Apply Now'),
+                ),
+              ],
             ),
           ],
         ),
@@ -313,9 +249,8 @@ class OpportunityCard extends StatelessWidget {
   }
 }
 
-// Bottom navigation bar widget with 5 items
 class BottomNavigation extends StatefulWidget {
-  final int selectedIndex; // Tracks the currently selected tab
+  final int selectedIndex;
 
   const BottomNavigation({super.key, required this.selectedIndex});
 
@@ -329,29 +264,28 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.selectedIndex; // Sets the initial selected tab
+    _selectedIndex = widget.selectedIndex;
   }
 
-  // Handles tap events for each navigation item
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/home'); // Navigates to Home
+        Navigator.pushNamed(context, '/home');
         break;
       case 1:
-        Navigator.pushNamed(context, '/resource_center'); // Navigates to Resource Center
+        Navigator.pushNamed(context, '/resource_center');
         break;
       case 2:
-        Navigator.pushNamed(context, '/search'); // Navigates to Search Screen
+        Navigator.pushNamed(context, '/search');
         break;
       case 3:
-        Navigator.pushNamed(context, '/opportunities_board'); // Navigates to Opportunities board
+        Navigator.pushNamed(context, '/opportunities_board');
         break;
       case 4:
-        Navigator.pushNamed(context, '/profile'); // Navigates to Profile Screen
+        Navigator.pushNamed(context, '/profile');
         break;
       default:
         break;
@@ -361,36 +295,36 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        currentIndex: _selectedIndex, // Highlights the selected tab
-        type: BottomNavigationBarType.fixed, // Fixed tab type
-        selectedItemColor: Colors.purple, // Selected icon color
-        unselectedItemColor: Colors.grey, // Unselected icon color
-        showSelectedLabels: false, // Hides selected labels
-        showUnselectedLabels: false, // Hides unselected labels
-        iconSize: 30, // Sets icon size
-        onTap: _onItemTapped, // Triggers _onItemTapped on tap
-        items: const [
+      currentIndex: _selectedIndex,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.purple,
+      unselectedItemColor: Colors.grey,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      iconSize: 30,
+      onTap: _onItemTapped,
+      items: const [
         BottomNavigationBarItem(
-        icon: Icon(Icons.home_outlined),
+          icon: Icon(Icons.home_outlined),
           label: 'Home',
         ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.auto_stories_outlined),
-            label: 'Resource Center',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search_outlined),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.language_outlined),
-            label: 'Opportunities Board',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: 'Profile',
-          ),
-        ],
+        BottomNavigationBarItem(
+          icon: Icon(Icons.auto_stories_outlined),
+          label: 'Resource Center',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search_outlined),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.language_outlined),
+          label: 'Opportunities Board',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle_outlined),
+          label: 'Profile',
+        ),
+      ],
     );
   }
 }

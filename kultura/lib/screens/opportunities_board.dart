@@ -2,8 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kultura/screens/services/job_opportunities_service.dart';
-
-final JobOpportunitiesService jobOpportunitiesService = JobOpportunitiesService();
+import 'package:kultura/screens/add_opportunity_form.dart';
 
 class OpportunitiesBoard extends StatefulWidget {
   const OpportunitiesBoard({super.key});
@@ -13,7 +12,12 @@ class OpportunitiesBoard extends StatefulWidget {
 }
 
 class _OpportunitiesBoardState extends State<OpportunitiesBoard> {
-  String selectedCategory = "Music"; // Default category
+  final JobOpportunitiesService jobOpportunitiesService = JobOpportunitiesService();
+  String selectedCategory = "Music";
+
+  void _refreshOpportunities() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,102 +43,87 @@ class _OpportunitiesBoardState extends State<OpportunitiesBoard> {
               setState(() {
                 selectedCategory = category;
               });
-
-              // Navigate to the appropriate category screen
-              if (category == "Painting") {
-                Navigator.pushNamed(context, '/paintings_opportunities');
-              } else if (category == "Literature") {
-                Navigator.pushNamed(context, '/literature_opportunities');
-              }
-              // Remain in Music by default (OpportunitiesBoard is for Music)
             },
           ),
           Expanded(
-            child: OpportunitiesList(selectedCategory: selectedCategory),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: jobOpportunitiesService.fetchOpportunitiesByCategory(selectedCategory),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text("No opportunities available."));
+                }
+
+                final opportunities = snapshot.data!.docs;
+
+                return ListView.builder(
+                  itemCount: opportunities.length,
+                  itemBuilder: (context, index) {
+                    final opportunity = opportunities[index].data() as Map<String, dynamic>;
+                    opportunity['id'] = opportunities[index].id; // Include Firestore ID
+                    return OpportunityCard(
+                      opportunity: opportunity,
+                      onEdit: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddOpportunityForm(
+                              existingOpportunity: opportunity,
+                              onComplete: _refreshOpportunities,
+                            ),
+                          ),
+                        );
+                      },
+                      onDelete: () async {
+                        try {
+                          await jobOpportunitiesService.deleteOpportunity(opportunity['id']);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Opportunity deleted successfully')),
+                          );
+                          _refreshOpportunities();
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to delete opportunity: $e')),
+                          );
+                        }
+                      },
+                      onApply: () async {
+                        try {
+                          await jobOpportunitiesService.applyToOpportunity(
+                              opportunity['id'], 'UwDPz9tsuph75xDKjPClshSTohs2'); // Example User ID
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Applied successfully')),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to apply: $e')),
+                          );
+                        }
+                      },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddOpportunityDialog(context),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddOpportunityForm(onComplete: _refreshOpportunities, existingOpportunity: {},),
+            ),
+          );
+        },
         backgroundColor: Colors.purple,
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: const BottomNavigation(selectedIndex: 3),
-    );
-  }
-
-  // Dialog to add a new opportunity
-  void _showAddOpportunityDialog(BuildContext context) {
-    final titleController = TextEditingController();
-    final locationController = TextEditingController();
-    final descriptionController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Add New Opportunity"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: "Title"),
-              ),
-              DropdownButtonFormField<String>(
-                value: selectedCategory,
-                items: ["Music", "Painting", "Literature"]
-                    .map((category) => DropdownMenuItem(
-                          value: category,
-                          child: Text(category),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  if (value != null) selectedCategory = value;
-                },
-                decoration: const InputDecoration(labelText: "Category"),
-              ),
-              TextField(
-                controller: locationController,
-                decoration: const InputDecoration(labelText: "Location"),
-              ),
-              TextField(
-                controller: descriptionController,
-                decoration: const InputDecoration(labelText: "Description"),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text("Cancel"),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            ElevatedButton(
-              child: const Text("Add"),
-              onPressed: () async {
-                await jobOpportunitiesService.addOpportunity(
-                  title: titleController.text,
-                  category: selectedCategory,
-                  location: locationController.text,
-                  description: descriptionController.text,
-                  createdBy: "UwDPz9tsuph75xDKjPClshSTohs2", 
-                );
-
-                // Navigate to the relevant screen after adding
-                if (selectedCategory == "Music") {
-                  Navigator.pushNamed(context, '/opportunities_board');
-                } else if (selectedCategory == "Painting") {
-                  Navigator.pushNamed(context, '/paintings_opportunities');
-                } else if (selectedCategory == "Literature") {
-                  Navigator.pushNamed(context, '/literature_opportunities');
-                }
-
-                Navigator.of(context).pop(); // Close the dialog
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }
@@ -151,6 +140,7 @@ class SearchBarAndFilters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const categories = ["Music", "Painting", "Literature"];
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -165,11 +155,14 @@ class SearchBarAndFilters extends StatelessWidget {
               filled: true,
               fillColor: Colors.purple[200],
             ),
+            onChanged: (query) {
+              // Implement search logic if needed
+            },
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: ["Music", "Painting", "Literature"].map((category) {
+          Wrap(
+            spacing: 8.0,
+            children: categories.map((category) {
               return FilterChip(
                 label: Text(category),
                 selected: selectedCategory == category,
@@ -178,7 +171,7 @@ class SearchBarAndFilters extends StatelessWidget {
                 },
                 backgroundColor: Colors.purple[100],
                 selectedColor: Colors.purple,
-                labelStyle: TextStyle(
+                labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: selectedCategory == category ? Colors.white : Colors.black,
                 ),
                 shape: RoundedRectangleBorder(
@@ -194,57 +187,17 @@ class SearchBarAndFilters extends StatelessWidget {
   }
 }
 
-class OpportunitiesList extends StatelessWidget {
-  final String selectedCategory;
-
-  const OpportunitiesList({
-    super.key,
-    required this.selectedCategory,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: jobOpportunitiesService.fetchOpportunitiesByCategory(selectedCategory),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text("No opportunities available."));
-        }
-
-        final opportunities = snapshot.data!.docs;
-
-        return ListView.builder(
-          itemCount: opportunities.length,
-          itemBuilder: (context, index) {
-            final opportunity = opportunities[index];
-            return OpportunityCard(
-              title: opportunity['title'],
-              category: opportunity['category'],
-              location: opportunity['location'],
-              description: opportunity['description'],
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
 class OpportunityCard extends StatelessWidget {
-  final String title;
-  final String category;
-  final String location;
-  final String description;
+  final Map<String, dynamic> opportunity;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+  final VoidCallback onApply;
 
   const OpportunityCard({
-    required this.title,
-    required this.category,
-    required this.location,
-    required this.description,
+    required this.opportunity,
+    required this.onEdit,
+    required this.onDelete,
+    required this.onApply,
     super.key,
   });
 
@@ -259,27 +212,35 @@ class OpportunityCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              opportunity['title'] ?? '',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text("Category: $category"),
-            Text("Location: $location"),
+            Text("Category: ${opportunity['category'] ?? ''}"),
+            Text("Location: ${opportunity['location'] ?? ''}"),
             const SizedBox(height: 8),
-            Text(description),
+            Text(opportunity['description'] ?? ''),
             const SizedBox(height: 16),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle the Apply Now button action
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple,
-                  foregroundColor: Colors.white,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: onEdit,
+                  child: const Text('Edit'),
                 ),
-                child: const Text('Apply Now'),
-              ),
+                TextButton(
+                  onPressed: onDelete,
+                  child: const Text('Delete'),
+                ),
+                ElevatedButton(
+                  onPressed: onApply,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.purple,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Apply Now'),
+                ),
+              ],
             ),
           ],
         ),
@@ -288,9 +249,6 @@ class OpportunityCard extends StatelessWidget {
   }
 }
 
-
-
-// Bottom navigation bar widget with 5 items
 class BottomNavigation extends StatefulWidget {
   final int selectedIndex;
 
