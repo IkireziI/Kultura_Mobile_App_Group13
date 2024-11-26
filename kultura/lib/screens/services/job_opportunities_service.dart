@@ -27,7 +27,6 @@ class JobOpportunitiesService {
         'timestamp': FieldValue.serverTimestamp(),
       });
     } catch (e) {
-      // Better error handling
       throw Exception('Failed to add opportunity: $e');
     }
   }
