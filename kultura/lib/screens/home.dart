@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/screens/marketplace.dart';
 import 'package:kultura/screens/search_page.dart';
 import 'package:kultura/screens/profile.dart';
 import 'package:kultura/screens/opportunities_board.dart';
@@ -22,6 +23,7 @@ class _HomeState extends State<Home> {
     const ArtisticCourseScreen(),  // Resource CenterR
     const SearchScreen(),    // Search
     const OpportunitiesBoard(), // Opportunities Board
+    const MarketplacePage(),
     const Profile(),   // Profile
   ];
 
@@ -69,6 +71,10 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.language_outlined),
             label: 'Opportunities Board',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.storefront),
+            label: 'Market Place',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_outlined),
