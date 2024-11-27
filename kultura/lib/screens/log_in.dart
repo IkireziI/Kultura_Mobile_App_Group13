@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD
+=======
+// ignore: depend_on_referenced_packages
+>>>>>>> 11fd773 (settings)
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kultura/config/styles_constants.dart';
