@@ -1,264 +1,218 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(KulturaApp());
+  runApp(MyApp());
 }
 
-class KulturaApp extends StatelessWidget {
-  const KulturaApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: KulturaHomePage(),
+      title: 'Kultura Messages',
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+      ),
+      home: MessagesPage(),
     );
   }
 }
 
-class KulturaHomePage extends StatelessWidget {
-  // List of images for "Profiles suggested for you"
-  final List<String> profileImages = [
-    'assets/person1.jpeg',
-    'assets/person2.jpeg',
-    'assets/person3.jpeg',
-    'assets/person4.jpeg',
-  ];
-
-  // Lists for images and background images for the Explore section
-  final List<String> exploreImages = [
-    'assets/person1.jpeg',
-    'assets/person2.jpeg',
-    'assets/person3.jpeg',
-    'assets/person4.jpeg',
-    'assets/person5.jpeg',
-    'assets/person6.jpeg',
-    'assets/person7.jpeg',
-    'assets/person8.jpeg',
-    'assets/person9.jpeg',
-  ];
-
-  final List<String> exploreBackgrounds = [
-    'assets/person5.jpeg',
-    'assets/people2.jpeg',
-    'assets/people3.jpeg',
-    'assets/people4.jpeg',
-    'assets/people5.jpeg',
-    'assets/people6.jpeg',
-    'assets/people7.jpeg',
-    'assets/people8.jpeg',
-    'assets/people9.jpeg',
-  ];
-
-  KulturaHomePage({super.key});
-
+class MessagesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
+            colors: [Color(0xFFA000C8), Colors.white],
             begin: Alignment.topCenter,
-            end: Alignment.center,
-            colors: [
-              Color(0xFFA020F0), // Purple color at the top
-              Colors.white,       // White background at the bottom
-            ],
-            stops: [0.3, 1.0],
+            end: Alignment.bottomCenter,
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Top Section with KULTURA
-            Padding(
-              padding: const EdgeInsets.only(top: 50.0, bottom: 10.0),
-              child: Center(
-                child: Center(
-                  child: Image.asset(
-                    'assets/kultura.png',
-                    height: 40,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-            ),
-            // Search Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    hintStyle: TextStyle(
-                      fontFamily: 'Roboto',
-                    ),
-                    border: InputBorder.none,
-                    icon: Icon(Icons.search),
-                    suffixIcon: Icon(Icons.filter_list),
-                  ),
-                ),
-              ),
-            ),
-            // Profiles Suggested for You
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, top: 5.0, bottom: 5.0),
-              child: Text(
-                'Profiles suggested for you',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto',
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 130,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: profileImages.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Top KULTURA Design with back icon and user name
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
-                        Container(
-                          width: 90,
-                          height: 90,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(
+                            Icons.arrow_back_ios,
+                            size: 28,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'John_D', // Replace with actual user name dynamically if needed
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    // Replace "KULTURA" with the kultura.png image
+                    Image.asset(
+                      'assets/images/KULTURA.png',
+                      height: 40, // Adjust size as needed
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              // Search Bar
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.deepPurple.shade200,
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.deepPurple,
+                        ),
+                      ),
+                      const Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Search Messages',
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              // Message & Group Buttons in the Same Row
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Message Button
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to Message Screen
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Spacer(),
-                              CircleAvatar(
-                                radius: 25,
-                                backgroundImage: AssetImage(profileImages[index]),
-                              ),
-                              Spacer(),
-                              Container(
-                                width: 90,
-                                alignment: Alignment.bottomCenter,
-                                child: Text(
-                                  'Username ${index + 1}',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.deepPurple.shade200,
+                                blurRadius: 6,
+                                offset: const Offset(0, 4),
                               ),
                             ],
                           ),
+                          child: const ListTile(
+                            leading: Icon(
+                              Icons.message,
+                              color: Color(0xFFA000C8),
+                              size: 30,
+                            ),
+                            title: Text(
+                              'Messages',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Color(0xFFA000C8),
+                              ),
+                            ),
+                          ),
                         ),
-                      ],
+                      ),
                     ),
-                  );
-                },
-              ),
-            ),
-            // Explore Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              child: Text(
-                'Explore',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto',
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.only(top: 0),
-                padding: EdgeInsets.all(0),
-                child: GridView.builder(
-                  padding: EdgeInsets.zero,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing: 0,
-                    childAspectRatio: 1.0,
-                  ),
-                  itemCount: exploreImages.length,
-                  itemBuilder: (context, index) {
-                    return Stack(
-                      children: [
-                        // Grid background image
-                        Positioned.fill(
-                          child: Image.asset(
-                            exploreBackgrounds[index % exploreBackgrounds.length],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        // Username and profile picture on top-left
-                        Positioned(
-                          top: 5,
-                          left: 5,
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 15,
-                                backgroundImage: AssetImage(exploreImages[index]),
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                'Username ${index + 1}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
+                    // Group Button
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to Group Screen
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.deepPurple.shade200,
+                                blurRadius: 6,
+                                offset: const Offset(0, 4),
                               ),
                             ],
                           ),
+                          child: const ListTile(
+                            leading: Icon(
+                              Icons.group,
+                              color: Color(0xFFA000C8),
+                              size: 30,
+                            ),
+                            title: Text(
+                              'Groups',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Color(0xFFA000C8),
+                              ),
+                            ),
+                          ),
                         ),
-                      ],
-                    );
-                  },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+              // Floating Action Button for New Messages
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // Start New Message
+                    },
+                    backgroundColor: const Color(0xFFA000C8),
+                    child: const Icon(
+                      Icons.add_comment,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.purpleAccent,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 2,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.auto_stories_outlined),
-            label: 'Resource Center',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search_outlined),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.language_outlined),
-            label: 'Marketplace',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }
