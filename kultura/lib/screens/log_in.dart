@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+// ignore: depend_on_referenced_packages
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kultura/config/styles_constants.dart';
 import 'package:kultura/service/auth_service.dart';
 import 'package:kultura/screens/home.dart';
@@ -31,6 +34,50 @@ class _LoginScreenState extends State<LoginScreen> {
       textColor: Colors.white,
       fontSize: 14.0,
     );
+  }
+
+  /// Handles Google Sign-In logic
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      setState(() {
+        _isLoading = true; // Show loading indicator
+      });
+
+      // Trigger Google Sign-In
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        setState(() {
+          _isLoading = false; // Hide loading indicator if canceled
+        });
+        return; // Sign-in aborted
+      }
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Create a credential for Firebase
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Navigate to Home on successful login
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const Home()),
+      );
+    } catch (e) {
+      setState(() {
+        _errorMessage = "Google Sign-In failed: $e"; // Display error message
+        _isLoading = false; // Hide loading indicator
+      });
+      _showToast(_errorMessage!);
+    }
   }
 
   /// Handles the login logic
@@ -216,9 +263,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     _socialLoginButton(
                       'assets/google_icon.png',
-                      () {
-                        // Handle Google login
-                      },
+                      _handleGoogleSignIn, // Google Sign-In handler
                     ),
                     _socialLoginButton(
                       'assets/facebook_icon.png',
