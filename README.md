@@ -55,6 +55,7 @@ Log in with the same credentials to access the app.
 
 ## Authentication Methods
 **Google Sign-In**
+
 *Setup:*
 
 Enable Google Sign-In in Firebase Console.
