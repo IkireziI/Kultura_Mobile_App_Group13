@@ -1,9 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:flutter/material.dart';
-import 'package:kultura/config/styles_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kultura/config/styles_constants.dart';
 import 'package:kultura/service/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'provider.dart'; // Ensure this file contains the SignUpScreenProvider class.
@@ -160,8 +158,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (_formKey.currentState?.validate() ?? false) {
                         try {
                           await AuthService().signup(
+                            name: _nameController.text.trim(),
                             email: _emailController.text.trim(),
-                            password: _passwordController.text.trim(), context: context,
+                            password: _passwordController.text.trim(),
+                            context: context,
                           );
                           // Navigate to HomePage after successful registration
                           Navigator.pushReplacementNamed(context, '/home');
