@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/screens/changePassword.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -58,8 +59,12 @@ class SettingsPage extends StatelessWidget {
             title:
                 const Text('Change Password', style: TextStyle(fontSize: 18)),
             onTap: () {
-              // Handle tap
-            },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChangePasswordScreen()),
+                    );
+                  },
           ),
           ListTile(
             leading: const Icon(Icons.help, color: Colors.grey),
