@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart'; // Importing Flutter material design package
-import 'resource_center.dart'; // Importing resource center page
+// Importing resource center page
 import 'music_course.dart'; // Importing music course page
 import 'literature_course.dart'; // Importing literature course page
 import 'painting_course.dart'; // Importing painting course page

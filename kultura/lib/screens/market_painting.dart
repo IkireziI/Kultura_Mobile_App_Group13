@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/screens/opportunities_board.dart';
 
 class MarketplacePainting extends StatelessWidget {
   const MarketplacePainting({super.key});

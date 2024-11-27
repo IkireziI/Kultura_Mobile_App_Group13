@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/screens/opportunities_board.dart';
 
 class MarketplaceMusic extends StatelessWidget {
   const MarketplaceMusic({super.key});

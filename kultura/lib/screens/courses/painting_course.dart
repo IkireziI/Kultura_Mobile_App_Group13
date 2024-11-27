@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/screens/courses/resource_center.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 // Main screen for the Painting Course

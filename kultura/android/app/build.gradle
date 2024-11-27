@@ -1,14 +1,14 @@
 buildscript {
-    ext.kotlin_version = '1.8.22' 
+    ext.kotlin_version = '1.7.10' // You might need to adjust this version
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0' 
+        classpath 'com.android.tools.build:gradle:7.3.0' // Adjust this version if needed
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.15' 
+        classpath 'com.google.gms:google-services:4.3.15' // Add this if you're using Firebase
     }
 }
 
@@ -38,10 +38,8 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-apply plugin: 'com.google.gms.google-services'
 
 android {
-
     namespace "com.example.kultura"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
@@ -65,7 +63,6 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        multiDexEnabled true
     }
 
     buildTypes {
@@ -81,5 +78,4 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.android.gms:play-services-auth:20.7.0'
 }

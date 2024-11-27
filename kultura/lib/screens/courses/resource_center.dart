@@ -2,106 +2,90 @@
 
 import 'package:flutter/material.dart';
 
-// Defines the ArtisticCourseScreen as a stateless widget
 class ArtisticCourseScreen extends StatelessWidget {
   const ArtisticCourseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Colors.white, // Sets the screen background color to white
-      appBar: AppBar(
-        automaticallyImplyLeading: false, // Hides the back button
-        title: const Text(
-          'Artistic Course', // Sets the title of the app bar
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.white, // Makes the app bar background white
-        elevation: 0, // Removes the app bar shadow
-        actions: [
-          Padding(
-            padding:
-                const EdgeInsets.only(right: 16.0), // Adds space on the right
-            child: Tooltip(
-              message: 'View History', // Tooltip message
-              child: IconButton(
-                icon: const Icon(Icons.history_outlined), // History icon
-                iconSize: 30, // Increased icon size
-                onPressed: () {
-                  Navigator.pushNamed(
-                      context, '/course_history'); // Navigates to History page
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(
-              16.0), // Adds padding around the body content
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start, // Aligns content to the left
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // CourseCard for Music course
+              // Artistic Course Header (replacing the second AppBar)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Artistic Course',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  IconButton(
+                    tooltip: 'View History', // Tooltip message
+                    icon: const Icon(
+                      Icons.history_outlined,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/course_history');
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16), // Spacing between header and cards
+              // Course Cards
               CourseCard(
                 title: 'Music',
                 imageUrl: 'assets/images/music.png',
-                backgroundColor:
-                    const Color(0xFFFCE4EC), // Background color for card
-                imageHeight: 120, // Sets image height
+                backgroundColor: const Color(0xFFFCE4EC),
+                imageHeight: 120,
                 onTap: () {
-                  Navigator.pushNamed(
-                      context, '/music'); // Navigates to Music page
+                  Navigator.pushNamed(context, '/music');
                 },
               ),
-              const SizedBox(height: 28), // Space between cards
-              // CourseCard for Painting course
+              const SizedBox(height: 28),
               CourseCard(
                 title: 'Painting',
                 imageUrl: 'assets/images/painting.png',
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 120,
                 onTap: () {
-                  Navigator.pushNamed(
-                      context, '/painting'); // Navigates to Painting page
+                  Navigator.pushNamed(context, '/painting');
                 },
               ),
-              const SizedBox(height: 28), // Space between cards
-              // CourseCard for Literature course
+              const SizedBox(height: 28),
               CourseCard(
                 title: 'Literature',
                 imageUrl: 'assets/images/literature.png',
                 backgroundColor: const Color(0xFFFCE4EC),
                 imageHeight: 120,
                 onTap: () {
-                  Navigator.pushNamed(
-                      context, '/literature'); // Navigates to Literature page
+                  Navigator.pushNamed(context, '/literature');
                 },
               ),
             ],
           ),
         ),
       ),
-      // Adds the bottom navigation bar to the screen
-      // bottomNavigationBar: const BottomNavigation(selectedIndex: 1),
     );
   }
 }
 
-// Custom widget for each course card
+// CourseCard Widget (unchanged)
 class CourseCard extends StatelessWidget {
-  final String title; // Course title
-  final String imageUrl; // Path to the course image
-  final Color backgroundColor; // Background color for the card
-  final double imageHeight; // Image height
-  final VoidCallback onTap; // Callback function when tapped
+  final String title;
+  final String imageUrl;
+  final Color backgroundColor;
+  final double imageHeight;
+  final VoidCallback onTap;
 
   const CourseCard({
     super.key,
@@ -115,38 +99,35 @@ class CourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, // Triggers the onTap callback when tapped
+      onTap: onTap,
       child: Container(
-        width: double.infinity, // Makes the card take full width
+        width: double.infinity,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(20), // Rounds the card corners
+          borderRadius: BorderRadius.circular(20),
         ),
-        clipBehavior: Clip.antiAlias, // Clips overflowed content
+        clipBehavior: Clip.antiAlias,
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Aligns content to the left
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  16, 16, 16, 0), // Padding around the image
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(12), // Rounds the image corners
+                borderRadius: BorderRadius.circular(12),
                 child: SizedBox(
                   width: double.infinity,
-                  height: imageHeight, // Sets image height
+                  height: imageHeight,
                   child: Image.asset(
-                    imageUrl, // Loads the image asset
-                    fit: BoxFit.cover, // Fills the image to cover the container
+                    imageUrl,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(16.0), // Padding around the title
+              padding: const EdgeInsets.all(16.0),
               child: Text(
-                title, // Displays the course title
+                title,
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
