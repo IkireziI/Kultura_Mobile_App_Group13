@@ -19,6 +19,7 @@ import 'package:kultura/screens/courses/painting_course.dart';
 import 'package:kultura/screens/courses/literature_course.dart';
 import 'package:kultura/screens/paintings_opportunities.dart';
 import 'package:kultura/screens/literature_opportunities.dart';
+import 'package:kultura/screens/courses/course_history.dart';
 import 'package:provider/provider.dart';
 import 'screens/provider.dart';
 
@@ -76,6 +77,7 @@ class MyApp extends StatelessWidget {
         '/music': (context) => const MusicCourseScreen(),
         '/painting': (context) => const PaintingCourseScreen(),
         '/literature': (context) => const LiteratureCourseScreen(),
+        '/course_history': (context) => const HistoryScreen(),
 
         // Opportunities board
         '/opportunities_board': (context) => const opportunities.OpportunitiesBoard(),

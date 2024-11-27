@@ -23,6 +23,23 @@ class ArtisticCourseScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white, // Makes the app bar background white
         elevation: 0, // Removes the app bar shadow
+        actions: [
+          Padding(
+            padding:
+                const EdgeInsets.only(right: 16.0), // Adds space on the right
+            child: Tooltip(
+              message: 'View History', // Tooltip message
+              child: IconButton(
+                icon: const Icon(Icons.history_outlined), // History icon
+                iconSize: 30, // Increased icon size
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, '/course_history'); // Navigates to History page
+                },
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
