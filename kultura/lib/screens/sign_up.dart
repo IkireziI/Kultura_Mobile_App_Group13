@@ -5,6 +5,7 @@ import 'package:kultura/config/styles_constants.dart';
 import 'package:kultura/service/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'provider.dart'; // Ensure this file contains the SignUpScreenProvider class.
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
