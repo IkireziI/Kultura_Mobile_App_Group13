@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kultura/screens/log_in.dart';
 import 'package:kultura/screens/settings.dart';
 import 'package:kultura/screens/form.dart';
+import 'package:kultura/screens/user_info.dart';
 import 'package:kultura/screens/view_portfolios.dart';
 
 
@@ -87,13 +88,9 @@ class ProfileSettingsPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ViewPortfoliosPage()),
+                          builder: (context) => UserProfileScreen()),
                     );
                   },
-                ),
-                const ProfileMenuItem(
-                  icon: Icons.notifications_none,
-                  text: 'Notifications',
                 ),
                 const ProfileMenuItem(
                   icon: Icons.help_outline,

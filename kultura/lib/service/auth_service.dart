@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -8,24 +9,40 @@ import 'package:kultura/screens/log_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   /// Sign up a new user
   Future<void> signup({
     required String email,
+    required String name,
     required String password,
     required BuildContext context,
   }) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      // Create user with email and password
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Navigate to Home page on successful registration
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const Home()),
-      );
+      User? user = userCredential.user;
+      if (user != null) {
+        // Update the user's display name
+        await user.updateDisplayName(name);
+
+        // Save user data to Firestore
+        await _firestore.collection('users').doc(user.uid).set({
+          'name': name,
+          'email': email,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+
+        // Navigate to Home page after registration
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const Home()),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       String message = _handleAuthError(e);
       _showToast(message);
@@ -64,29 +81,29 @@ class AuthService {
         context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
+
+      _showToast('Successfully signed out.');
     } catch (e) {
       _showToast('An error occurred while signing out. Please try again.');
       debugPrint('Error during signout: $e');
     }
   }
 
- /// Reset user password
-Future<String> resetPassword({
-  required String email,
-  required BuildContext context,
-}) async {
-  try {
-    await _auth.sendPasswordResetEmail(email: email);
-    return 'Password reset email sent! Please check your inbox.';
-  } on FirebaseAuthException catch (e) {
-    return _handleAuthError(e);
-  } catch (e) {
-    debugPrint('Error during password reset: $e');
-    return 'An unexpected error occurred. Please try again.';
+  /// Reset user password
+  Future<String> resetPassword({
+    required String email,
+    required BuildContext context,
+  }) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return 'Password reset email sent! Please check your inbox.';
+    } on FirebaseAuthException catch (e) {
+      return _handleAuthError(e);
+    } catch (e) {
+      debugPrint('Error during password reset: $e');
+      return 'An unexpected error occurred. Please try again.';
+    }
   }
-}
-
-  
 
   /// Handle FirebaseAuthException errors
   String _handleAuthError(FirebaseAuthException e) {
