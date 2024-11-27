@@ -50,7 +50,7 @@ class _OpportunitiesBoardState extends State<OpportunitiesBoard> {
                   itemCount: opportunities.length,
                   itemBuilder: (context, index) {
                     final opportunity = opportunities[index].data() as Map<String, dynamic>;
-                    opportunity['id'] = opportunities[index].id; // Include Firestore ID
+                    opportunity['id'] = opportunities[index].id;
                     return OpportunityCard(
                       opportunity: opportunity,
                       onEdit: () {
@@ -80,7 +80,7 @@ class _OpportunitiesBoardState extends State<OpportunitiesBoard> {
                       onApply: () async {
                         try {
                           await jobOpportunitiesService.applyToOpportunity(
-                              opportunity['id'], 'UwDPz9tsuph75xDKjPClshSTohs2'); // Example User ID
+                              opportunity['id'], 'UwDPz9tsuph75xDKjPClshSTohs2'); 
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Applied successfully')),
                           );
@@ -145,7 +145,6 @@ class SearchBarAndFilters extends StatelessWidget {
               fillColor: Colors.purple[200],
             ),
             onChanged: (query) {
-              // Implement search logic if needed
             },
           ),
           const SizedBox(height: 16),
