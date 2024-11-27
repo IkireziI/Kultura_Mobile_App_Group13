@@ -42,6 +42,39 @@
 - **Backend**: Firebase (real-time database, authentication, storage)
 - **APIs**: Integrated with payment gateways (e.g., PayPal) for secure transactions and AI tools to enhance artwork.
 
+##  Usage Examples
+**Google Sign-In**
+Tap the "Sign in with Google" button.
+Select a Google account to authenticate.
+The user is redirected to the dashboard after successful login.
+
+**Email Authentication**
+Register with an email and password.
+
+Log in with the same credentials to access the app.
+
+## Authentication Methods
+**Google Sign-In**
+*Setup:*
+
+Enable Google Sign-In in Firebase Console.
+
+Integrate the google_sign_in Flutter package.
+
+**Email and Password Authentication**
+Setup:
+
+Enable Email/Password Authentication in Firebase Console.
+
+## Security Rules
+We use Firebase Security Rules to enforce strict access control for Firestore.
+
+## Testing Security Rules
+Use the Firebase Emulator Suite for local testing:
+
+Simulate user actions in the Emulator UI to verify rule enforcement.
+
+
 ## **Contributing**
 We welcome contributions! Here’s how you can help:
 1. Fork the repository.
