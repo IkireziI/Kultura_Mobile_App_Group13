@@ -1,12 +1,12 @@
 buildscript {
-    ext.kotlin_version = '1.7.10' // You might need to adjust this version
+    ext.kotlin_version = '1.8.22' // Version for Gradle 8.3
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0' // Adjust this version if needed
+        classpath 'com.android.tools.build:gradle:8.3.0' // Version for Gradle 8.3
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.15' // Add this if you're using Firebase
     }
