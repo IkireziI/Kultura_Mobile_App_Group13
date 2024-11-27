@@ -23,9 +23,7 @@ class MarketplacePainting extends StatelessWidget {
       ),
       // Main body content for the page
       body: MarketplacePaintingContent(),
-      bottomNavigationBar: const BottomNavigation(
-          selectedIndex:
-              3), // Update selectedIndex to the appropriate tab index for the OpportunitiesBoard
+
     );
   }
 }

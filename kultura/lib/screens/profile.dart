@@ -48,7 +48,6 @@ class Profile extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(selectedIndex: 4),
     );
   }
 }
@@ -82,10 +81,7 @@ class AppliBar extends StatelessWidget {
           ),
         ),
       ),
-      title: Image.asset(
-        'assets/kultura.png',
-        height: 40,
-      ),
+
     );
   }
 }
@@ -354,96 +350,6 @@ class PostGrid extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-// Bottom navigation bar widget with 5 items
-class BottomNavigation extends StatefulWidget {
-  final int selectedIndex;
-
-  const BottomNavigation({super.key, required this.selectedIndex});
-
-  @override
-  State<BottomNavigation> createState() => _BottomNavigationState();
-}
-
-class _BottomNavigationState extends State<BottomNavigation> {
-  late int selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedIndex = widget.selectedIndex; // Sets the initial selected tab
-  }
-
-  // Handles tap events for each navigation item
-  void onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(
-            context, '/resource_center'); // Navigates to Resource Center
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(
-            context, '/search'); // Navigates to Search Screen
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(context,
-            '/opportunities_board'); // Navigates to Opportunities board
-        break;
-      case 4:
-        Navigator.pushReplacementNamed(
-            context, '/profile'); // Navigates to Profile Screen
-        break;
-      default:
-        break;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.purple,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      currentIndex: selectedIndex,
-      onTap: (index) {
-        setState(() {
-          selectedIndex = index;
-        });
-        // Add Navigation logic for each index
-      },
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.auto_stories_outlined),
-          label: 'Resource Center',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined),
-          label: 'Search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.language_outlined),
-          label: 'Opportunities Board',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined),
-          label: 'Profile',
-        ),
-      ],
     );
   }
 }

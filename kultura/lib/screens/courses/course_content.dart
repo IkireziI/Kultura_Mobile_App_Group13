@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart'; // Importing Flutter material design package
 import 'resource_center.dart'; // Importing resource center page
 import 'music_course.dart'; // Importing music course page
@@ -22,67 +23,94 @@ class CourseContentScreen extends StatelessWidget {
             fontWeight: FontWeight.bold, // Text weight
           ),
         ),
-        backgroundColor: Colors.purple, // App bar background color
-        elevation: 0, // No shadow for app bar
+        backgroundColor: Colors.purple,
+        elevation: 0,
       ),
-      body: SingleChildScrollView(
-        // Enables scrolling for the body
-        child: Padding(
-          padding: const EdgeInsets.all(16.0), // Padding around the column
-          child: Column(
-            children: [
-              // Music Course
-              CourseCard(
-                title: 'Music Course', // Title of the course
-                description:
-                    'Learn about music theory, composition, and instruments.', // Description of the course
-                onTap: () {
-                  // Navigate to Music Course Page when tapped
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MusicCourseScreen()),
-                  );
-                },
-              ),
-              const SizedBox(height: 16), // Spacer between course cards
+      body: FutureBuilder<QuerySnapshot>(
+        // Fetch courses from Firestore
+        future: FirebaseFirestore.instance.collection('courses').get(),
+        builder: (context, snapshot) {
+          // Check if data is loading
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-              // Literature Course
-              CourseCard(
-                title: 'Literature Course', // Title of the course
-                description:
-                    'Explore the world of literature, poetry, and storytelling.', // Description of the course
-                onTap: () {
-                  // Navigate to Literature Course Page when tapped
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LiteratureCourseScreen()),
-                  );
-                },
-              ),
-              const SizedBox(height: 16), // Spacer between course cards
+          // Check for errors
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Error fetching courses. Please try again later.'),
+            );
+          }
 
-              // Painting Course
-              CourseCard(
-                title: 'Painting Course', // Title of the course
-                description:
-                    'Dive into painting techniques, styles, and art history.', // Description of the course
-                onTap: () {
-                  // Navigate to Painting Course Page when tapped
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PaintingCourseScreen()),
-                  );
-                },
+          // If data is fetched successfully
+          if (snapshot.hasData) {
+            final courses = snapshot.data!.docs;
+
+            // Display list of courses
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: courses.map((course) {
+                    final courseData = course.data() as Map<String, dynamic>;
+
+                    return Column(
+                      children: [
+                        CourseCard(
+                          title: courseData['title'] ?? 'No Title',
+                          description:
+                              courseData['description'] ?? 'No Description',
+                          onTap: () {
+                            // Navigate to specific course page based on course ID
+                            switch (courseData['course_id']) {
+                              case 'music':
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MusicCourseScreen()),
+                                );
+                                break;
+                              case 'literature':
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LiteratureCourseScreen()),
+                                );
+                                break;
+                              case 'painting':
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PaintingCourseScreen()),
+                                );
+                                break;
+                              default:
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        'Course ${courseData['title']} is not yet available.'),
+                                  ),
+                                );
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    );
+                  }).toList(),
+                ),
               ),
-            ],
-          ),
-        ),
+            );
+          }
+
+          // Handle empty state
+          return const Center(child: Text('No courses available.'));
+        },
       ),
-      bottomNavigationBar: const BottomNavigation(
-          selectedIndex: 1), // Bottom Navigation bar with selected index
+      // bottomNavigationBar: const BottomNavigation(selectedIndex: 1),
     );
   }
 }

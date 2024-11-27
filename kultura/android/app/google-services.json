@@ -12,7 +12,20 @@
           "package_name": "com.example.kultura"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "748109815411-ghsd0uraqmomdquqhtutdi0qvkimqa7s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kultura",
+            "certificate_hash": "2a1dee224a96b0762fefc974a34a37b7f9add366"
+          }
+        },
+        {
+          "client_id": "748109815411-j66le1skmk1779b1ue5vcfjmbunen4l3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBAku7gwanS4rNKMZfmvP1q_T2jLx98kJw"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748109815411-j66le1skmk1779b1ue5vcfjmbunen4l3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "748109815411-843om6ao1lltuv7lq22ht2v3hvqf6fcc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kultura"
+              }
+            }
+          ]
         }
       }
     }

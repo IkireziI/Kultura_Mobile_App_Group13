@@ -1,14 +1,14 @@
 buildscript {
-    ext.kotlin_version = '1.8.22' // Version for Gradle 8.3
+    ext.kotlin_version = '1.8.22' 
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.0' // Version for Gradle 8.3
+        classpath 'com.android.tools.build:gradle:7.3.0' 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.15' // Add this if you're using Firebase
+        classpath 'com.google.gms:google-services:4.3.15' 
     }
 }
 
@@ -38,6 +38,7 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+apply plugin: 'com.google.gms.google-services'
 
 android {
 
@@ -80,4 +81,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
 }

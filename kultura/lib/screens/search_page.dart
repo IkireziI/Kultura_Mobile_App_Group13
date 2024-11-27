@@ -47,7 +47,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: KulturaHomePage(),
-      bottomNavigationBar: const BottomNavigation(selectedIndex: 2),
+      // bottomNavigationBar: const BottomNavigation(selectedIndex: 2),
     );
   }
 }
@@ -103,16 +103,7 @@ class KulturaHomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 50.0, bottom: 10.0),
-            child: Center(
-              child: Image.asset(
-                'assets/kultura.png',
-                height: 40,
-                fit: BoxFit.contain,
-              ),
-            ),
-          ),
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Container(
@@ -259,82 +250,82 @@ class KulturaHomePage extends StatelessWidget {
   }
 }
 
-class BottomNavigation extends StatefulWidget {
-  final int selectedIndex;
+// class BottomNavigation extends StatefulWidget {
+//   final int selectedIndex;
 
-  const BottomNavigation({super.key, required this.selectedIndex});
+//   const BottomNavigation({super.key, required this.selectedIndex});
 
-  @override
-  State<BottomNavigation> createState() => _BottomNavigationState();
-}
+//   @override
+//   State<BottomNavigation> createState() => _BottomNavigationState();
+// }
 
-class _BottomNavigationState extends State<BottomNavigation> {
-  late int _selectedIndex;
+// class _BottomNavigationState extends State<BottomNavigation> {
+//   late int _selectedIndex;
 
-  @override
-  void initState() {
-    super.initState();
-    _selectedIndex = widget.selectedIndex;
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     _selectedIndex = widget.selectedIndex;
+//   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home');
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/resource_center');
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/search');
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(context, '/opportunities_board');
-        break;
-      case 4:
-        Navigator.pushReplacementNamed(context, '/profile');
-        break;
-      default:
-        break;
-    }
-  }
+//   void _onItemTapped(int index) {
+//     setState(() {
+//       _selectedIndex = index;
+//     });
+//     switch (index) {
+//       case 0:
+//         Navigator.pushReplacementNamed(context, '/home');
+//         break;
+//       case 1:
+//         Navigator.pushReplacementNamed(context, '/resource_center');
+//         break;
+//       case 2:
+//         Navigator.pushReplacementNamed(context, '/search');
+//         break;
+//       case 3:
+//         Navigator.pushReplacementNamed(context, '/opportunities_board');
+//         break;
+//       case 4:
+//         Navigator.pushReplacementNamed(context, '/profile');
+//         break;
+//       default:
+//         break;
+//     }
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.purple,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      iconSize: 30,
-      onTap: _onItemTapped,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.auto_stories_outlined),
-          label: 'Resource Center',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined),
-          label: 'Search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.language_outlined),
-          label: 'Opportunities Board',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined),
-          label: 'Profile',
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return BottomNavigationBar(
+//       currentIndex: _selectedIndex,
+//       type: BottomNavigationBarType.fixed,
+//       selectedItemColor: Colors.purple,
+//       unselectedItemColor: Colors.grey,
+//       showSelectedLabels: false,
+//       showUnselectedLabels: false,
+//       iconSize: 30,
+//       onTap: _onItemTapped,
+//       items: const [
+//         BottomNavigationBarItem(
+//           icon: Icon(Icons.home_outlined),
+//           label: 'Home',
+//         ),
+//         BottomNavigationBarItem(
+//           icon: Icon(Icons.auto_stories_outlined),
+//           label: 'Resource Center',
+//         ),
+//         BottomNavigationBarItem(
+//           icon: Icon(Icons.search_outlined),
+//           label: 'Search',
+//         ),
+//         BottomNavigationBarItem(
+//           icon: Icon(Icons.language_outlined),
+//           label: 'Opportunities Board',
+//         ),
+//         BottomNavigationBarItem(
+//           icon: Icon(Icons.account_circle_outlined),
+//           label: 'Profile',
+//         ),
+//       ],
+//     );
+//   }
+// }

@@ -22,19 +22,6 @@ class _OpportunitiesBoardState extends State<OpportunitiesBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.purple,
-        title: SizedBox(
-          width: double.infinity,
-          child: Center(
-            child: Image.asset(
-              'assets/images/KULTURA.png',
-              height: 40,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-      ),
       body: Column(
         children: [
           SearchBarAndFilters(
@@ -63,7 +50,7 @@ class _OpportunitiesBoardState extends State<OpportunitiesBoard> {
                   itemCount: opportunities.length,
                   itemBuilder: (context, index) {
                     final opportunity = opportunities[index].data() as Map<String, dynamic>;
-                    opportunity['id'] = opportunities[index].id; // Include Firestore ID
+                    opportunity['id'] = opportunities[index].id;
                     return OpportunityCard(
                       opportunity: opportunity,
                       onEdit: () {
@@ -93,7 +80,7 @@ class _OpportunitiesBoardState extends State<OpportunitiesBoard> {
                       onApply: () async {
                         try {
                           await jobOpportunitiesService.applyToOpportunity(
-                              opportunity['id'], 'UwDPz9tsuph75xDKjPClshSTohs2'); // Example User ID
+                              opportunity['id'], 'UwDPz9tsuph75xDKjPClshSTohs2'); 
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Applied successfully')),
                           );
@@ -113,17 +100,19 @@ class _OpportunitiesBoardState extends State<OpportunitiesBoard> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // Navigate to the Add Opportunity Form for adding a new opportunity
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddOpportunityForm(onComplete: _refreshOpportunities, existingOpportunity: {},),
+              builder: (context) => AddOpportunityForm(
+                onComplete: _refreshOpportunities,
+              ),
             ),
           );
         },
         backgroundColor: Colors.purple,
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: const BottomNavigation(selectedIndex: 3),
     );
   }
 }
@@ -156,7 +145,6 @@ class SearchBarAndFilters extends StatelessWidget {
               fillColor: Colors.purple[200],
             ),
             onChanged: (query) {
-              // Implement search logic if needed
             },
           ),
           const SizedBox(height: 16),
@@ -204,8 +192,7 @@ class OpportunityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(12.0),
-      elevation: 4.0,
+      margin: const EdgeInsets.all(18.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -249,82 +236,3 @@ class OpportunityCard extends StatelessWidget {
   }
 }
 
-class BottomNavigation extends StatefulWidget {
-  final int selectedIndex;
-
-  const BottomNavigation({super.key, required this.selectedIndex});
-
-  @override
-  State<BottomNavigation> createState() => _BottomNavigationState();
-}
-
-class _BottomNavigationState extends State<BottomNavigation> {
-  late int _selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedIndex = widget.selectedIndex;
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        Navigator.pushNamed(context, '/home');
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/resource_center');
-        break;
-      case 2:
-        Navigator.pushNamed(context, '/search');
-        break;
-      case 3:
-        Navigator.pushNamed(context, '/opportunities_board');
-        break;
-      case 4:
-        Navigator.pushNamed(context, '/profile');
-        break;
-      default:
-        break;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.purple,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      iconSize: 30,
-      onTap: _onItemTapped,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.auto_stories_outlined),
-          label: 'Resource Center',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined),
-          label: 'Search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.language_outlined),
-          label: 'Opportunities Board',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined),
-          label: 'Profile',
-        ),
-      ],
-    );
-  }
-}
