@@ -1,124 +1,82 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:kultura/screens/opportunities_board.dart';
 
-class MarketplacePainting extends StatelessWidget {
-  const MarketplacePainting({super.key});
+class PaintingsPage extends StatelessWidget {
+  const PaintingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
-        title: SizedBox(
-          width:
-              double.infinity, // This makes the container take the full width
-          child: Center(
-            child: Image.asset(
-              'assets/images/KULTURA.png',
-              height: 40,
-              fit: BoxFit.contain,
+        title: const Text("Paintings"),
+        centerTitle: true,
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('artworks')
+            .where('category', isEqualTo: 'Paintings')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text("Error: ${snapshot.error}"));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text("No paintings available"));
+          }
+
+          final artworks = snapshot.data!.docs;
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
             ),
-          ),
-        ),
-      ),
-      // Main body content for the page
-      body: MarketplacePaintingContent(),
-      bottomNavigationBar: const BottomNavigation(
-          selectedIndex:
-              3), // Update selectedIndex to the appropriate tab index for the OpportunitiesBoard
-    );
-  }
-}
+            itemCount: artworks.length,
+            itemBuilder: (context, index) {
+              final artwork = artworks[index];
+              final artworkId = artwork.id;
+              final artworkTitle = artwork['title'];
+              final artworkImageUrl = artwork['imageUrl'];
+              final artworkPrice = artwork['price'];
 
-// Content
-class MarketplacePaintingContent extends StatelessWidget {
-  const MarketplacePaintingContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Search bar and filters section
-        const SearchBarAndFilters(),
-        // Expanded list of opportunities
-        Expanded(
-          child: const PaintsList(),
-        ),
-      ],
-    );
-  }
-}
-
-class SearchBarAndFilters extends StatelessWidget {
-  const SearchBarAndFilters({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          // Search bar for searching opportunities
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'Search',
-              prefixIcon: Icon(Icons.search_outlined),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              filled: true,
-              fillColor: Colors.grey[200],
-            ),
-          ),
-          const SizedBox(height: 16), // Space between search bar and filters
-          // Filter chips (Music, Painting, Literature)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              CustomFilterChip(label: 'Music', isSelected: false),
-              CustomFilterChip(label: 'Painting', isSelected: true),
-              CustomFilterChip(label: 'Literature', isSelected: false),
-            ],
-          ),
-        ],
+              return Card(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Image.network(
+                        artworkImageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.broken_image, size: 50),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            artworkTitle,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            "\$${artworkPrice}",
+                            style: const TextStyle(color: Colors.green),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
 }
-
-class CustomFilterChip extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-
-  const CustomFilterChip({
-    required this.label,
-    required this.isSelected,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ChoiceChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (bool selected) {
-        // Handle filter selection logic
-      },
-      selectedColor: Colors.purple,
-      labelStyle: TextStyle(
-        color: isSelected ? Colors.white : Colors.black,
-      ),
-    );
-  }
-}
-
-// Paints List Class
-class PaintsList extends StatelessWidget {
-  const PaintsList({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-

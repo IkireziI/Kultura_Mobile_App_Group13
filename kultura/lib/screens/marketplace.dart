@@ -1,109 +1,329 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class MarketplacePage extends StatelessWidget {
-  const MarketplacePage({super.key});
+import 'home.dart';
+
+class MarketplacePage extends StatefulWidget {
+  const MarketplacePage({Key? key}) : super(key: key);
+
+  @override
+  _MarketplacePageState createState() => _MarketplacePageState();
+}
+
+class _MarketplacePageState extends State<MarketplacePage> {
+  final List<String> _categories = ["All", "Paintings", "Sculptures", "Music", "Literature"];
+  String _selectedCategory = "All";
+  int _selectedIndex = 0;
+  final String _userId = "sampleUserId"; // Replace with real user ID logic
+
+  // Form controllers for payment
+  final _paymentFormKey = GlobalKey<FormState>();
+  final TextEditingController _cardNumberController = TextEditingController();
+  final TextEditingController _expiryDateController = TextEditingController();
+  final TextEditingController _cvvController = TextEditingController();
+
+  // Fetch wishlist state for a specific artwork
+  Future<bool> _iswishlistd(String artworkId) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('wishlists')
+        .doc('$_userId-$artworkId')
+        .get();
+    return doc.exists;
+  }
+
+  // Toggle wishlist state in Firestore
+  Future<void> _togglewishlist(String artworkId) async {
+    final wishlistDoc = FirebaseFirestore.instance
+        .collection('wishlists')
+        .doc('$_userId-$artworkId');
+
+    final docSnapshot = await wishlistDoc.get();
+    if (docSnapshot.exists) {
+      // If already wishlistd, remove it
+      await wishlistDoc.delete();
+    } else {
+      // Add to wishlists
+      await wishlistDoc.set({
+        'userId': _userId,
+        'artworkId': artworkId,
+        'wishlistdAt': Timestamp.now(),
+      });
+    }
+
+    setState(() {}); // Trigger UI update
+  }
+
+  // Show payment form
+  void _showPaymentForm(BuildContext context, String artworkTitle) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Payment for '$artworkTitle'"),
+          content: Form(
+            key: _paymentFormKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _cardNumberController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: "Card Number",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your card number.";
+                    }
+                    if (value.length < 16) {
+                      return "Card number must be 16 digits.";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _expiryDateController,
+                  keyboardType: TextInputType.datetime,
+                  decoration: const InputDecoration(
+                    labelText: "Expiry Date (MM/YY)",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter the expiry date.";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  controller: _cvvController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: "CVV",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter the CVV.";
+                    }
+                    if (value.length != 3) {
+                      return "CVV must be 3 digits.";
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (_paymentFormKey.currentState!.validate()) {
+                  Navigator.pop(context); // Close the payment form dialog
+                  _showSuccessAlert(context); // Show the success alert
+                }
+              },
+              child: const Text("Pay"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Show success alert
+  void _showSuccessAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.check_circle, color: Color.fromARGB(255, 139, 18, 129), size: 60),
+              const SizedBox(height: 20),
+              const Text(
+                "Paid!",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Thank you for buying kultura's art!",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("OK"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Navigation logic for the bottom navigation bar
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    // Navigate to respective screens based on the index
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/home');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/resource_center');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/search');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/opportunities_board');
+        break;
+      case 4:
+        Navigator.pushNamed(context, '/profile');
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<String> imagePaths = [
-      'assets/Rectangle103.png',
-      'assets/Rectangle104.png',
-      'assets/Rectangle105.png',
-      'assets/Rectangle106.png',
-    ];
-
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.purple,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 40,
-              child: Image.asset(
-                'assets/images/KULTURA.png',
-                fit: BoxFit.contain,
-              ),
-            ),
-          ],
-        ),
-        actions: const [
-          SizedBox(width: 48)
-        ], // Balances the AppBar with leading icon space
+        title: const Text("Marketplace"),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Marketplace',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-
-            // Search and Filters Section
-            const SearchAndFilters(),
-            const SizedBox(height: 10),
-
-            // Location
-            Row(
-              children: [
-                Icon(Icons.location_on, color: Colors.grey),
-                Text(
-                  'Kigali, Rwanda',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ],
+            // Category filters
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: _categories.map((category) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: FilterChip(
+                      label: Text(category),
+                      selected: _selectedCategory == category,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          _selectedCategory = selected ? category : "All";
+                        });
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
             const SizedBox(height: 20),
+            // Display artworks
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _selectedCategory == "All"
+                    ? FirebaseFirestore.instance.collection('artworks').snapshots()
+                    : FirebaseFirestore.instance
+                        .collection('artworks')
+                        .where('category', isEqualTo: _selectedCategory)
+                        .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text("Error: ${snapshot.error}"));
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text("No artworks available"));
+                  }
 
-            // GridView Section in a Flexible widget
-            Flexible(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 3 / 4,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: imagePaths.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      // Handle onTap for each item
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: AssetImage(imagePaths[index]),
+                  final artworks = snapshot.data!.docs;
+                  return GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: artworks.length,
+                    itemBuilder: (context, index) {
+                      final artwork = artworks[index];
+                      final artworkId = artwork.id;
+                      final artworkTitle = artwork['title'];
+                      final artworkImageUrl = artwork['imageUrl'];
+                      final artworkPrice = artwork['price'];
+
+                      return Card(
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: Image.network(
+                                artworkImageUrl,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.broken_image, size: 50),
                               ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    artworkTitle,
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    "\$${artworkPrice}",
+                                    style: const TextStyle(color: Color.fromARGB(255, 117, 11, 133)),
+                                  ),
+                                  FutureBuilder<bool>(
+                                    future: _iswishlistd(artworkId),
+                                    builder: (context, snapshot) {
+                                      final iswishlistd = snapshot.data ?? false;
+                                      return Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(
+                                              iswishlistd
+                                                  ? Icons.favorite
+                                                  : Icons.favorite_border,
+                                              color:
+                                                  iswishlistd ? const Color.fromARGB(255, 144, 8, 194) : Colors.grey,
+                                            ),
+                                            onPressed: () =>
+                                                _togglewishlist(artworkId),
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.shopping_cart),
+                                            onPressed: () =>
+                                                _showPaymentForm(context, artworkTitle),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          index % 2 == 0 ? '25,000 RWF' : '68,000 RWF',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   );
                 },
               ),
@@ -112,197 +332,6 @@ class MarketplacePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: const BottomNavigation(selectedIndex: 3),
-    );
-  }
-}
-
-// SearchAndFilters and BottomNavigation classes remain unchanged
-class SearchAndFilters extends StatefulWidget {
-  const SearchAndFilters({super.key});
-
-  @override
-  State<SearchAndFilters> createState() => _SearchAndFiltersState();
-}
-
-class _SearchAndFiltersState extends State<SearchAndFilters> {
-  bool _isFilterVisible = false;
-  String selectedCategory = 'Painting'; // Default to 'Painting'
-  String searchQuery = '';
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          onChanged: (value) {
-            setState(() {
-              searchQuery = value; // Update search query
-            });
-            // Implement filtering logic if needed
-          },
-          decoration: InputDecoration(
-            hintText: 'Search Opportunities',
-            prefixIcon: const Icon(Icons.search_outlined),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            filled: true,
-            fillColor: Colors.purple[200],
-          ),
-        ),
-        const SizedBox(height: 16),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isFilterVisible = !_isFilterVisible;
-                  });
-                },
-                icon: Icon(
-                  _isFilterVisible ? Icons.close : Icons.filter_list,
-                  color: Colors.black,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: ['Music', 'Painting', 'Literature'].map((category) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: FilterChip(
-                      label: Text(category),
-                      selected: selectedCategory == category,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          selectedCategory = selected ? category : '';
-                        });
-                        if (selected) {
-                          // Navigate to the respective route based on the selected category
-                          switch (category) {
-                            case 'Music':
-                              Navigator.pushNamed(context, '/market_music');
-                              break;
-                            case 'Literature':
-                              Navigator.pushNamed(
-                                  context, '/market_literature');
-                              break;
-                            case 'Painting':
-                              // You can handle the painting case as needed
-                              break;
-                          }
-                        }
-                      },
-                      backgroundColor: Colors.purple[100],
-                      selectedColor: Colors.purple,
-                      labelStyle: TextStyle(
-                        color: selectedCategory == category
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        side: const BorderSide(color: Colors.purple, width: 1),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(width: 16),
-            ],
-          ),
-        ),
-        if (_isFilterVisible)
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Column(
-              children: [
-                // Additional filters can be added here
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class BottomNavigation extends StatefulWidget {
-  final int selectedIndex;
-
-  const BottomNavigation({super.key, required this.selectedIndex});
-
-  @override
-  State<BottomNavigation> createState() => _BottomNavigationState();
-}
-
-class _BottomNavigationState extends State<BottomNavigation> {
-  late int _selectedIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedIndex = widget.selectedIndex;
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home');
-        break;
-      case 1:
-        Navigator.pushReplacementNamed(context, '/resource_center');
-        break;
-      case 2:
-        Navigator.pushReplacementNamed(context, '/search');
-        break;
-      case 3:
-        Navigator.pushReplacementNamed(context, '/opportunities_board');
-        break;
-      case 4:
-        Navigator.pushReplacementNamed(context, '/profile');
-        break;
-      default:
-        break;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: _selectedIndex,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.purple,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      iconSize: 30,
-      onTap: _onItemTapped,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.auto_stories_outlined),
-          label: 'Resource Center',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined),
-          label: 'Search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.language_outlined),
-          label: 'Opportunities Board',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_outlined),
-          label: 'Profile',
-        ),
-      ],
     );
   }
 }

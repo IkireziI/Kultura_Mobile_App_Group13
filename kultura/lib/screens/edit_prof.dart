@@ -22,12 +22,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
+     print('Full userData: ${widget.userData}');
+     print('User ID: ${widget.userData['id']}');
     _phoneController = TextEditingController(
         text: widget.userData['phone'] ?? 'Not Provided');
     _occupationController = TextEditingController(
         text: widget.userData['occupation'] ?? 'Not Provided');
     _nationalityController = TextEditingController(
         text: widget.userData['nationality'] ?? 'Not Provided');
+
 
     // Initialize the role with the current user's role
     _selectedRole = widget.userData['role'] ?? _roles.first;
@@ -168,30 +171,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  void _updateProfile() async {
-    var userDocRef =
-        FirebaseFirestore.instance.collection('users').doc(widget.userData['id']);
-        print("Document ID: ${widget.userData['id']}");
-
-    final updatedData = {
-      'phone': _phoneController.text,
-      'occupation': _occupationController.text,
-      'nationality': _nationalityController.text,
-      'role': _selectedRole,
-    };
-
-    try {
-      await userDocRef.update(updatedData);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
-      );
-
-      Navigator.pop(context, updatedData);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to update profile')),
-      );
-    }
+void _updateProfile() async {
+  if (widget.userData['id'] == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Invalid user ID')),
+    );
+    return;
   }
-}
+
+  var userDocRef =
+      FirebaseFirestore.instance.collection('users').doc(widget.userData['id']);
+
+  final updatedData = {
+    'phone': _phoneController.text,
+    'occupation': _occupationController.text,
+    'nationality': _nationalityController.text,
+    'role': _selectedRole,
+  };
+
+  try {
+    // Check if document exists before updating
+    var docSnapshot = await userDocRef.get();
+    if (!docSnapshot.exists) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User document not found')),
+      );
+      return;
+    }
+
+    await userDocRef.update(updatedData);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile updated successfully')),
+    );
+
+    Navigator.pop(context, updatedData);
+  } catch (e) {
+    print('Update Error: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to update profile: $e')),
+    );
+  }
+}}

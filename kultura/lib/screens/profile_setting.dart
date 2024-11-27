@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/screens/faq.dart';
 import 'package:kultura/screens/log_in.dart';
 import 'package:kultura/screens/settings.dart';
 import 'package:kultura/screens/form.dart';
@@ -54,9 +55,16 @@ class ProfileSettingsPage extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                const ProfileMenuItem(
-                  icon: Icons.person_outline,
-                  text: 'Personal Information',
+                 ProfileMenuItem(
+                  icon: Icons.info_outline,
+                  text: 'Account Information',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UserProfileScreen()),
+                    );
+                  },
                 ),
                 ProfileMenuItem(
                   icon: Icons.folder_open,
@@ -81,20 +89,17 @@ class ProfileSettingsPage extends StatelessWidget {
                     );
                   },
                 ),
-                ProfileMenuItem(
-                  icon: Icons.info_outline,
-                  text: 'Account Information',
+               
+               ProfileMenuItem(
+                  icon: Icons.help_outline,
+                  text: 'FAQs',
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => UserProfileScreen()),
+                          builder: (context) =>  FAQPage()),
                     );
                   },
-                ),
-                const ProfileMenuItem(
-                  icon: Icons.help_outline,
-                  text: 'Help & Support',
                 ),
                 ProfileMenuItem(
                   icon: Icons.logout,

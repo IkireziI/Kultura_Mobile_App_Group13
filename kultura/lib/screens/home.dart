@@ -353,6 +353,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
             '/opportunities_board'); // Navigates to Opportunities board
         break;
       case 4:
+        Navigator.pushReplacementNamed(context,
+            '/marketplace'); // Navigates to marketplace
+        break;  
+      case 5:
         Navigator.pushReplacementNamed(
             context, '/profile'); // Navigates to Profile Screen
         break;
@@ -388,6 +392,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
         BottomNavigationBarItem(
           icon: Icon(Icons.language_outlined),
           label: 'Opportunities Board',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.storefront),
+          label: 'Market place',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle_outlined),

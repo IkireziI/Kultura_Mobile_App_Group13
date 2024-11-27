@@ -54,9 +54,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             'uid': currentUser.uid,
             'name': userDoc['name'] ?? currentUser.displayName ?? 'New User',
             'phone': 'Not provided',
-            'registeredAt': userDoc['Created'] != null
-                ? (userDoc['Created'] as Timestamp).toDate().toString()
-                : 'Not available',
+            'registeredAt': 'not available'
           };
           _isLoading = false;
         });

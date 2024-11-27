@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kultura/screens/add_work.dart';
 import 'package:kultura/screens/changePassword.dart';
+import 'package:kultura/screens/view_portfolios.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -48,11 +50,15 @@ class SettingsPage extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           ListTile(
-            leading: const Icon(Icons.manage_accounts, color: Colors.grey),
-            title: const Text('Manage Account', style: TextStyle(fontSize: 18)),
+            leading: const Icon(Icons.folder_open, color: Colors.grey),
+            title: const Text('View portfolios', style: TextStyle(fontSize: 18)),
             onTap: () {
-              // Handle tap
-            },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewPortfoliosPage()),
+                    );
+                  },
           ),
           ListTile(
             leading: const Icon(Icons.lock, color: Colors.grey),
@@ -75,11 +81,15 @@ class SettingsPage extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.security, color: Colors.grey),
-            title: const Text('Privacy and security',
+            title: const Text('Add Art',
                 style: TextStyle(fontSize: 18)),
             onTap: () {
-              // Handle tap
-            },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddArtworkPage()),
+                    );
+                  },
           ),
         ],
       ),
