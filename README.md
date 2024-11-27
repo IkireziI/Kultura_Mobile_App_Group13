@@ -17,7 +17,7 @@
 ### **Prerequisites**
 - **Android**: Android 7.0 (Nougat) and above
 - **iOS**: iOS 12.0 and above
-- **Flutter SDK**: The app is built using **Flutter**, so developers should have Flutter installed along with dependencies like **Firebase** for authentication and cloud storage.
+- **Flutter SDK**: The app is built using **Flutter**, so developers should have Flutter installed along with dependencies like **Firebase** and **Java** for authentication and cloud storage.
 
 ### **Installation Steps**
 1. Clone the repository:
