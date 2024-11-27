@@ -129,7 +129,7 @@ class EmbeddedVideoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final YoutubePlayerController _controller = YoutubePlayerController(
+    final YoutubePlayerController controller = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
       flags: const YoutubePlayerFlags(autoPlay: false, mute: false),
     );
@@ -190,7 +190,7 @@ class EmbeddedVideoCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             YoutubePlayer(
-              controller: _controller,
+              controller: controller,
               showVideoProgressIndicator: true,
             ),
             const SizedBox(height: 16),
