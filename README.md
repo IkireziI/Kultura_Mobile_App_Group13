@@ -2,6 +2,8 @@
 *Version: 1.0*  
 *Last Updated: November 28, 2024*
 
+See our App Demo Video [here](https://drive.google.com/file/d/1W7DZy0ieANb9GheTSisrtjDadUhJm097/view?usp=sharing)
+
 ## **Project Overview**
 **Kultura** is a mobile application that provides a platform for African artists to showcase their work, connect with buyers and investors, and access educational resources. The app fosters appreciation of African art, culture, and design while also supporting job creation and skill development through its unique blend of a marketplace and learning hub.
 
@@ -93,12 +95,12 @@ We welcome contributions! Here’s how you can help:
 5. Open a pull request.
 
 ## **Team Members**
-- **Eunice Adewusi (Climiradi)**: Project Lead, SRS Documentation
-- **Sifa Mwachoni**: Backend Developer, Flutter Features
-- **Lilian Kayitesi**: Market Research, Competitor Analysis
-- **Ines Ikirezi**: Feature Design, Educational Resources
-- **Ruth Iradukunda**: Appendix, Market Research
-- **Bryan Aurel Bakongo**: Lead Product Designer
+- **Eunice Adewusi (Climiradi)**: Project Lead
+- **Sifa Mwachoni**
+- **Lilian Kayitesi**
+- **Ines Ikirezi**
+- **Ruth Iradukunda**
+- **Bryan Aurel Bakongo**
 
 ## **Contact Information**
 For more information, feel free to contact Eunice at e.adewusi@alustudent.com
