@@ -70,9 +70,8 @@ class PaintingCourseScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('videos')
-                    .snapshots(),
+                stream:
+                    FirebaseFirestore.instance.collection('courses').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -87,7 +86,7 @@ class PaintingCourseScreen extends StatelessWidget {
                       final video = videos[index];
                       return EmbeddedVideoCard(
                         videoId: video.id,
-                        videoUrl: video['url'],
+                        videoUrl: video['videoUrl'],
                         title: video['title'],
                         description: video['description'],
                       );
@@ -129,8 +128,42 @@ class EmbeddedVideoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final YoutubePlayerController _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
+    final videoIdFromUrl = YoutubePlayer.convertUrlToId(videoUrl);
+
+    if (videoIdFromUrl == null) {
+      return Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Invalid video URL',
+                style: TextStyle(color: Colors.red),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                description,
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final YoutubePlayerController controller = YoutubePlayerController(
+      initialVideoId: videoIdFromUrl,
       flags: const YoutubePlayerFlags(autoPlay: false, mute: false),
     );
 
@@ -170,7 +203,7 @@ class EmbeddedVideoCard extends StatelessWidget {
                       );
                     } else if (value == 'delete') {
                       FirebaseFirestore.instance
-                          .collection('videos')
+                          .collection('courses')
                           .doc(videoId)
                           .delete();
                     }
@@ -190,7 +223,7 @@ class EmbeddedVideoCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             YoutubePlayer(
-              controller: _controller,
+              controller: controller,
               showVideoProgressIndicator: true,
             ),
             const SizedBox(height: 16),
@@ -217,24 +250,40 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
   final TextEditingController _urlController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  void _addVideo() {
+  void _addVideo() async {
     final title = _titleController.text;
     final url = _urlController.text;
     final description = _descriptionController.text;
 
     if (title.isEmpty || url.isEmpty || description.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('All fields are required')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('All fields are required')),
+        );
+      }
       return;
     }
 
-    FirebaseFirestore.instance.collection('videos').add({
-      'title': title,
-      'url': url,
-      'description': description,
-    }).then((_) {
-      Navigator.pop(context);
-    });
+    try {
+      await FirebaseFirestore.instance.collection('courses').add({
+        'title': title,
+        'videoUrl': url,
+        'description': description,
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Video added successfully')),
+        );
+        Navigator.pop(context);
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to add video: $error')),
+        );
+      }
+    }
   }
 
   @override
@@ -300,30 +349,40 @@ class _EditVideoScreenState extends State<EditVideoScreen> {
     _descriptionController = TextEditingController(text: widget.description);
   }
 
-  void _updateVideo() {
+  void _updateVideo() async {
     final title = _titleController.text;
     final url = _urlController.text;
     final description = _descriptionController.text;
 
     if (title.isEmpty || url.isEmpty || description.isEmpty) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('All fields are required')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('All fields are required')),
+        );
+      }
       return;
     }
 
-    FirebaseFirestore.instance
-        .collection('videos')
-        .doc(widget.videoId)
-        .update({
-      'title': title,
-      'url': url,
-      'description': description,
-    }).then((_) {
-      Navigator.pop(context);
-    }).catchError((error) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Failed to update: $error')));
-    });
+    try {
+      await FirebaseFirestore.instance
+          .collection('courses')
+          .doc(widget.videoId)
+          .update({
+        'title': title,
+        'videoUrl': url,
+        'description': description,
+      });
+
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update: $error')),
+        );
+      }
+    }
   }
 
   @override
