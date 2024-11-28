@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kultura/screens/add_work.dart';
-import 'package:kultura/screens/changePassword.dart';
+import 'package:kultura/screens/changepassword.dart';
 import 'package:kultura/screens/view_portfolios.dart';
 
 class SettingsScreen extends StatelessWidget {

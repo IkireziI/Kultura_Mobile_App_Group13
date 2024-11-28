@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
+
   @override
-  _ChangePasswordScreenState createState() => _ChangePasswordScreenState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
@@ -65,19 +67,23 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           _isLoading = false;
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Password changed successfully!')),
-        );
-        Navigator.pop(context);  // Close the screen after password is changed
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Password changed successfully!')),
+          );
+          Navigator.pop(context);  // Close the screen after password is changed
+        }
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
         _errorMessage = 'Failed to change password: $e';
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_errorMessage)),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_errorMessage)),
+        );
+      }
     }
   }
 
@@ -126,13 +132,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _isLoading ? null : _changePassword,
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text('Change Password'),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 
               ),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text('Change Password'),
             ),
           ],
         ),

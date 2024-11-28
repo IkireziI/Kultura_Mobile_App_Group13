@@ -233,7 +233,9 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
       'url': url,
       'description': description,
     }).then((_) {
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     });
   }
 
@@ -319,10 +321,12 @@ class _EditVideoScreenState extends State<EditVideoScreen> {
       'url': url,
       'description': description,
     }).then((_) {
-      Navigator.pop(context);
+      if (mounted) {Navigator.pop(context);}
     }).catchError((error) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Failed to update: $error')));
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Failed to update: $error')));
+      }
     });
   }
 

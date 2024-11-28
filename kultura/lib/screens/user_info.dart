@@ -5,8 +5,10 @@ import 'package:kultura/screens/edit_prof.dart';
 // import 'package:kultura/screens/edit_prof.dart';
 
 class UserProfileScreen extends StatefulWidget {
+  const UserProfileScreen({super.key});
+
   @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
@@ -63,9 +65,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       setState(() {
         _isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching user data: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error fetching user data: $e')),
+        );
+      }
     }
   }
 
@@ -134,11 +138,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             await _auth.signOut();
                             Navigator.of(context).pushReplacementNamed('/login');
                           },
-                          child: const Text('Logout'),
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: const Color.fromARGB(255, 199, 50, 171),
                           ),
+                          child: const Text('Logout'),
                         ),
                       ),
                     ],

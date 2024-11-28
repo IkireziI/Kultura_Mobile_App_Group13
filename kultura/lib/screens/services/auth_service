@@ -1,0 +1,43 @@
+class AuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Sign up method
+  Future<User?> signup({
+    required String name,
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      // Create user with email and password
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Get the user ID
+      User? user = userCredential.user;
+
+      // Create a document in Firestore to store user data
+      await _firestore.collection('users').doc(user?.uid).set({
+        'name': name,
+        'email': email,
+        'createdAt': FieldValue.serverTimestamp(),
+        // Add other user data you might need
+        'username': '', // Will be updated later
+        'profilePictureUrl': '', // Will be updated later
+        'posts': [], // Empty list for future posts
+        'stories': [], // Empty list for future stories
+      });
+
+      return user;
+    } on FirebaseAuthException catch (e) {
+      throw e; // Handle Firebase errors (e.g., email already in use)
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // You can also add other methods like login(), logout(), etc.
+}

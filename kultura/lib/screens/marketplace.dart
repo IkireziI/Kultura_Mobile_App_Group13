@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kultura/screens/literature_opportunities.dart';
 
-import 'home.dart';
+import 'package:kultura/screens/home.dart';
 
 class MarketplacePage extends StatefulWidget {
-  const MarketplacePage({Key? key}) : super(key: key);
+  const MarketplacePage({super.key});
 
   @override
-  _MarketplacePageState createState() => _MarketplacePageState();
+  State<MarketplacePage> createState() => _MarketplacePageState();
 }
 
 class _MarketplacePageState extends State<MarketplacePage> {
   final List<String> _categories = ["All", "Paintings", "Sculptures", "Music", "Literature"];
   String _selectedCategory = "All";
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
   final String _userId = "sampleUserId"; // Replace with real user ID logic
 
   // Form controllers for payment
@@ -263,7 +263,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    "\$${artworkPrice}",
+                                    "\$$artworkPrice",
                                     style: const TextStyle(color: Color.fromARGB(255, 117, 11, 133)),
                                   ),
                                   FutureBuilder<bool>(
