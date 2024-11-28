@@ -58,6 +58,8 @@ class AppliBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double iconSize = MediaQuery.of(context).size.width * 0.08;
+
     return AppBar(
       centerTitle: true,
       elevation: 0,
@@ -69,7 +71,7 @@ class AppliBar extends StatelessWidget {
           elevation: 5,
           color: Colors.grey,
           child: IconButton(
-            icon: const Icon(Icons.settings, size: 30),
+            icon: Icon(Icons.settings, size: iconSize),
             onPressed: () {
               Navigator.push(
                 context,
@@ -81,10 +83,6 @@ class AppliBar extends StatelessWidget {
           ),
         ),
       ),
-      title: Image.asset(
-        'assets/kultura.png',
-        height: 40
-      ),
     );
   }
 }
@@ -95,18 +93,21 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double avatarRadius = screenWidth * 0.15;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Spacer(),
           // Profile Picture
           CircleAvatar(
-            radius: 60,
+            radius: avatarRadius,
             backgroundImage: const AssetImage('assets/pp.jpg'),
           ),
-          const SizedBox(width: 30),
+          SizedBox(width: screenWidth * 0.08),
 
           // Profile Stats
           Column(
@@ -178,10 +179,12 @@ class ProfileInfos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       padding: const EdgeInsets.all(0),
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      width: screenWidth * 0.9,
+      margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -204,8 +207,11 @@ class ProfileInfos extends StatelessWidget {
               const SizedBox(width: 5),
               Center(
                 child: Text(
-                '@Bry_aurel',
-                style: TextStyle(color: Colors.black),
+                  '@Bry_aurel',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: screenWidth * 0.04,
+                  ),
                 ),
               ),
               const Spacer(),
@@ -216,9 +222,12 @@ class ProfileInfos extends StatelessWidget {
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Text(
+                child: Text(
                   'Artist',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: screenWidth * 0.03,
+                  ),
                 ),
               ),
             ],
@@ -309,7 +318,7 @@ class _GridBarState extends State<GridBar> with SingleTickerProviderStateMixin {
           child: TabBarView(
             controller: _tabController,
             children: [
-              const PostGrid(),
+              PostGrid(),
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -339,25 +348,28 @@ class _GridBarState extends State<GridBar> with SingleTickerProviderStateMixin {
 
 // Post Grid
 class PostGrid extends StatelessWidget {
-  const PostGrid({super.key});
+  PostGrid({super.key});
 
-  @override
+  // List of posts
+  final List<String> images = [
+    'assets/post1.jpg',
+    'assets/post2.jpeg',
+    'assets/post3.jpeg',
+    'assets/post4.jpg',
+  ];
+
+    @override
   Widget build(BuildContext context) {
-    // List of Posts
-    final List<String> images = [
-      'assets/post1.jpg',
-      'assets/post2.jpeg',
-      'assets/post3.jpeg',
-      'assets/post4.jpg',
-    ];
+    final double screenWidth = MediaQuery.of(context).size.width;
+    int crossAxisCount = screenWidth < 600 ? 3 : 5;
     
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           childAspectRatio: 1,
@@ -369,7 +381,6 @@ class PostGrid extends StatelessWidget {
               image: DecorationImage(
                 image: AssetImage(images[index]),
                 fit: BoxFit.cover,
-                onError: (_, __) => AssetImage('assets/placeholder.jpg'),
               ),
               borderRadius: BorderRadius.circular(8),
             ),
