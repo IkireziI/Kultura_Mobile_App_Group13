@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class PaintingCourseScreen extends StatelessWidget {
+class PaintingCourseScreen extends StatefulWidget {
   const PaintingCourseScreen({super.key});
+
+  @override
+  PaintingCourseScreenState createState() => PaintingCourseScreenState();
+}
+
+class PaintingCourseScreenState extends State<PaintingCourseScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +62,31 @@ class PaintingCourseScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextField(
+                  controller: _searchController,
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value.toLowerCase();
+                    });
+                  },
                   decoration: InputDecoration(
-                    hintText: 'Search',
+                    hintText: 'Search courses',
                     hintStyle: const TextStyle(fontStyle: FontStyle.italic),
                     prefixIcon: const Icon(Icons.search, color: Colors.black),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.filter_list, color: Colors.black),
-                      onPressed: () {},
-                    ),
+                    suffixIcon: _searchQuery.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear, color: Colors.black),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() {
+                                _searchQuery = '';
+                              });
+                            },
+                          )
+                        : IconButton(
+                            icon: const Icon(Icons.filter_list,
+                                color: Colors.black),
+                            onPressed: () {},
+                          ),
                     border: InputBorder.none,
                   ),
                 ),
@@ -70,8 +95,9 @@ class PaintingCourseScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream:
-                    FirebaseFirestore.instance.collection('courses').snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection('courses')
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -79,11 +105,29 @@ class PaintingCourseScreen extends StatelessWidget {
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return const Center(child: Text('No Videos Available'));
                   }
-                  final videos = snapshot.data!.docs;
+
+                  // Filter videos based on search query
+                  final filteredVideos = snapshot.data!.docs.where((video) {
+                    final title = video['title'].toString().toLowerCase();
+                    final description =
+                        video['description'].toString().toLowerCase();
+                    return title.contains(_searchQuery) ||
+                        description.contains(_searchQuery);
+                  }).toList();
+
+                  if (filteredVideos.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No courses match your search',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+
                   return ListView.builder(
-                    itemCount: videos.length,
+                    itemCount: filteredVideos.length,
                     itemBuilder: (context, index) {
-                      final video = videos[index];
+                      final video = filteredVideos[index];
                       return EmbeddedVideoCard(
                         videoId: video.id,
                         videoUrl: video['videoUrl'],
@@ -102,7 +146,7 @@ class PaintingCourseScreen extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddVideoScreen()),
+            MaterialPageRoute(builder: (context) => const AddVideoScreen()),
           );
         },
         backgroundColor: Colors.purple,
@@ -128,8 +172,42 @@ class EmbeddedVideoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final YoutubePlayerController _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
+    final videoIdFromUrl = YoutubePlayer.convertUrlToId(videoUrl);
+
+    if (videoIdFromUrl == null) {
+      return Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Invalid video URL',
+                style: TextStyle(color: Colors.red),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                description,
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final YoutubePlayerController controller = YoutubePlayerController(
+      initialVideoId: videoIdFromUrl,
       flags: const YoutubePlayerFlags(autoPlay: false, mute: false),
     );
 
@@ -230,13 +308,26 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
       return;
     }
 
-    FirebaseFirestore.instance.collection('videos').add({
-      'title': title,
-      'url': url,
-      'description': description,
-    }).then((_) {
-      Navigator.pop(context);
-    });
+    try {
+      await FirebaseFirestore.instance.collection('courses').add({
+        'title': title,
+        'videoUrl': url,
+        'description': description,
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Video added successfully')),
+        );
+        Navigator.pop(context);
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to add video: $error')),
+        );
+      }
+    }
   }
 
   @override
@@ -316,19 +407,26 @@ class _EditVideoScreenState extends State<EditVideoScreen> {
       return;
     }
 
-    FirebaseFirestore.instance
-        .collection('videos')
-        .doc(widget.videoId)
-        .update({
-      'title': title,
-      'url': url,
-      'description': description,
-    }).then((_) {
-      Navigator.pop(context);
-    }).catchError((error) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Failed to update: $error')));
-    });
+    try {
+      await FirebaseFirestore.instance
+          .collection('courses')
+          .doc(widget.videoId)
+          .update({
+        'title': title,
+        'videoUrl': url,
+        'description': description,
+      });
+
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update: $error')),
+        );
+      }
+    }
   }
 
   @override
