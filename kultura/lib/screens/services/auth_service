@@ -1,3 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -33,11 +37,39 @@ class AuthService {
 
       return user;
     } on FirebaseAuthException catch (e) {
-      throw e; // Handle Firebase errors (e.g., email already in use)
+      if (e.code == 'email-already-in-use') {
+        throw Exception("The email is already in use.");
+      } else if (e.code == 'weak-password') {
+        throw Exception("The password is too weak.");
+      } else {
+        throw Exception("Something went wrong. Please try again.");
+      }
     } catch (e) {
       rethrow;
     }
   }
 
-  // You can also add other methods like login(), logout(), etc.
+  // Sign in method
+  Future<String> signin({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      // Attempt to sign in the user with email and password
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      return "Successfully logged in";
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return "No user found for that email.";
+      } else if (e.code == 'wrong-password') {
+        return "Wrong password provided.";
+      } else {
+        return "Something went wrong. Please try again later.";
+      }
+    } catch (e) {
+      return "An unknown error occurred: $e";
+    }
+  }
 }
