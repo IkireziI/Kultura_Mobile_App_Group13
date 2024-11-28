@@ -199,6 +199,7 @@ class ProfileInfos extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Spacer(),
               const Icon(Icons.person, size: 16, color: Colors.black),
               const SizedBox(width: 5),
               Center(
