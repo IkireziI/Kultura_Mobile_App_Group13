@@ -1,38 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/screens/marketplace.dart';
-import 'package:kultura/screens/search_page.dart';
-import 'package:kultura/screens/profile.dart';
-import 'package:kultura/screens/opportunities_board.dart';
-import 'package:kultura/screens/courses/resource_center.dart';
 
-
-
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({super.key});
-
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
-
-  // Define an array of pages for the bottom navigation bar
-  final List<Widget> _pages = [
-    const HomePage(), // Home
-    const ArtisticCourseScreen(),  // Resource CenterR
-    const SearchScreen(),    // Search
-    const OpportunitiesBoard(), // Opportunities Board
-    const MarketplacePage(),
-    const Profile(),   // Profile
-  ];
-
-  // Handle navigation bar item tap
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,74 +14,45 @@ class _HomeState extends State<Home> {
         ),
         backgroundColor: Colors.purple,
       ),
-      body: _pages[_selectedIndex], // Display the selected page
+      body: Column(
+        children: [
+          // Stories Section
+          const _StoriesSection(),
+          // Posts Section
+          Expanded(
+            child: _PostsSection(),
+          ),
+        ],
+      ),
+      floatingActionButton: const _AddPostButton(),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.purple,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        iconSize: 30,
-        onTap: _onItemTapped,
+        currentIndex: 0,
+        onTap: (index) {
+          // Navigation logic if needed
+        },
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.auto_stories_outlined),
-            label: 'Resource Center',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search_outlined),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.language_outlined),
-            label: 'Opportunities Board',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.storefront),
-            label: 'Market Place',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: 'Profile',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Explore"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
       ),
     );
   }
 }
 
-// Define the Home page with Stories and Posts
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+// Stories Section
+class _StoriesSection extends StatelessWidget {
+  const _StoriesSection();
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Stories(), // Stories section
-        Expanded(child: PostsSection()), // Posts section
-      ],
-    );
-  }
-}
-
-// Stories Section
-class Stories extends StatelessWidget {
-  const Stories({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.purple,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        children: [
-          Row(
+        Container(
+          color: Colors.purple,
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
@@ -125,59 +65,91 @@ class Stories extends StatelessWidget {
               ),
               Row(
                 children: [
-                  IconButton(
+                  _ActionIcon(
+                    icon: Icons.notifications,
                     onPressed: () {
-                      // Notification Logic
+                      // Notification logic
                     },
-                    icon: const Icon(Icons.notifications, color: Colors.white),
                   ),
-                  IconButton(
+                  const SizedBox(width: 10),
+                  _ActionIcon(
+                    icon: Icons.message,
                     onPressed: () {
-                      // Message Logic
+                      // Messages logic
                     },
-                    icon: const Icon(Icons.message, color: Colors.white),
                   ),
                 ],
               ),
             ],
           ),
-          SizedBox(
-            height: 120,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: const [
-                StoryItem(imagePath: 'assets/pp.jpg', label: 'Your Story'),
-                StoryItem(imagePath: 'assets/story1.png', label: 'Aurel'),
-                StoryItem(imagePath: 'assets/story2.jpg', label: 'Ines'),
-                StoryItem(imagePath: 'assets/story3.jpeg', label: 'Liliane'),
-              ],
-            ),
+        ),
+        Container(
+          height: 151,
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: const BoxDecoration(
+            color: Colors.purple,
           ),
-        ],
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: const [
+              _StoryItem(imagePath: 'assets/pp.jpg', label: 'Your Story'),
+              _StoryItem(imagePath: 'assets/story1.png', label: 'Aurel'),
+              _StoryItem(imagePath: 'assets/story2.jpg', label: 'Ines'),
+              _StoryItem(imagePath: 'assets/story3.jpeg', label: 'Liliane'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Action Icon for Stories Section
+class _ActionIcon extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  const _ActionIcon({required this.icon, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      elevation: 5,
+      color: Colors.white,
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon, color: Colors.black),
       ),
     );
   }
 }
 
 // Story Item
-class StoryItem extends StatelessWidget {
+class _StoryItem extends StatelessWidget {
   final String imagePath;
   final String label;
 
-  const StoryItem({super.key, required this.imagePath, required this.label});
+  const _StoryItem({required this.imagePath, required this.label});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(8.0),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
           CircleAvatar(
             radius: 30,
             backgroundImage: AssetImage(imagePath),
           ),
-          const SizedBox(height: 8),
-          Text(label, style: const TextStyle(color: Colors.white)),
+          const SizedBox(height: 10),
+          Text(
+            label,
+            style: const TextStyle(color: Colors.white, fontSize: 12),
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );
@@ -185,18 +157,18 @@ class StoryItem extends StatelessWidget {
 }
 
 // Posts Section
-class PostsSection extends StatelessWidget {
-  const PostsSection({super.key});
+class _PostsSection extends StatelessWidget {
+  const _PostsSection();
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: const [
-        PostItem(
+        _PostItem(
           userName: 'Marc_aurel',
           timeAgo: '2 mins ago',
           postText:
-              'Join my team for this session we are organizing in collaboration with a painting school.',
+              'Join my Team and I for this session we are organizing in Collaboration with a painting school.',
           postImage: 'assets/post_home.jpg',
         ),
       ],
@@ -205,14 +177,13 @@ class PostsSection extends StatelessWidget {
 }
 
 // Post Item
-class PostItem extends StatelessWidget {
+class _PostItem extends StatelessWidget {
   final String userName;
   final String timeAgo;
   final String postText;
   final String postImage;
 
-  const PostItem({
-    super.key,
+  const _PostItem({
     required this.userName,
     required this.timeAgo,
     required this.postText,
@@ -222,7 +193,7 @@ class PostItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -232,14 +203,60 @@ class PostItem extends StatelessWidget {
             ),
             title: Text(userName),
             subtitle: Text(timeAgo),
+            trailing: ElevatedButton(
+              onPressed: () {
+                // Follow logic
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+              ),
+              child: const Text('Follow'),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(postText),
           ),
-          Image.asset(postImage, fit: BoxFit.cover),
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            width: double.infinity,
+            height: 250,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(postImage),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
         ],
       ),
+    );
+  }
+}
+
+// Add Post Button
+class _AddPostButton extends StatefulWidget {
+  const _AddPostButton();
+
+  @override
+  State<_AddPostButton> createState() => __AddPostButtonState();
+}
+
+class __AddPostButtonState extends State<_AddPostButton> {
+  bool _isChipsVisible = false;
+
+  void _toggleChipsVisibility() {
+    setState(() {
+      _isChipsVisible = !_isChipsVisible;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: _toggleChipsVisibility,
+      backgroundColor: Colors.purple,
+      child: const Icon(Icons.add, size: 50),
     );
   }
 }
