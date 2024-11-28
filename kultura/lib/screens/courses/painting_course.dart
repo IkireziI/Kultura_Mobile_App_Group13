@@ -128,42 +128,8 @@ class EmbeddedVideoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final videoIdFromUrl = YoutubePlayer.convertUrlToId(videoUrl);
-
-    if (videoIdFromUrl == null) {
-      return Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Invalid video URL',
-                style: TextStyle(color: Colors.red),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                description,
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    final YoutubePlayerController controller = YoutubePlayerController(
-      initialVideoId: videoIdFromUrl,
+    final YoutubePlayerController _controller = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
       flags: const YoutubePlayerFlags(autoPlay: false, mute: false),
     );
 
@@ -264,26 +230,13 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
       return;
     }
 
-    try {
-      await FirebaseFirestore.instance.collection('courses').add({
-        'title': title,
-        'videoUrl': url,
-        'description': description,
-      });
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Video added successfully')),
-        );
-        Navigator.pop(context);
-      }
-    } catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add video: $error')),
-        );
-      }
-    }
+    FirebaseFirestore.instance.collection('videos').add({
+      'title': title,
+      'url': url,
+      'description': description,
+    }).then((_) {
+      Navigator.pop(context);
+    });
   }
 
   @override
@@ -363,26 +316,19 @@ class _EditVideoScreenState extends State<EditVideoScreen> {
       return;
     }
 
-    try {
-      await FirebaseFirestore.instance
-          .collection('courses')
-          .doc(widget.videoId)
-          .update({
-        'title': title,
-        'videoUrl': url,
-        'description': description,
-      });
-
-      if (mounted) {
-        Navigator.pop(context);
-      }
-    } catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update: $error')),
-        );
-      }
-    }
+    FirebaseFirestore.instance
+        .collection('videos')
+        .doc(widget.videoId)
+        .update({
+      'title': title,
+      'url': url,
+      'description': description,
+    }).then((_) {
+      Navigator.pop(context);
+    }).catchError((error) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Failed to update: $error')));
+    });
   }
 
   @override

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 class EditProfileScreen extends StatefulWidget {
   final Map<String, dynamic> userData;
 
-  EditProfileScreen({required this.userData});
+  const EditProfileScreen({super.key, required this.userData});
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
@@ -193,23 +193,29 @@ void _updateProfile() async {
     // Check if document exists before updating
     var docSnapshot = await userDocRef.get();
     if (!docSnapshot.exists) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User document not found')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User document not found')),
+        );
+      }
       return;
     }
 
     await userDocRef.update(updatedData);
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile updated successfully')),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully')),
+      );
+    }
 
-    Navigator.pop(context, updatedData);
+    if (mounted) {Navigator.pop(context, updatedData);}
   } catch (e) {
     print('Update Error: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to update profile: $e')),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update profile: $e')),
+      );
+    }
   }
 }}

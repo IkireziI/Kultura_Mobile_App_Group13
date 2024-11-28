@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore: depend_on_referenced_packages
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,10 +68,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Navigate to Home on successful login
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const Home()),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const Home()),
+        );
+      }
     } catch (e) {
       setState(() {
         _errorMessage = "Google Sign-In failed: $e"; // Display error message
@@ -101,10 +104,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (errorMessage == "Successfully logged in") {
         // Navigate to Home on successful login
         // ignore: use_build_context_synchronously
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const Home()),
-        );
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const Home()),
+          );
+        }
       } else {
         // Display the error message
         setState(() {

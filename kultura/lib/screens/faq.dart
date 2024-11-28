@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FAQPage extends StatelessWidget {
-  final List<Map<String, String>> faqData = [
+  final List<Map<String, String>> faqData = const [
     {
       "question": "What is Kultura?",
       "answer": "Kultura is a platform to explore and promote cultural heritage and artistic works."
@@ -23,6 +23,8 @@ class FAQPage extends StatelessWidget {
       "answer": "Yes, Kultura provides a way to get a job/opporunity"
     },
   ];
+
+  const FAQPage({super.key});
 
   @override
   Widget build(BuildContext context) {
