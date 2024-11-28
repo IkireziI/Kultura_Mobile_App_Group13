@@ -58,8 +58,6 @@ class AppliBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double iconSize = MediaQuery.of(context).size.width * 0.08;
-
     return AppBar(
       centerTitle: true,
       elevation: 0,
@@ -71,7 +69,7 @@ class AppliBar extends StatelessWidget {
           elevation: 5,
           color: Colors.grey,
           child: IconButton(
-            icon: Icon(Icons.settings, size: iconSize),
+            icon: const Icon(Icons.settings, size: 30),
             onPressed: () {
               Navigator.push(
                 context,
@@ -83,6 +81,10 @@ class AppliBar extends StatelessWidget {
           ),
         ),
       ),
+      title: Image.asset(
+        'assets/kultura.png',
+        height: 40
+      ),
     );
   }
 }
@@ -93,21 +95,18 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double avatarRadius = screenWidth * 0.15;
-
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Spacer(),
           // Profile Picture
           CircleAvatar(
-            radius: avatarRadius,
+            radius: 60,
             backgroundImage: const AssetImage('assets/pp.jpg'),
           ),
-          SizedBox(width: screenWidth * 0.08),
+          const SizedBox(width: 30),
 
           // Profile Stats
           Column(
@@ -179,12 +178,10 @@ class ProfileInfos extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-
     return Container(
       padding: const EdgeInsets.all(0),
-      width: screenWidth * 0.9,
-      margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.5),
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -207,11 +204,8 @@ class ProfileInfos extends StatelessWidget {
               const SizedBox(width: 5),
               Center(
                 child: Text(
-                  '@Bry_aurel',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: screenWidth * 0.04,
-                  ),
+                '@Bry_aurel',
+                style: TextStyle(color: Colors.black),
                 ),
               ),
               const Spacer(),
@@ -222,12 +216,9 @@ class ProfileInfos extends StatelessWidget {
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
+                child: const Text(
                   'Artist',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenWidth * 0.03,
-                  ),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],
@@ -252,7 +243,7 @@ class ProfileInfos extends StatelessWidget {
             style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
           ),
           const SizedBox(height: 10),
-          
+
           // Edit Profile Button
           Row(
             children: [
@@ -318,7 +309,7 @@ class _GridBarState extends State<GridBar> with SingleTickerProviderStateMixin {
           child: TabBarView(
             controller: _tabController,
             children: [
-              PostGrid(),
+              const PostGrid(),
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -348,28 +339,25 @@ class _GridBarState extends State<GridBar> with SingleTickerProviderStateMixin {
 
 // Post Grid
 class PostGrid extends StatelessWidget {
-  PostGrid({super.key});
+  const PostGrid({super.key});
 
-  // List of posts
-  final List<String> images = [
-    'assets/post1.jpg',
-    'assets/post2.jpeg',
-    'assets/post3.jpeg',
-    'assets/post4.jpg',
-  ];
-
-    @override
+  @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    int crossAxisCount = screenWidth < 600 ? 3 : 5;
-    
+    // List of Posts
+    final List<String> images = [
+      'assets/post1.jpg',
+      'assets/post2.jpeg',
+      'assets/post3.jpeg',
+      'assets/post4.jpg',
+    ];
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
           childAspectRatio: 1,
@@ -381,6 +369,7 @@ class PostGrid extends StatelessWidget {
               image: DecorationImage(
                 image: AssetImage(images[index]),
                 fit: BoxFit.cover,
+                onError: (_, __) => AssetImage('assets/placeholder.jpg'),
               ),
               borderRadius: BorderRadius.circular(8),
             ),
