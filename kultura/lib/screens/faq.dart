@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 
 class FAQPage extends StatelessWidget {
   final List<Map<String, String>> faqData = const [
-    const {
+    {
       "question": "What is Kultura?",
       "answer": "Kultura is a platform to explore and promote cultural heritage and artistic works."
     },
-    const {
+    {
       "question": "How do I create an account?",
       "answer": "To create an account, click on 'Sign Up', fill in the required details, and follow the instructions."
     },
-    const {
+    {
       "question": "How can I reset my password?",
       "answer": "Click on 'Forgot Password' on the login screen and follow the instructions to reset your password."
     },
-    const {
+    {
       "question": "Can I upload my own artwork?",
       "answer": "Yes! Once you create an artist account, you can upload and showcase your work."
     },
-    const {
+    {
       "question": "Is there a way i can get a get a job/opporunity on kultura?",
       "answer": "Yes, Kultura provides a way to get a job/opporunity"
     },
