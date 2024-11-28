@@ -291,10 +291,19 @@ class PostsSection extends StatelessWidget {
       shrinkWrap: true,
       children: [
         PostItem(
+          ppic: CircleAvatar(backgroundImage: AssetImage('assets/marc.jpg')),
           userName: 'Marc_aurel',
           timeAgo: '2 mins ago',
           postText: 'Join my Team and I for this session we are organizing in Collaboration with a painting school.',
           postImage: 'assets/post_home.jpg',
+        ),
+
+        PostItem(
+          ppic: CircleAvatar(backgroundImage: AssetImage('assets/download-11.jpeg')),
+          userName: 'Sarah_',
+          timeAgo: '6 hours ago',
+          postText: 'Nothing better than a Book',
+          postImage: 'assets/download-9.jpeg',
         ),
       ],
     );
@@ -303,6 +312,7 @@ class PostsSection extends StatelessWidget {
 
 // Post Item
 class PostItem extends StatelessWidget {
+  final Widget ppic;
   final String userName;
   final String timeAgo;
   final String postText;
@@ -310,6 +320,7 @@ class PostItem extends StatelessWidget {
 
   const PostItem({
     super.key,
+    required this.ppic,
     required this.userName,
     required this.timeAgo,
     required this.postText,
@@ -324,9 +335,7 @@ class PostItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            leading: CircleAvatar(
-              backgroundImage: AssetImage('assets/marc.jpg'),
-            ),
+            leading: ppic,
             title: Text(userName),
             subtitle: Text(timeAgo),
             trailing: ElevatedButton(
