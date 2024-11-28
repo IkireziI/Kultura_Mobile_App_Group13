@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 class EditProfileScreen extends StatefulWidget {
   final Map<String, dynamic> userData;
 
-  EditProfileScreen({required this.userData});
+  const EditProfileScreen({super.key, required this.userData});
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
