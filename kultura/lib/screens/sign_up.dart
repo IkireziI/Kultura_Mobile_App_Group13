@@ -22,6 +22,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
+  bool _isLoading = false;  // Manage the loading spinner
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -155,8 +157,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: AppStyles.primaryButtonStyle,
-                    onPressed: () async {
+                    onPressed: _isLoading ? null : () async { //Disable if loading
                       if (_formKey.currentState?.validate() ?? false) {
+                        setState(() {
+                          _isLoading = true; // Show loading spinner
+                        });
+
                         try {
                           await AuthService().signup(
                             name: _nameController.text.trim(),
@@ -164,6 +170,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             password: _passwordController.text.trim(),
                             context: context,
                           );
+
+                          // After successful registration, store additional user info in Firestore
+                          User? user = FirebaseAuth.instance.currentUser;
+                          if (user != null) {
+                            await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+                              'name': _nameController.text.trim(),
+                              'email': _emailController.text.trim(),
+                              'createdAt': FieldValue.serverTimestamp(),
+                              'username': '', // Empty string, will be updated later
+                              'profilePictureUrl': '', // Empty string, will be updated later
+                              'posts': [], // Empty list for future posts
+                              'stories': [], // Empty list for future stories
+                            });
+                          }
+
                           // Navigate to HomePage after successful registration
                           Navigator.pushReplacementNamed(context, '/home');
                         } on FirebaseAuthException catch (e) {
@@ -175,6 +196,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textColor: Colors.white,
                             fontSize: 14.0,
                           );
+                          print('Error: ${e.message}');
                         } catch (e) {
                           Fluttertoast.showToast(
                             msg: 'Unexpected error occurred. Please try again.',
@@ -184,10 +206,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             textColor: Colors.white,
                             fontSize: 14.0,
                           );
+                        } finally {
+                          setState(() {
+                            _isLoading = false; // Hide loading spinner
+                          });
                         }
                       }
                     },
-                    child: const Text('Sign Up'),
+                    child: _isLoading
+                        ? Center(child: CircularProgressIndicator())  // Show spinner while loading
+                        : const Text('Sign Up'),
                   ),
                 ),
                 const SizedBox(height: 20),

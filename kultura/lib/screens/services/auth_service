@@ -1,14 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Sign up method
-  Future<void> signup({
+  Future<User?> signup({
     required String name,
     required String email,
     required String password,
@@ -21,39 +16,28 @@ class AuthService {
         password: password,
       );
 
-      // After successful registration, update Firestore with additional details
-      await _firestore.collection('users').doc(userCredential.user?.uid).set({
+      // Get the user ID
+      User? user = userCredential.user;
+
+      // Create a document in Firestore to store user data
+      await _firestore.collection('users').doc(user?.uid).set({
         'name': name,
         'email': email,
-        'createdAt': Timestamp.now(),
+        'createdAt': FieldValue.serverTimestamp(),
+        // Add other user data you might need
+        'username': '', // Will be updated later
+        'profilePictureUrl': '', // Will be updated later
+        'posts': [], // Empty list for future posts
+        'stories': [], // Empty list for future stories
       });
 
-      // Display success message
-      Fluttertoast.showToast(
-        msg: "Sign up successful!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-      );
+      return user;
     } on FirebaseAuthException catch (e) {
-      Fluttertoast.showToast(
-        msg: e.message ?? 'An error occurred during sign up',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      throw e; // Handle Firebase errors (e.g., email already in use)
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Unexpected error occurred. Please try again.',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.SNACKBAR,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      rethrow;
     }
   }
+
+  // You can also add other methods like login(), logout(), etc.
 }
