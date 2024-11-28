@@ -233,7 +233,9 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
       'url': url,
       'description': description,
     }).then((_) {
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     });
   }
 

@@ -67,19 +67,23 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           _isLoading = false;
         });
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Password changed successfully!')),
-        );
-        Navigator.pop(context);  // Close the screen after password is changed
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Password changed successfully!')),
+          );
+          Navigator.pop(context);  // Close the screen after password is changed
+        }
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
         _errorMessage = 'Failed to change password: $e';
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_errorMessage)),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(_errorMessage)),
+        );
+      }
     }
   }
 
