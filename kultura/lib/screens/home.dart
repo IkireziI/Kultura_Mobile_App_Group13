@@ -1,92 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kultura/screens/marketplace.dart';
-import 'package:kultura/screens/search_page.dart';
-import 'package:kultura/screens/profile.dart';
-import 'package:kultura/screens/opportunities_board.dart';
-import 'package:kultura/screens/courses/resource_center.dart';
 
 
-
-class HomeBottomNavigationBar extends StatefulWidget {
-  const HomeBottomNavigationBar({super.key});
-
-  @override
-  State<HomeBottomNavigationBar> createState() => _HomeBottomNavigationBar();
-}
-
-class _HomeBottomNavigationBar extends State<HomeBottomNavigationBar> {
-  int _selectedIndex = 0;
-
-  // Define an array of pages for the bottom navigation bar
-  final List<Widget> _pages = [
-    const Home(), // Home
-    const ArtisticCourseScreen(),  // Resource CenterR
-    const SearchScreen(),    // Search
-    const OpportunitiesBoard(), // Opportunities Board
-    const MarketplacePage(),
-    const Profile(),   // Profile
-  ];
-
-  // Handle navigation bar item tap
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Image.asset(
-          'assets/kultura.png',
-          height: 40,
-        ),
-        backgroundColor: Colors.purple,
-      ),
-      body: _pages[_selectedIndex], // Display the selected page
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.purple,
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        iconSize: 30,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.auto_stories_outlined),
-            label: 'Resource Center',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search_outlined),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.language_outlined),
-            label: 'Opportunities Board',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.storefront),
-            label: 'Market Place',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: 'Profile',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Define the Home page with Stories and Posts
 class Home extends StatelessWidget {
   const Home({super.key});
 
@@ -114,7 +28,7 @@ class Home extends StatelessWidget {
         ),
         floatingActionButton: const AddPost(),
         // Body
-        bottomNavigationBar: HomeBottomNavigationBar(),
+        bottomNavigationBar: BottomNavigation(selectedIndex: 0,),
         // Bottom Navigation Bar
     );
   }
@@ -395,6 +309,92 @@ class _AddPostState extends State<AddPost> {
       backgroundColor: Colors.purple,
       elevation: 5,
       child: const Icon(Icons.add, size: 50, color: Colors.black),
+    );
+  }
+}
+
+// Bottom navigation bar widget with 5 items
+class BottomNavigation extends StatefulWidget {
+  final int selectedIndex; // Tracks the currently selected tab
+
+  const BottomNavigation({super.key, required this.selectedIndex});
+
+  @override
+  State<BottomNavigation> createState() => _BottomNavigationState();
+}
+
+class _BottomNavigationState extends State<BottomNavigation> {
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex; // Sets the initial selected tab
+  }
+
+  // Handles tap events for each navigation item
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/home'); // Navigates to Home
+        break;
+      case 1:
+        Navigator.pushReplacementNamed(
+            context, '/resource_center'); // Navigates to Resource Center
+        break;
+      case 2:
+        Navigator.pushReplacementNamed(
+            context, '/search'); // Navigates to Search Screen
+        break;
+      case 3:
+        Navigator.pushReplacementNamed(context,
+            '/opportunities_board'); // Navigates to Opportunities board
+        break;
+      case 4:
+        Navigator.pushReplacementNamed(
+            context, '/profile'); // Navigates to Profile Screen
+        break;
+      default:
+        break;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex, // Highlights the selected tab
+      type: BottomNavigationBarType.fixed, // Fixed tab type
+      selectedItemColor: Colors.purple, // Selected icon color
+      unselectedItemColor: Colors.grey, // Unselected icon color
+      showSelectedLabels: false, // Hides selected labels
+      showUnselectedLabels: false, // Hides unselected labels
+      iconSize: 30, // Sets icon size
+      onTap: _onItemTapped, // Triggers _onItemTapped on tap
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.auto_stories_outlined),
+          label: 'Resource Center',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search_outlined),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.language_outlined),
+          label: 'Opportunities Board',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle_outlined),
+          label: 'Profile',
+        ),
+      ],
     );
   }
 }
