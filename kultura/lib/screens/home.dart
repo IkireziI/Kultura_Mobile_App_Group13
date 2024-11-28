@@ -46,6 +46,9 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.purple,
       ),
       body: _pages[_selectedIndex], // Display the selected page
+      floatingActionButton: _selectedIndex == 0 // Show FAB only on HomePage
+        ? const AddPost()
+        : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
