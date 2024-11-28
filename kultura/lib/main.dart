@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kultura/firebase_options.dart';
 import 'package:kultura/screens/courses/resource_center.dart';
+import 'package:kultura/screens/edit_prof.dart';
 
 // Importing screens
 import 'package:kultura/screens/home.dart';
