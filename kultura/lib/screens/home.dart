@@ -101,7 +101,6 @@ class HomePage extends StatelessWidget {
         Expanded(child: HomePageContent()), // Homepage section
       ],
     );
-    floatingActionButton: const AddPost();
   }
 }
 

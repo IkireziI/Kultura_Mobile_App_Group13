@@ -81,7 +81,10 @@ class AppliBar extends StatelessWidget {
           ),
         ),
       ),
-
+      title: Image.asset(
+        'assets/kultura.png',
+        height: 40
+      ),
     );
   }
 }
@@ -97,13 +100,13 @@ class ProfileHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(width: 100),
+          Spacer(),
           // Profile Picture
           CircleAvatar(
             radius: 60,
             backgroundImage: const AssetImage('assets/pp.jpg'),
           ),
-          const SizedBox(width: 60),
+          const SizedBox(width: 30),
 
           // Profile Stats
           Column(
@@ -115,7 +118,7 @@ class ProfileHeader extends StatelessWidget {
               StatItem(count: '496', label: 'Following'),
             ],
           ),
-          const SizedBox(width: 10),
+          Spacer(),
         ],
       ),
     );
@@ -126,7 +129,11 @@ class ProfileHeader extends StatelessWidget {
 class StatItem extends StatelessWidget {
   final String count;
   final String label;
-  const StatItem({super.key, required this.count, required this.label});
+  const StatItem({
+    super.key, 
+    required this.count, 
+    required this.label
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +199,7 @@ class ProfileInfos extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(width: 180),
+              const SizedBox(width: 185),
               const Icon(Icons.person, size: 16, color: Colors.black),
               const SizedBox(width: 5),
               const Text(
@@ -234,10 +241,10 @@ class ProfileInfos extends StatelessWidget {
             style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
           ),
           const SizedBox(height: 10),
+          
           // Edit Profile Button
           Row(
             children: [
-              const SizedBox(width: 241),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -301,8 +308,24 @@ class _GridBarState extends State<GridBar> with SingleTickerProviderStateMixin {
             controller: _tabController,
             children: [
               const PostGrid(),
-              const Center(
-                child: Text('No saved Posts'),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.bookmark_border,
+                      size: 50,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'No saved Posts yet',
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                )
               ),
             ],
           ),
@@ -344,6 +367,7 @@ class PostGrid extends StatelessWidget {
               image: DecorationImage(
                 image: AssetImage(images[index]),
                 fit: BoxFit.cover,
+                onError: (_, __) => AssetImage('assets/placeholder.jpg'),
               ),
               borderRadius: BorderRadius.circular(8),
             ),
