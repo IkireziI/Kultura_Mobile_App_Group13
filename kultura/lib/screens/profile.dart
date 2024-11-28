@@ -81,10 +81,6 @@ class AppliBar extends StatelessWidget {
           ),
         ),
       ),
-      title: Image.asset(
-        'assets/kultura.png',
-        height: 40
-      ),
     );
   }
 }
