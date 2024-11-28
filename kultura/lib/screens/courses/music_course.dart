@@ -1,36 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-// Main screen for the Music Course
-class MusicCourseScreen extends StatelessWidget {
+class MusicCourseScreen extends StatefulWidget {
   const MusicCourseScreen({super.key});
+
+  @override
+  MusicCourseScreenState createState() => MusicCourseScreenState();
+}
+
+class MusicCourseScreenState extends State<MusicCourseScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Main body of the screen with a gradient background
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFF9C27B0),
-              Color(0xFFE1BEE7)
-            ], // Purple gradient colors
-            begin: Alignment.topCenter, // Gradient starts from the top
-            end: Alignment.bottomCenter, // Gradient ends at the bottom
+            colors: [Color(0xFF9C27B0), Color(0xFFE1BEE7)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Column(
           children: [
-            // Custom App Bar with back button and logo
             AppBar(
-              elevation: 0, // No shadow under the AppBar.
+              elevation: 0,
               backgroundColor: Colors.transparent,
-              automaticallyImplyLeading: false, // No default back button.
+              automaticallyImplyLeading: false,
               title: Row(
                 children: [
                   IconButton(
-                    // Custom back button that navigates to the previous screen.
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () {
                       Navigator.pop(context);
@@ -39,12 +41,11 @@ class MusicCourseScreen extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: Image.asset(
-                        'assets/images/KULTURA.png', // App logo.
-                        height: 40, // Logo height.
+                        'assets/images/KULTURA.png',
+                        height: 40,
                       ),
                     ),
                   ),
-                  // Empty IconButton for layout symmetry.
                   const IconButton(
                     icon: Icon(null),
                     onPressed: null,
@@ -52,154 +53,406 @@ class MusicCourseScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16), // Spacing below AppBar.
-
-            // Search bar with centered italic text
+            const SizedBox(height: 16),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0), // Padding for the search bar
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white
-                      .withOpacity(0.8), // White background with opacity
-                  borderRadius: BorderRadius.circular(30), // Rounded corners
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextField(
+                  controller: _searchController,
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value.toLowerCase();
+                    });
+                  },
                   decoration: InputDecoration(
-                    hintText: 'Search', // Placeholder text
-                    hintStyle: const TextStyle(
-                      fontStyle: FontStyle.italic, // Italic style for hint text
-                    ),
-                    prefixIcon: const Icon(Icons.search,
-                        color: Colors.black), // Search icon
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.filter_list,
-                          color: Colors.black), // Filter icon
-                      onPressed: () {
-                        // Handle filter action here
-                      },
-                    ),
-                    border: InputBorder.none, // No border around the text field
+                    hintText: 'Search courses',
+                    hintStyle: const TextStyle(fontStyle: FontStyle.italic),
+                    prefixIcon: const Icon(Icons.search, color: Colors.black),
+                    suffixIcon: _searchQuery.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear, color: Colors.black),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() {
+                                _searchQuery = '';
+                              });
+                            },
+                          )
+                        : IconButton(
+                            icon: const Icon(Icons.filter_list,
+                                color: Colors.black),
+                            onPressed: () {},
+                          ),
+                    border: InputBorder.none,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 16), // Spacing
-
-            // Scrollable area for embedded videos
+            const SizedBox(height: 16),
             Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0), // Padding for video cards
-                  child: Column(
-                    children: [
-                      // First embedded video card
-                      EmbeddedVideoCard(
-                        videoUrl:
-                            'https://youtu.be/2pirdPK5avU?si=qRvFGwAQ0ke1kH24', // Video URL
-                        title: "How I'd Learn Music Theory (If I Had To Start Over)", // Video title
-                        description:
-                            "Knowing what I know now, how would I advise the old 2009 Cory on how to do things better? Or, perhaps more relevantly, how would I advise people who are just starting their own journeys into music theory?", // Video description
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('music_courses')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('No Videos Available'));
+                  }
+
+                  // Filter videos based on search query
+                  final filteredVideos = snapshot.data!.docs.where((video) {
+                    final title = video['title'].toString().toLowerCase();
+                    final description =
+                        video['description'].toString().toLowerCase();
+                    return title.contains(_searchQuery) ||
+                        description.contains(_searchQuery);
+                  }).toList();
+
+                  if (filteredVideos.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'No courses match your search',
+                        style: TextStyle(color: Colors.white),
                       ),
-                      const SizedBox(height: 16), // Spacing between video cards
-                      // Second embedded video card
-                      EmbeddedVideoCard(
-                        videoUrl:
-                            'https://youtu.be/mWpXy57-mvc?si=fu6WJdXJc4PEBg_2', // Video URL
-                        title: 'The BASICS Of Music Theory EXPLAINED (in 10 minutes)', // Video title
-                        description:
-                            'In this episode we revisit the basics of music theory exploring intervals, chord construction, and ear training. All in 10 minutes! Beato Ear Training and Beato Book links below.', // Video description
-                      ),
-                    ],
-                  ),
-                ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    itemCount: filteredVideos.length,
+                    itemBuilder: (context, index) {
+                      final video = filteredVideos[index];
+                      return EmbeddedVideoCard(
+                        videoId: video.id,
+                        videoUrl: video['videoUrl'],
+                        title: video['title'],
+                        description: video['description'],
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
         ),
       ),
-      // bottomNavigationBar:
-      //     const BottomNavigation(selectedIndex: 1), // Bottom navigation bar
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddVideoScreen()),
+          );
+        },
+        backgroundColor: Colors.purple,
+        child: const Icon(Icons.add, color: Colors.black),
+      ),
     );
   }
 }
 
-// Custom widget for displaying an embedded video card
-class EmbeddedVideoCard extends StatefulWidget {
-  final String videoUrl; // URL of the YouTube video
-  final String title; // Title of the video
-  final String description; // Description of the video
+class EmbeddedVideoCard extends StatelessWidget {
+  final String videoId;
+  final String videoUrl;
+  final String title;
+  final String description;
 
   const EmbeddedVideoCard({
     super.key,
+    required this.videoId,
     required this.videoUrl,
     required this.title,
     required this.description,
   });
 
   @override
-  EmbeddedVideoCardState createState() =>
-      EmbeddedVideoCardState(); // Create the state for the video card
-}
+  Widget build(BuildContext context) {
+    final videoIdFromUrl = YoutubePlayer.convertUrlToId(videoUrl);
 
-class EmbeddedVideoCardState extends State<EmbeddedVideoCard> {
-  late YoutubePlayerController _controller; // Controller for the YouTube player
+    if (videoIdFromUrl == null) {
+      return Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Invalid video URL',
+                style: TextStyle(color: Colors.red),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                description,
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
-  @override
-  void initState() {
-    super.initState();
-    // Initialize the YouTube player controller with the video URL
-    _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(
-          widget.videoUrl)!, // Convert URL to video ID
-      flags: const YoutubePlayerFlags(
-        autoPlay: false, // Do not auto-play the video
-        mute: false, // Sound is not muted
+    final YoutubePlayerController controller = YoutubePlayerController(
+      initialVideoId: videoIdFromUrl,
+      flags: const YoutubePlayerFlags(autoPlay: false, mute: false),
+    );
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                PopupMenuButton<String>(
+                  onSelected: (value) {
+                    if (value == 'edit') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditVideoScreen(
+                            videoId: videoId,
+                            videoUrl: videoUrl,
+                            title: title,
+                            description: description,
+                          ),
+                        ),
+                      );
+                    } else if (value == 'delete') {
+                      FirebaseFirestore.instance
+                          .collection('music_courses')
+                          .doc(videoId)
+                          .delete();
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: 'edit',
+                      child: Text('Edit'),
+                    ),
+                    const PopupMenuItem(
+                      value: 'delete',
+                      child: Text('Delete'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            YoutubePlayer(
+              controller: controller,
+              showVideoProgressIndicator: true,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              description,
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+class AddVideoScreen extends StatefulWidget {
+  const AddVideoScreen({super.key});
 
   @override
-  void dispose() {
-    _controller.dispose(); // Dispose of the controller when done
-    super.dispose();
+  State<AddVideoScreen> createState() => _AddVideoScreenState();
+}
+
+class _AddVideoScreenState extends State<AddVideoScreen> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _urlController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
+  void _addVideo() async {
+    final title = _titleController.text;
+    final url = _urlController.text;
+    final description = _descriptionController.text;
+
+    if (title.isEmpty || url.isEmpty || description.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('All fields are required')),
+        );
+      }
+      return;
+    }
+
+    try {
+      await FirebaseFirestore.instance.collection('music_courses').add({
+        'title': title,
+        'videoUrl': url,
+        'description': description,
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Video added successfully')),
+        );
+        Navigator.pop(context);
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to add video: $error')),
+        );
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4, // Shadow effect for the card
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10), // Rounded corners for the card
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0), // Padding inside the card
+    return Scaffold(
+      appBar: AppBar(title: const Text('Add Video')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Align text to the start
           children: [
-            // Title of the video
-            Text(
-              widget.title,
-              style: const TextStyle(
-                fontSize: 18, // Font size for the title
-                fontWeight: FontWeight.bold, // Bold font weight for the title
-              ),
+            TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
-            const SizedBox(height: 8), // Spacing below the title
-            // YouTube player widget
-            YoutubePlayer(
-              controller: _controller, // Provide the controller
-              showVideoProgressIndicator: true, // Show progress indicator
+            TextField(
+              controller: _urlController,
+              decoration: const InputDecoration(labelText: 'Video URL'),
             ),
-            const SizedBox(height: 16), // Spacing below the video
-            // Description of the video
-            Text(
-              widget.description,
-              style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey), // Style for the description
+            TextField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(labelText: 'Description'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _addVideo,
+              child: const Text('Add Video'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EditVideoScreen extends StatefulWidget {
+  final String videoId;
+  final String videoUrl;
+  final String title;
+  final String description;
+
+  const EditVideoScreen({
+    super.key,
+    required this.videoId,
+    required this.videoUrl,
+    required this.title,
+    required this.description,
+  });
+
+  @override
+  State<EditVideoScreen> createState() => _EditVideoScreenState();
+}
+
+class _EditVideoScreenState extends State<EditVideoScreen> {
+  late TextEditingController _titleController;
+  late TextEditingController _urlController;
+  late TextEditingController _descriptionController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.title);
+    _urlController = TextEditingController(text: widget.videoUrl);
+    _descriptionController = TextEditingController(text: widget.description);
+  }
+
+  void _updateVideo() async {
+    final title = _titleController.text;
+    final url = _urlController.text;
+    final description = _descriptionController.text;
+
+    if (title.isEmpty || url.isEmpty || description.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('All fields are required')),
+        );
+      }
+      return;
+    }
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('music_courses')
+          .doc(widget.videoId)
+          .update({
+        'title': title,
+        'videoUrl': url,
+        'description': description,
+      });
+
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update: $error')),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Edit Video')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(labelText: 'Title'),
+            ),
+            TextField(
+              controller: _urlController,
+              decoration: const InputDecoration(labelText: 'Video URL'),
+            ),
+            TextField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(labelText: 'Description'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _updateVideo,
+              child: const Text('Update Video'),
             ),
           ],
         ),

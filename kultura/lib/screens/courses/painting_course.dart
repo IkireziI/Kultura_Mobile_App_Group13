@@ -96,7 +96,7 @@ class PaintingCourseScreenState extends State<PaintingCourseScreen> {
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
-                    .collection('courses')
+                    .collection('painting_courses')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -247,7 +247,7 @@ class EmbeddedVideoCard extends StatelessWidget {
                       );
                     } else if (value == 'delete') {
                       FirebaseFirestore.instance
-                          .collection('courses')
+                          .collection('painting_courses')
                           .doc(videoId)
                           .delete();
                     }
@@ -309,7 +309,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
     }
 
     try {
-      await FirebaseFirestore.instance.collection('courses').add({
+      await FirebaseFirestore.instance.collection('painting_courses').add({
         'title': title,
         'videoUrl': url,
         'description': description,
@@ -409,7 +409,7 @@ class _EditVideoScreenState extends State<EditVideoScreen> {
 
     try {
       await FirebaseFirestore.instance
-          .collection('courses')
+          .collection('painting_courses')
           .doc(widget.videoId)
           .update({
         'title': title,
