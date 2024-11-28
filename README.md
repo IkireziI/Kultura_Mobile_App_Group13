@@ -1,6 +1,6 @@
 # **Kultura App**  
 *Version: 1.0*  
-*Last Updated: September 29, 2024*
+*Last Updated: November 28, 2024*
 
 ## **Project Overview**
 **Kultura** is a mobile application that provides a platform for African artists to showcase their work, connect with buyers and investors, and access educational resources. The app fosters appreciation of African art, culture, and design while also supporting job creation and skill development through its unique blend of a marketplace and learning hub.
@@ -40,21 +40,20 @@
 ## **App Architecture**
 - **Frontend**: Flutter (cross-platform mobile development)
 - **Backend**: Firebase (real-time database, authentication, storage)
-- **APIs**: Integrated with payment gateways (e.g., PayPal) for secure transactions and AI tools to enhance artwork.
 
-##  Usage Examples
-**Google Sign-In**
+##  Authentication (User)
+- **Google Sign-In**
 Tap the "Sign in with Google" button.
 Select a Google account to authenticate.
 The user is redirected to the dashboard after successful login.
 
-**Email Authentication**
+- **Email Authentication**
 Register with an email and password.
 
 Log in with the same credentials to access the app.
 
-## Authentication Methods
-**Google Sign-In**
+## Authentication Methods (Developer)
+- **Google Sign-In**
 
 *Setup:*
 
@@ -62,7 +61,7 @@ Enable Google Sign-In in Firebase Console.
 
 Integrate the google_sign_in Flutter package.
 
-**Email and Password Authentication**
+- **Email and Password Authentication**
 Setup:
 
 Enable Email/Password Authentication in Firebase Console.
@@ -71,10 +70,19 @@ Enable Email/Password Authentication in Firebase Console.
 We use Firebase Security Rules to enforce strict access control for Firestore.
 
 ## Testing Security Rules
-Use the Firebase Emulator Suite for local testing:
+Use the Firebase Emulator Suite for local testing: Unit Testing
 
 Simulate user actions in the Emulator UI to verify rule enforcement.
 
+
+## **All Links**
+- Figma: https://www.figma.com/design/QNS4ZaYxoaapEorJmvNNnY/kultura--app?node-id=184-112&node-type=frame&t=nWQ9q8ihmjvdG4Ku-0
+- Front-end Demo Video: https://www.youtube.com/watch?v=8LyMIz6y8cU
+- Firebase Project: https://console.firebase.google.com/project/kultura-app-group13/overview
+- Entity-Relationship Diagrams: https://docs.google.com/document/d/1on0IlsrnYmv6Ff18IQxFvneYTaQ_gyp7u_RXqdV_JgI/edit?usp=sharing
+- Final Presentation slides: https://www.canva.com/design/DAGXvg4iANA/8AmnRjuutk34-jkMdnTpDg/edit?utm_content=DAGXvg4iANA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+- Backend = Firebase Database Demo Video: https://drive.google.com/file/d/1fzNx9XiAsozqfSRYyQm3WEZDpymiSqjT/view?usp=drive_link
+- APK File: https://drive.google.com/file/d/1fLw_5U9FH5GNx40YtCO2NDUeOoTaGI8U/view?usp=drive_link
 
 ## **Contributing**
 We welcome contributions! Here’s how you can help:
