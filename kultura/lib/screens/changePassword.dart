@@ -132,13 +132,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _isLoading ? null : _changePassword,
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text('Change Password'),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 
               ),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text('Change Password'),
             ),
           ],
         ),
