@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'art_work.dart';
 
 class AddArtworkPage extends StatefulWidget {
+  const AddArtworkPage({super.key});
+
   @override
-  _AddArtworkPageState createState() => _AddArtworkPageState();
+  State<AddArtworkPage> createState() => _AddArtworkPageState();
 }
 
 class _AddArtworkPageState extends State<AddArtworkPage> {
@@ -41,15 +43,19 @@ class _AddArtworkPageState extends State<AddArtworkPage> {
         await docRef.set(artwork.toMap());
 
         // Navigate back and show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Artwork added successfully!')),
-        );
-        Navigator.pop(context);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Artwork added successfully!')),
+          );
+          Navigator.pop(context);
+        }
       } catch (e) {
         // Handle errors
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add artwork: $e')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to add artwork: $e')),
+          );
+        }
       } finally {
         setState(() {
           _isLoading = false; // Hide loading indicator

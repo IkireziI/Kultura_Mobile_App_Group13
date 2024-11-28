@@ -12,7 +12,7 @@ class AddOpportunityForm extends StatefulWidget {
   });
 
   @override
-  _AddOpportunityFormState createState() => _AddOpportunityFormState();
+  State<AddOpportunityForm> createState() => _AddOpportunityFormState();
 }
 
 class _AddOpportunityFormState extends State<AddOpportunityForm> {
