@@ -199,12 +199,13 @@ class ProfileInfos extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(width: 185),
               const Icon(Icons.person, size: 16, color: Colors.black),
               const SizedBox(width: 5),
-              const Text(
+              Center(
+                child: Text(
                 '@Bry_aurel',
                 style: TextStyle(color: Colors.black),
+                ),
               ),
               const Spacer(),
               // Artist Badge
