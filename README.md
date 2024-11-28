@@ -76,13 +76,13 @@ Simulate user actions in the Emulator UI to verify rule enforcement.
 
 
 ## **All Links**
-- Figma: https://www.figma.com/design/QNS4ZaYxoaapEorJmvNNnY/kultura--app?node-id=184-112&node-type=frame&t=nWQ9q8ihmjvdG4Ku-0
-- Front-end Demo Video: https://www.youtube.com/watch?v=8LyMIz6y8cU
-- Firebase Project: https://console.firebase.google.com/project/kultura-app-group13/overview
-- Entity-Relationship Diagrams: https://docs.google.com/document/d/1on0IlsrnYmv6Ff18IQxFvneYTaQ_gyp7u_RXqdV_JgI/edit?usp=sharing
-- Final Presentation slides: https://www.canva.com/design/DAGXvg4iANA/8AmnRjuutk34-jkMdnTpDg/edit?utm_content=DAGXvg4iANA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
-- Backend = Firebase Database Demo Video: https://drive.google.com/file/d/1fzNx9XiAsozqfSRYyQm3WEZDpymiSqjT/view?usp=drive_link
-- APK File: https://drive.google.com/file/d/1fLw_5U9FH5GNx40YtCO2NDUeOoTaGI8U/view?usp=drive_link
+- **Figma:** click [here](https://www.figma.com/design/QNS4ZaYxoaapEorJmvNNnY/kultura--app?node-id=184-112&node-type=frame&t=nWQ9q8ihmjvdG4Ku-0)
+- **Front-end Demo Video:** click [here](https://www.youtube.com/watch?v=8LyMIz6y8cU) 
+- **Firebase Project:** click [here](https://console.firebase.google.com/project/kultura-app-group13/overview)
+- **Entity-Relationship Diagrams:** click [here](https://docs.google.com/document/d/1on0IlsrnYmv6Ff18IQxFvneYTaQ_gyp7u_RXqdV_JgI/edit?usp=sharing)
+- **Final Presentation slides:** click [here](https://www.canva.com/design/DAGXvg4iANA/8AmnRjuutk34-jkMdnTpDg/edit?utm_content=DAGXvg4iANA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+- **Backend = Firebase Database Demo Video:** click [here](https://drive.google.com/file/d/1fzNx9XiAsozqfSRYyQm3WEZDpymiSqjT/view?usp=drive_link) 
+- **APK File:** click [here](https://drive.google.com/file/d/1fLw_5U9FH5GNx40YtCO2NDUeOoTaGI8U/view?usp=drive_link) 
 
 ## **Contributing**
 We welcome contributions! Here’s how you can help:
